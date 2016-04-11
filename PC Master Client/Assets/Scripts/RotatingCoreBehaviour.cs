@@ -22,7 +22,7 @@ public class RotatingCoreBehaviour : MonoBehaviour
 
 	public void Damage(int damageValue)
 	{
-		currentHP -= damageValue;
+		currentHP -= (float)damageValue;
 		coreSprite.color = new Color(1, 1 - (float)(startingHP - currentHP) / startingHP, 1 - (float)(startingHP - currentHP) / startingHP);
 
 		if (currentHP < 0)

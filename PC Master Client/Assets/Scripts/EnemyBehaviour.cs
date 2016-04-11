@@ -39,7 +39,16 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Core"))
         {
-            collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
+			
+            //collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
+			var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
+			if (null == behaviour) {
+				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+			} else {
+				
+				behaviour.Damage (damage);
+			} 
+
             Destroy(gameObject);
         }
     }
