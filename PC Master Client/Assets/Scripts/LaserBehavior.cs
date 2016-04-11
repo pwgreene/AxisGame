@@ -27,6 +27,8 @@ public class LaserBehavior : MonoBehaviour {
 	{
 		if (other.CompareTag("Enemy"))
 		{
+			PlayerController playerScript = owner.GetComponent<PlayerController> ();
+			playerScript.IncreaseScore (100);
 			Destroy (other.gameObject);
 			Destroy (gameObject);
 		}
