@@ -5,7 +5,7 @@ public class TurretController : MonoBehaviour {
 
 	public float speed;
 	public float rotationSpeed;
-	public int fireRate;
+	public float fireRate;
 
 	float playerVertical;
 	float playerHorizontal;

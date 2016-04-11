@@ -4,9 +4,9 @@ using System.Collections;
 public class RotatingCoreBehaviour : MonoBehaviour
 {
 
-	public int startingHP;
-	int currentHP;
-	public int rotationspeed;
+	public float startingHP;
+	public float currentHP;
+	public float rotationspeed;
 
 	SpriteRenderer coreSprite;
 
