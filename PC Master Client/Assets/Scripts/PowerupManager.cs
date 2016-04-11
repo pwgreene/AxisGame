@@ -21,7 +21,7 @@ public class PowerupManager : MonoBehaviour {
 		GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
 		Powerups scriptPower = clone.GetComponent<Powerups> ();
 		scriptPower.powType = (PowerupType) Mathf.RoundToInt (Random.Range(0,System.Enum.GetValues(typeof(PowerupType)).Length-1)) ;
-		scriptPower.scalarIncrease += Random.Range(5,25);
+		scriptPower.scalarIncrease += Random.Range(0,1);
 		scriptPower.percentageIncrease = Random.Range (1, 1.1f);
 		yield return new WaitForSeconds(timeBetweenPowerUps);
 		StartCoroutine ("spawnPowerUp");
