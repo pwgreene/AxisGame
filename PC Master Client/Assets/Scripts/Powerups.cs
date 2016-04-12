@@ -31,7 +31,7 @@ public class Powerups : MonoBehaviour {
 				core.GetComponent<RotatingCoreBehaviour> ().rotationspeed = scalarIncrease + core.GetComponent<RotatingCoreBehaviour> ().rotationspeed * percentageIncrease; 
 				break;
 			case PowerupType.FiringRate:
-				other.GetComponent<TurretController> ().fireRate = scalarIncrease + other.GetComponent<TurretController> ().fireRate * percentageIncrease;
+				other.GetComponent<TurretController> ().fireRate = Mathf.RoundToInt(1/(scalarIncrease + other.GetComponent<TurretController> ().fireRate * percentageIncrease))+1;
 				break;
 			case PowerupType.Speed:
 				other.GetComponent<TurretController> ().speed = scalarIncrease + other.GetComponent<TurretController> ().speed * percentageIncrease;

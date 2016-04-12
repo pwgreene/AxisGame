@@ -107,7 +107,7 @@ public class TurretController : MonoBehaviour {
 	void Fire()
 	{
 		print ("fire");
-		if (timeElapsedSinceFire == fireRate) {
+		if (timeElapsedSinceFire >= fireRate) {
 			//create two new lasers to fire and set them equal to the color of the parent
 			if (leftShooting) {
 				leftShooting = false;
