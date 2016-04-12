@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
 	public float rotationSpeed;
 	public int fireRate;
 
+	public static int score;
+
 	float playerVertical;
 	float playerHorizontal;
 	bool playerFire;
@@ -68,5 +70,13 @@ public class PlayerController : MonoBehaviour {
 			leftLaser.GetComponent<SpriteRenderer> ().color = color;
 			timeElapsedSinceFire = 0;
 		}
+	}
+
+	void OnGUI() {
+		GUI.Box (new Rect (50, 300, 100, 50), "Score:  " + score.ToString());
+	}
+
+	public void IncreaseScore(int amount) {
+		score += amount;
 	}
 }
