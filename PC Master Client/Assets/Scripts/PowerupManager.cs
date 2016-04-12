@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PowerupManager : MonoBehaviour {
-	public float timeBetweenPowerUps;
+	public float minTimeBetweenPowerUps;
+	public float maxTimeBetweenPowerUps;
 	public GameObject powerupPrefab;
 	List<Vector2> powerUpSpawnPoints;
 
@@ -23,7 +24,7 @@ public class PowerupManager : MonoBehaviour {
 		scriptPower.powType = (PowerupType) Mathf.RoundToInt (Random.Range(0,System.Enum.GetValues(typeof(PowerupType)).Length-1)) ;
 		scriptPower.scalarIncrease += Random.Range(0,1);
 		scriptPower.percentageIncrease = Random.Range (1, 1.1f);
-		yield return new WaitForSeconds(timeBetweenPowerUps);
+		yield return new WaitForSeconds(Random.Range(minTimeBetweenPowerUps,maxTimeBetweenPowerUps));
 		StartCoroutine ("spawnPowerUp");
 
 	}
