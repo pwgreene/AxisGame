@@ -7,6 +7,8 @@ public class TurretController : MonoBehaviour {
 	public float rotationSpeed;
 	public float fireRate;
 
+	public float max_distance;
+
 	float playerVertical;
 	float playerHorizontal;
 	bool playerFire;
@@ -28,6 +30,7 @@ public class TurretController : MonoBehaviour {
 
 	bool leftShooting = true;
 	bool rightShooting = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -73,11 +76,20 @@ public class TurretController : MonoBehaviour {
 	{
 		Vector3 toCenter = (this.transform.position + this.transform.parent.position).normalized;
 		Vector3 distance = toCenter * playerVertical * speed;
+		float dot_product = Vector3.Dot ((this.gameObject.transform.parent.position + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
+
+		print ("Dot: " + dot_product);
 
 		if (this.GetComponent<CircleCollider2D> ().radius + this.transform.parent.GetComponent<CircleCollider2D> ().radius >
-		    Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position)) {
+		    Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) ||
+			playerVertical != 0 && -1.1 < dot_product && dot_product < -.9) {
 			print ("Collision");
 			this.gameObject.transform.position = toCenter * (this.gameObject.transform.parent.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
+		} 
+		else if (playerVertical != 0 && Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) > max_distance) {
+			print ("Outer limit Reached");
+			this.gameObject.transform.position = toCenter * max_distance;
+
 		}
 		else {
 			this.gameObject.transform.position += toCenter * playerVertical * speed;
