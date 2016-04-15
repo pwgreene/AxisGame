@@ -44,8 +44,8 @@ public class Enemy3Behavior : MonoBehaviour {
 		if (remainingHealth <= 0) {
 			Destroy (gameObject);
 		}
-		sprite.color = new Color(1, 1 - (float)(totalHealth - remainingHealth) / remainingHealth, 1 - (float)(totalHealth - remainingHealth) / totalHealth);
-
+		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
+		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
 
 	}
 
