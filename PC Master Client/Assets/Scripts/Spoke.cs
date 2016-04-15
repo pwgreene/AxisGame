@@ -6,7 +6,6 @@ public class Spoke : MonoBehaviour {
 	public TurretController player;
 	public RotatingCoreBehaviour core;
 
-	Color color = Color.gray;
 
 	const int VERTEX_COUNT = 2;
 	const float WIDTH = .2f;
