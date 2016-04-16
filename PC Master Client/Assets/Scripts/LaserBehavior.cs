@@ -4,9 +4,11 @@ using System.Collections;
 public class LaserBehavior : MonoBehaviour {
 
 	Rigidbody2D rb;
+
 	public int speed;
 	public GameObject owner;
 	public int life;
+	public int damage;
 
 	// Use this for initialization
 	void Start () {
@@ -25,11 +27,26 @@ public class LaserBehavior : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.CompareTag("Enemy"))
-		{
+		if (other.CompareTag ("Enemy")) {
 			PlayerController playerScript = owner.GetComponent<PlayerController> ();
 			playerScript.IncreaseScore (100);
 			Destroy (other.gameObject);
+			Destroy (gameObject);
+		} else if (other.CompareTag ("Enemy2")) {
+			PlayerController playerScript = owner.GetComponent<PlayerController> ();
+			Enemy2Behavior enemyScript = other.gameObject.GetComponent<Enemy2Behavior> ();
+			playerScript.IncreaseScore (enemyScript.points);
+			if (enemyScript != null) {
+				enemyScript.decreaseHealth (damage);
+			}
+			Destroy (gameObject);
+		} else if (other.CompareTag ("Enemy3")) {
+			PlayerController playerScript = owner.GetComponent<PlayerController> ();
+			Enemy3Behavior enemyScript = other.gameObject.GetComponent<Enemy3Behavior> ();
+			playerScript.IncreaseScore (enemyScript.points);
+			if (enemyScript != null) {
+				enemyScript.decreaseHealth (damage);
+			}
 			Destroy (gameObject);
 		}
 	}
