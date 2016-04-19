@@ -90,11 +90,19 @@ public class HomingMissile : MonoBehaviour, Projectile {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.CompareTag("Enemy"))
-		{
+		if (other.CompareTag ("Enemy")) {
 			Destroy (other.gameObject);
 			Destroy (gameObject);
+		} else if (other.CompareTag ("Enemy2")) {
+			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
+			enemy.decreaseHealth (damage);
+			Destroy (gameObject);
+		} else if (other.CompareTag ("Enemy3")) {
+			Enemy3Behavior enemy = other.GetComponent<Enemy3Behavior> ();
+			enemy.decreaseHealth (damage);
+			Destroy (gameObject);
 		}
+
 	}
 
 	public int getDamage (){
