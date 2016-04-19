@@ -29,6 +29,9 @@ public class TurretController : MonoBehaviour {
 	public Color color;
 
 	public GameObject homing_missile;
+	public GameObject grenade;
+
+	GameObject current_ammo;
 
 	bool leftShooting = true;
 	bool rightShooting = false;
@@ -36,6 +39,8 @@ public class TurretController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		current_ammo = laser;
+
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
 
@@ -72,6 +77,15 @@ public class TurretController : MonoBehaviour {
 		{
 			timeElapsedSinceFire++;
 		}
+		if(Input.GetKeyDown("1")){
+			current_ammo = laser;
+		}
+		if (Input.GetKeyDown ("2")) {
+			current_ammo = homing_missile;
+		}
+		if (Input.GetKeyDown ("3")) {
+			current_ammo = grenade;
+		}
 	}
 
 	void FixedUpdate()
@@ -85,11 +99,11 @@ public class TurretController : MonoBehaviour {
 		if (this.GetComponent<CircleCollider2D> ().radius + this.transform.parent.GetComponent<CircleCollider2D> ().radius >
 		    Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) ||
 			playerVertical != 0 && -1.01 < dot_product && dot_product < -.99) {
-			//print ("Collision");
+			print ("Collision");
 			this.gameObject.transform.position = toCenter * (this.gameObject.transform.parent.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
 		} 
 		else if (playerVertical != 0 && Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) > max_distance) {
-			//print ("Outer limit Reached");
+			print ("Outer limit Reached");
 			this.gameObject.transform.position = toCenter * max_distance;
 
 		}
@@ -130,7 +144,7 @@ public class TurretController : MonoBehaviour {
 
 				left_turret.SetTrigger ("Recoil");
 
-				GameObject leftLaser = Instantiate (laser, leftBarrelEnd, transform.rotation) as GameObject;
+				GameObject leftLaser = Instantiate (current_ammo, leftBarrelEnd, transform.rotation) as GameObject;
 				leftLaser.GetComponent<SpriteRenderer> ().color = color;
 
 				
@@ -140,7 +154,7 @@ public class TurretController : MonoBehaviour {
 				Vector3 rightBarrelEnd = right_turret_position.position;
 
 				right_turret.SetTrigger("Recoil");
-				GameObject rightLaser = Instantiate (laser, rightBarrelEnd, transform.rotation) as GameObject;
+				GameObject rightLaser = Instantiate (current_ammo, rightBarrelEnd, transform.rotation) as GameObject;
 				rightLaser.GetComponent<SpriteRenderer> ().color = color;
 			}
 

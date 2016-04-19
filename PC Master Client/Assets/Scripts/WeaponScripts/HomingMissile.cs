@@ -56,7 +56,7 @@ public class HomingMissile : MonoBehaviour, Projectile {
 
 
 				if (cross_product.z < 0) {
-					print ("Readjusting");
+					//print ("Readjusting");
 					turn_amount *= -1;
 				}
 
