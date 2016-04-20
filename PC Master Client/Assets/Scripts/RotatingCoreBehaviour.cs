@@ -48,6 +48,6 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	{
 
 		PhotonView photonView = PhotonView.Get(this);
-		photonView.RPC("CoreDamage", PhotonTargets.MasterClient,damageValue);
+		photonView.RPC("CoreDamage", PhotonTargets.All,damageValue);
 	}
 }
