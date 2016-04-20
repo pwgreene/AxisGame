@@ -32,7 +32,8 @@ public class RotatingCoreBehaviour : MonoBehaviour
 		this.gameObject.transform.Rotate(new Vector3(0,0,rotationspeed));
 	}
 
-	public void Damage(int damageValue)
+	[PunRPC]
+	public void CoreDamage(int damageValue)
 	{
 		currentHP -= (float)damageValue;
 		coreSprite.color = new Color(1, 1 - (float)(startingHP - currentHP) / startingHP, 1 - (float)(startingHP - currentHP) / startingHP);

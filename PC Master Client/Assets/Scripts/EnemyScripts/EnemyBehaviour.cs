@@ -43,9 +43,12 @@ public class EnemyBehaviour : MonoBehaviour
             //collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
 			var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
 			if (null == behaviour) {
-				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+				//collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+				PhotonView photonView = PhotonView.Get(this);
+				photonView.RPC("CoreDamage", PhotonTargets.All,damage);
 			} else {
-				
+				PhotonView photonView = PhotonView.Get(this);
+				photonView.RPC("CoreDamage", PhotonTargets.All,damage);
 				behaviour.Damage (damage);
 			} 
 
