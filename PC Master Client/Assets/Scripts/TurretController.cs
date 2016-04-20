@@ -7,6 +7,7 @@ public class TurretController : MonoBehaviour {
 	public float speed;
 	public float rotationSpeed;
 	public float fireRate;
+	public float orbiting_speed;
 
 	public float max_distance;
 
@@ -36,6 +37,8 @@ public class TurretController : MonoBehaviour {
 
 	bool leftShooting = true;
 	bool rightShooting = false;
+
+
 
 	Transform core;
 	// Use this for initialization
@@ -90,8 +93,17 @@ public class TurretController : MonoBehaviour {
 			if (Input.GetKeyDown ("3")) {
 				current_ammo = grenade;
 			}
+			orbit ();
 		}
 
+	}
+
+	void orbit (){
+		Vector3 new_distance =  Quaternion.AngleAxis (orbiting_speed, Vector3.forward) * (this.gameObject.transform.position);
+		this.gameObject.transform.position = new_distance;
+		Vector3 current_rotation = this.gameObject.transform.rotation.eulerAngles;
+		current_rotation = new Vector3 (current_rotation.x, current_rotation.y, current_rotation.z + orbiting_speed);
+		this.gameObject.transform.rotation = Quaternion.Euler (current_rotation);
 	}
 
 	void FixedUpdate()
@@ -101,24 +113,26 @@ public class TurretController : MonoBehaviour {
 			Vector3 distance = toCenter * playerVertical * speed;
 			float dot_product = Vector3.Dot ((core.position + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
 
+			//print ("Player Vertical: " + playerVertical);
+
 			//print ("Dot: " + dot_product);
 
 			if (this.GetComponent<CircleCollider2D> ().radius + core.gameObject.GetComponent<CircleCollider2D> ().radius >
 				Vector3.Distance (this.gameObject.transform.position + distance, core.position) ||
-				playerVertical != 0 && -1.01 < dot_product && dot_product < -.99) {
+				playerVertical < 0.0f && -1.01f < dot_product && dot_product < -.99f) {
 				print ("Collision");
-				this.gameObject.transform.position = toCenter * (core.gameObject.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
+				//this.gameObject.transform.position = toCenter * (core.gameObject.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
 			} 
-			else if (playerVertical != 0 && Vector3.Distance (this.gameObject.transform.position + distance, core.position) > max_distance) {
+			else if (playerVertical > 0.0f && Vector3.Distance (this.gameObject.transform.position + distance, core.position) > max_distance) {
 				print ("Outer limit Reached");
-				this.gameObject.transform.position = toCenter * max_distance;
+				//this.gameObject.transform.position = toCenter * max_distance;
 
 			}
 			else {
 				this.gameObject.transform.position += toCenter * playerVertical * speed;
 			}
 
-
+			//print("Distance from core: " + Vector3.Distance(this.gameObject.transform.position, core.position));
 
 			//print (toCenter * playerVertical * speed);
 			//print ("Vetical: " + playerVertical);
