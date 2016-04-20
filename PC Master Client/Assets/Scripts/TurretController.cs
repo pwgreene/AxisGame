@@ -7,6 +7,8 @@ public class TurretController : MonoBehaviour {
 	public float rotationSpeed;
 	public float fireRate;
 
+	public float max_distance;
+
 	float playerVertical;
 	float playerHorizontal;
 	bool playerFire;
@@ -26,11 +28,19 @@ public class TurretController : MonoBehaviour {
 	public GameObject laser;
 	public Color color;
 
+	public GameObject homing_missile;
+	public GameObject grenade;
+
+	GameObject current_ammo;
+
 	bool leftShooting = true;
 	bool rightShooting = false;
 
+
 	// Use this for initialization
 	void Start () {
+		current_ammo = laser;
+
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
 
@@ -67,17 +77,35 @@ public class TurretController : MonoBehaviour {
 		{
 			timeElapsedSinceFire++;
 		}
+		if(Input.GetKeyDown("1")){
+			current_ammo = laser;
+		}
+		if (Input.GetKeyDown ("2")) {
+			current_ammo = homing_missile;
+		}
+		if (Input.GetKeyDown ("3")) {
+			current_ammo = grenade;
+		}
 	}
 
 	void FixedUpdate()
 	{
 		Vector3 toCenter = (this.transform.position + this.transform.parent.position).normalized;
 		Vector3 distance = toCenter * playerVertical * speed;
+		float dot_product = Vector3.Dot ((this.gameObject.transform.parent.position + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
+
+		//print ("Dot: " + dot_product);
 
 		if (this.GetComponent<CircleCollider2D> ().radius + this.transform.parent.GetComponent<CircleCollider2D> ().radius >
-		    Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position)) {
+		    Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) ||
+			playerVertical != 0 && -1.01 < dot_product && dot_product < -.99) {
 			print ("Collision");
 			this.gameObject.transform.position = toCenter * (this.gameObject.transform.parent.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
+		} 
+		else if (playerVertical != 0 && Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) > max_distance) {
+			print ("Outer limit Reached");
+			this.gameObject.transform.position = toCenter * max_distance;
+
 		}
 		else {
 			this.gameObject.transform.position += toCenter * playerVertical * speed;
@@ -116,7 +144,7 @@ public class TurretController : MonoBehaviour {
 
 				left_turret.SetTrigger ("Recoil");
 
-				GameObject leftLaser = Instantiate (laser, leftBarrelEnd, transform.rotation) as GameObject;
+				GameObject leftLaser = Instantiate (current_ammo, leftBarrelEnd, transform.rotation) as GameObject;
 				leftLaser.GetComponent<SpriteRenderer> ().color = color;
 
 				
@@ -126,7 +154,7 @@ public class TurretController : MonoBehaviour {
 				Vector3 rightBarrelEnd = right_turret_position.position;
 
 				right_turret.SetTrigger("Recoil");
-				GameObject rightLaser = Instantiate (laser, rightBarrelEnd, transform.rotation) as GameObject;
+				GameObject rightLaser = Instantiate (current_ammo, rightBarrelEnd, transform.rotation) as GameObject;
 				rightLaser.GetComponent<SpriteRenderer> ().color = color;
 			}
 

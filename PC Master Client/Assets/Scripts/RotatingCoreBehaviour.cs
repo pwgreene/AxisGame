@@ -8,12 +8,24 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	public float currentHP;
 	public float rotationspeed;
 
+	public float max_radius;
+
+	const float LINE_WIDTH = .2F; 
+
+	public Spoke rod;
+
 	SpriteRenderer coreSprite;
 
 	void Start()
 	{
 		currentHP = startingHP;
 		coreSprite = GetComponent<SpriteRenderer>();
+
+		foreach(TurretController player in this.gameObject.GetComponentsInChildren<TurretController>()){
+			Spoke a = (Spoke) Instantiate (rod, this.gameObject.transform.position, Quaternion.identity);
+			a.core = this;
+			a.player = player;
+		}
 	}
 
 	void Update(){
