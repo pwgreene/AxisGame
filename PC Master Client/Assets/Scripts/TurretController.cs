@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TurretController : MonoBehaviour {
 
+	public bool isControllable = false;
 	public float speed;
 	public float rotationSpeed;
 	public float fireRate;
@@ -36,7 +37,7 @@ public class TurretController : MonoBehaviour {
 	bool leftShooting = true;
 	bool rightShooting = false;
 
-
+	Transform core;
 	// Use this for initialization
 	void Start () {
 		current_ammo = laser;
@@ -65,66 +66,80 @@ public class TurretController : MonoBehaviour {
 			print ("We have found the left turret");
 		}
 		print (color);
+
+		core = GameObject.FindGameObjectWithTag ("Core").transform;
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		playerHorizontal = Input.GetAxis("Horizontal");
-		playerVertical = Input.GetAxis("Vertical");
-		playerFire = Input.GetButton("Fire1");
-		if (timeElapsedSinceFire < fireRate) 
-		{
-			timeElapsedSinceFire++;
+		if (isControllable) {
+			playerHorizontal = Input.GetAxis("Horizontal");
+			playerVertical = Input.GetAxis("Vertical");
+			playerFire = Input.GetButton("Fire1");
+			if (timeElapsedSinceFire < fireRate) 
+			{
+				timeElapsedSinceFire++;
+			}
+			if(Input.GetKeyDown("1")){
+				current_ammo = laser;
+			}
+			if (Input.GetKeyDown ("2")) {
+				current_ammo = homing_missile;
+			}
+			if (Input.GetKeyDown ("3")) {
+				current_ammo = grenade;
+			}
 		}
-		if(Input.GetKeyDown("1")){
-			current_ammo = laser;
-		}
-		if (Input.GetKeyDown ("2")) {
-			current_ammo = homing_missile;
-		}
-		if (Input.GetKeyDown ("3")) {
-			current_ammo = grenade;
-		}
+
 	}
 
 	void FixedUpdate()
 	{
-		Vector3 toCenter = (this.transform.position + this.transform.parent.position).normalized;
-		Vector3 distance = toCenter * playerVertical * speed;
-		float dot_product = Vector3.Dot ((this.gameObject.transform.parent.position + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
+		if (isControllable) {
+			Vector3 toCenter = (this.transform.position + core.position).normalized;
+			Vector3 distance = toCenter * playerVertical * speed;
+			float dot_product = Vector3.Dot ((core.position + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
 
-		//print ("Dot: " + dot_product);
+			//print ("Dot: " + dot_product);
 
-		if (this.GetComponent<CircleCollider2D> ().radius + this.transform.parent.GetComponent<CircleCollider2D> ().radius >
-		    Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) ||
-			playerVertical != 0 && -1.01 < dot_product && dot_product < -.99) {
-			print ("Collision");
-			this.gameObject.transform.position = toCenter * (this.gameObject.transform.parent.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
-		} 
-		else if (playerVertical != 0 && Vector3.Distance (this.gameObject.transform.position + distance, this.transform.parent.position) > max_distance) {
-			print ("Outer limit Reached");
-			this.gameObject.transform.position = toCenter * max_distance;
+			if (this.GetComponent<CircleCollider2D> ().radius + core.gameObject.GetComponent<CircleCollider2D> ().radius >
+				Vector3.Distance (this.gameObject.transform.position + distance, core.position) ||
+				playerVertical != 0 && -1.01 < dot_product && dot_product < -.99) {
+				print ("Collision");
+				this.gameObject.transform.position = toCenter * (core.gameObject.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
+			} 
+			else if (playerVertical != 0 && Vector3.Distance (this.gameObject.transform.position + distance, core.position) > max_distance) {
+				print ("Outer limit Reached");
+				this.gameObject.transform.position = toCenter * max_distance;
 
-		}
-		else {
-			this.gameObject.transform.position += toCenter * playerVertical * speed;
-		}
+			}
+			else {
+				this.gameObject.transform.position += toCenter * playerVertical * speed;
+			}
 
 
 
-		//print (toCenter * playerVertical * speed);
-		//print ("Vetical: " + playerVertical);
+			//print (toCenter * playerVertical * speed);
+			//print ("Vetical: " + playerVertical);
 			//new Vector2 (this.gameObject.transform.position.x-this.gameObject.transform.parent.transform.position.x,
 			//	this.gameObject.transform.position.y-this.gameObject.transform.parent.transform.position.y)*playerVertical*speed)
-		//rb.AddRelativeForce (new Vector2 (0, playerVertical * speed));
-		rb.AddTorque (-playerHorizontal * rotationSpeed);
-		if (playerFire) {
-			Fire ();
+			//rb.AddRelativeForce (new Vector2 (0, playerVertical * speed));
+			rb.AddTorque (-playerHorizontal * rotationSpeed);
+			if (playerFire) {
+				PhotonView photonView = PhotonView.Get(this);
+				photonView.RPC("Fire", PhotonTargets.All);
+
+			}
 		}
+
 		//print (timeElapsedSinceFire);
 	}
 
+
+	public void setControllable(bool val){
+		isControllable = val;
+	}
 	void OnCollisionEnter(Collision col){
 		print ("We have a collision");
 		if (col.gameObject.name == "rotating_core") {
@@ -132,6 +147,7 @@ public class TurretController : MonoBehaviour {
 		}
 	}
 
+	[PunRPC]
 	void Fire()
 	{
 		print ("fire");

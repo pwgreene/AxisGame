@@ -47,8 +47,9 @@ public class EnemyManager : MonoBehaviour
             Vector3 enemyWorldPoint = Camera.main.ViewportToWorldPoint(enemyScreenPoint);
 			Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
 			Instantiate (enemyWarning, warningWorldPoint, Quaternion.identity);
-            GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
-            newEnemy.transform.parent = transform;
+            //GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
+			GameObject newEnemy = PhotonNetwork.InstantiateSceneObject(enemy.name, enemyWorldPoint, Quaternion.identity, 0,null);
+            //newEnemy.transform.parent = transform;
             yield return new WaitForSeconds(spawnTime);
         }
     }

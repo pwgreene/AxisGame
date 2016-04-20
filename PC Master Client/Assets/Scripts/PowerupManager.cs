@@ -19,7 +19,8 @@ public class PowerupManager : MonoBehaviour {
 	}
 
 	IEnumerator spawnPowerUp(){
-		GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
+		//GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
+		GameObject clone= PhotonNetwork.InstantiateSceneObject("Powerup", powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity, 0,null);
 		Powerups scriptPower = clone.GetComponent<Powerups> ();
 		scriptPower.powType = (PowerupType) Mathf.RoundToInt (Random.Range(0,System.Enum.GetValues(typeof(PowerupType)).Length-1)) ;
 		scriptPower.scalarIncrease += Random.Range(0,1);
