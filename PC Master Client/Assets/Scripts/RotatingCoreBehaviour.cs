@@ -33,8 +33,7 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	}
 
 	[PunRPC]
-	public void CoreDamage(int damageValue)
-	{
+	public void CoreDamage(int damageValue){
 		currentHP -= (float)damageValue;
 		coreSprite.color = new Color(1, 1 - (float)(startingHP - currentHP) / startingHP, 1 - (float)(startingHP - currentHP) / startingHP);
 
@@ -42,5 +41,12 @@ public class RotatingCoreBehaviour : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+	}
+
+	public void Damage(int damageValue)
+	{
+
+		PhotonView photonView = PhotonView.Get(this);
+		photonView.RPC("CoreDamage", PhotonTargets.MasterClient,damageValue);
 	}
 }
