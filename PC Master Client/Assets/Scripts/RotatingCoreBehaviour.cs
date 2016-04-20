@@ -39,7 +39,8 @@ public class RotatingCoreBehaviour : MonoBehaviour
 
 		if (currentHP < 0)
 		{
-			Destroy(gameObject);
+			
+			PhotonNetwork.Destroy(gameObject);
 		}
 	}
 
