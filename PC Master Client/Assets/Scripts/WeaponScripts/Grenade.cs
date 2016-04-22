@@ -34,7 +34,8 @@ public class Grenade : MonoBehaviour, Projectile {
 			piece.transform.Rotate(new Vector3(0, 0, 360.0f / fragments * i));
 		}*/
 
-		Instantiate (grenadePiece, this.gameObject.transform.position, this.gameObject.transform.rotation);
+		GameObject explosion = Instantiate (grenadePiece, this.gameObject.transform.position, this.gameObject.transform.rotation) as GameObject;
+		explosion.GetComponent<SpriteRenderer> ().color = this.gameObject.GetComponent<SpriteRenderer> ().color;
 
 		Destroy (this.gameObject);
 	}
