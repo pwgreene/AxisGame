@@ -35,9 +35,12 @@ public class TurretController : MonoBehaviour {
 
 	GameObject current_ammo;
 
+	public GameObject spoke_object;
+
 	bool leftShooting = true;
 	bool rightShooting = false;
 
+	//public bool hasSpoke = false;
 
 
 	Transform core;
@@ -71,6 +74,11 @@ public class TurretController : MonoBehaviour {
 		print (color);
 
 		core = GameObject.FindGameObjectWithTag ("Core").transform;
+
+		GameObject a = Instantiate (spoke_object, core.position, Quaternion.identity) as GameObject;
+		Spoke spoke = a.GetComponent<Spoke>();
+		spoke.player = this;
+		spoke.core = core.gameObject.GetComponent<RotatingCoreBehaviour>();
 	}
 
 	// Update is called once per frame

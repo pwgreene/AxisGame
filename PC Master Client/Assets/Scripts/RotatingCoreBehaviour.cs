@@ -20,12 +20,6 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	{
 		currentHP = startingHP;
 		coreSprite = GetComponent<SpriteRenderer>();
-
-		foreach(TurretController player in this.gameObject.GetComponentsInChildren<TurretController>()){
-			Spoke a = (Spoke) Instantiate (rod, this.gameObject.transform.position, Quaternion.identity);
-			a.core = this;
-			a.player = player;
-		}
 	}
 
 	void Update(){
