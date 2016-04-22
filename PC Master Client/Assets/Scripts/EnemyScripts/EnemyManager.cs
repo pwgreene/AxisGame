@@ -7,8 +7,9 @@ public class EnemyManager : MonoBehaviour
     public GameObject enemy;
 	public GameObject enemyWarning;
 
-	int numRemainingEnemies;
-	int numEnemiesToSpawn;
+	int numRemainingEnemies; //number of enemies alive on the map
+	int totalEnemies;		 //number of enemies that will spawn total
+	int numEnemiesToSpawn;   //number of enemies left to spawn
 
     public float spawnTime;
 
@@ -20,6 +21,8 @@ public class EnemyManager : MonoBehaviour
 
 	public void setNumEnemiesToSpawn(int num) {
 		numEnemiesToSpawn = num;
+		numRemainingEnemies = numEnemiesToSpawn;
+		totalEnemies = numEnemiesToSpawn;
 	}
 
 	//used by child to say that he is dead
@@ -29,7 +32,7 @@ public class EnemyManager : MonoBehaviour
 			//let the wave manager know all of your enemies are killed
 			if (transform.parent != null) {
 				WaveManager waveManager = transform.parent.GetComponent<WaveManager> ();
-				waveManager.EnemyManagerDone(numEnemiesToSpawn);
+				waveManager.EnemyManagerDone(totalEnemies);
 			}
 			Destroy (gameObject);
 		}
@@ -79,7 +82,4 @@ public class EnemyManager : MonoBehaviour
             yield return new WaitForSeconds(spawnTime);
         }
     }
-
-	void OnGUI() {
-	}
 }

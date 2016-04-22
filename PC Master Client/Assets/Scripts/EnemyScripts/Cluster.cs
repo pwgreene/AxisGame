@@ -47,7 +47,7 @@ public class Cluster : MonoBehaviour {
 				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
 				continue;
 			}
-
+			/**
 			Enemy2Behavior behaviour2 = a.GetComponent<Enemy2Behavior> ();
 
 			if (behaviour2 != null) {
@@ -65,6 +65,7 @@ public class Cluster : MonoBehaviour {
 			}
 
 			gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
+			**/
 
 		}
 	}

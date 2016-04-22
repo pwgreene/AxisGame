@@ -6,8 +6,6 @@ public class WaveManager : MonoBehaviour {
 	int waveNumber;
 	int numEnemiesOnWave;
 
-	public int enemiesOnFirstWave;
-
 	public GameObject enemyManager;
 	public GameObject smallSuicider;
 	public GameObject mediumSuicider;
@@ -15,9 +13,8 @@ public class WaveManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		numEnemiesOnWave = enemiesOnFirstWave;
-		GameObject firstManager = (GameObject) Instantiate (enemyManager, transform.position, transform.rotation);
-		InitializeManager (firstManager, smallSuicider, numEnemiesOnWave);
+		waveNumber = 1;
+		SpawnWave ();
 	}
 	
 	// Update is called once per frame
@@ -34,6 +31,32 @@ public class WaveManager : MonoBehaviour {
 
 	public void EnemyManagerDone(int numEnemies) {
 		numEnemiesOnWave -= numEnemies;
-		print ("wave done");
+		print ("manager done"+numEnemiesOnWave.ToString());
+		//all managers should be done, wave over
+		if (numEnemiesOnWave <= 0) {
+			waveNumber++;
+			SpawnWave ();
+		}
 	}
+
+	void SpawnWave() {
+		GameObject manager = (GameObject)Instantiate (enemyManager, transform.position, transform.rotation);
+		numEnemiesOnWave = waveNumber*2 + 1;
+		switch ((waveNumber-1) % 3) {
+		case 0:
+			InitializeManager (manager, smallSuicider, numEnemiesOnWave);
+			break;
+		case 1:
+			InitializeManager (manager, mediumSuicider, numEnemiesOnWave);
+			break;
+		case 2:
+			InitializeManager (manager, smallSuicider, numEnemiesOnWave);
+			break;
+		}
+	}
+		
+	void OnGUI() {
+		GUI.Box (new Rect (50, 300, 100, 50), "Wave:  " + waveNumber.ToString());
+	}
+		
 }

@@ -29,12 +29,15 @@ public class LaserBehavior : MonoBehaviour {
 	{
 		if (other.CompareTag ("Enemy")) {
 			PlayerController playerScript = owner.GetComponent<PlayerController> ();
-			playerScript.IncreaseScore (100);
-			Destroy (other.gameObject);
+			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
+			playerScript.IncreaseScore (enemyScript.points);
+			if (enemyScript != null) {
+				enemyScript.decreaseHealth (damage);
+			}
 			Destroy (gameObject);
-		} else if (other.CompareTag ("Enemy2")) {
+		}/** else if (other.CompareTag ("Enemy2")) {
 			PlayerController playerScript = owner.GetComponent<PlayerController> ();
-			Enemy2Behavior enemyScript = other.gameObject.GetComponent<Enemy2Behavior> ();
+			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 			playerScript.IncreaseScore (enemyScript.points);
 			if (enemyScript != null) {
 				enemyScript.decreaseHealth (damage);
@@ -42,12 +45,12 @@ public class LaserBehavior : MonoBehaviour {
 			Destroy (gameObject);
 		} else if (other.CompareTag ("Enemy3")) {
 			PlayerController playerScript = owner.GetComponent<PlayerController> ();
-			Enemy3Behavior enemyScript = other.gameObject.GetComponent<Enemy3Behavior> ();
+			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 			playerScript.IncreaseScore (enemyScript.points);
 			if (enemyScript != null) {
 				enemyScript.decreaseHealth (damage);
 			}
 			Destroy (gameObject);
-		}
+		}**/
 	}
 }

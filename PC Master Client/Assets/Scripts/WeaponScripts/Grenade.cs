@@ -45,7 +45,7 @@ public class Grenade : MonoBehaviour, Projectile {
 		if (other.CompareTag ("Enemy")) {
 			Destroy (other.gameObject);
 			blowUp ();
-		} else if (other.CompareTag ("Enemy2")) {
+		}/** else if (other.CompareTag ("Enemy2")) {
 			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
 			enemy.decreaseHealth (damage);
 			blowUp();
@@ -54,7 +54,7 @@ public class Grenade : MonoBehaviour, Projectile {
 			enemy.decreaseHealth (damage);
 			blowUp();
 		}
-
+		**/
 	}
 
 	public int getDamage(){

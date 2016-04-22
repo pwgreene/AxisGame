@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class Enemy2Behavior : MonoBehaviour {
+public class mediumSuicider : EnemyBehaviour {
 
 	public int totalHealth;
 	public int points;

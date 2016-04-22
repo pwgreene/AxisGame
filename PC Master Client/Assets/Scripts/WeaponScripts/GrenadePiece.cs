@@ -28,7 +28,7 @@ public class GrenadePiece : MonoBehaviour, Projectile {
 		if (other.CompareTag ("Enemy")) {
 			Destroy (other.gameObject);
 			Destroy (gameObject);
-		} else if (other.CompareTag ("Enemy2")) {
+		}/** else if (other.CompareTag ("Enemy2")) {
 			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
 			enemy.decreaseHealth (damage);
 			Destroy (gameObject);
@@ -36,7 +36,7 @@ public class GrenadePiece : MonoBehaviour, Projectile {
 			Enemy3Behavior enemy = other.GetComponent<Enemy3Behavior> ();
 			enemy.decreaseHealth (damage);
 			Destroy (gameObject);
-		}
+		}**/
 
 	}
 
