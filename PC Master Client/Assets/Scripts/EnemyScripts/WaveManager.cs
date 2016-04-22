@@ -9,7 +9,7 @@ public class WaveManager : MonoBehaviour {
 	public GameObject enemyManager;
 	public GameObject smallSuicider;
 	public GameObject mediumSuicider;
-	public GameObject largerSuicider;
+	public GameObject largeSuicider;
 
 	// Use this for initialization
 	void Start () {
@@ -50,7 +50,7 @@ public class WaveManager : MonoBehaviour {
 			InitializeManager (manager, mediumSuicider, numEnemiesOnWave);
 			break;
 		case 2:
-			InitializeManager (manager, smallSuicider, numEnemiesOnWave);
+			InitializeManager (manager, largeSuicider, numEnemiesOnWave);
 			break;
 		}
 	}

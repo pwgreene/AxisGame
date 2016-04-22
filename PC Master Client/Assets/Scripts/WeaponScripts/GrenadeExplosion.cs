@@ -36,7 +36,8 @@ public class GrenadeExplosion : MonoBehaviour, Projectile {
 	{
 		print ("Collision");
 		if (other.CompareTag ("Enemy")) {
-			Destroy (other.gameObject);
+			EnemyBehaviour enemy = other.GetComponent<EnemyBehaviour> ();
+			enemy.decreaseHealth (damage);
 		}/** else if (other.CompareTag ("Enemy2")) {
 			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
 			enemy.decreaseHealth (damage);

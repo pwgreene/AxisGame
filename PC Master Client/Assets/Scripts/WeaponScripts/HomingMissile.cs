@@ -91,7 +91,8 @@ public class HomingMissile : MonoBehaviour, Projectile {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.CompareTag ("Enemy")) {
-			Destroy (other.gameObject);
+			EnemyBehaviour enemy = other.GetComponent<EnemyBehaviour> ();
+			enemy.decreaseHealth (damage);
 			Destroy (gameObject);
 		}/** else if (other.CompareTag ("Enemy2")) {
 			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
