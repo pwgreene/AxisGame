@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Cluster : MonoBehaviour {
 
-	public float speed;
+	//public float speed;
 
 	Vector3 corePosition;
 
@@ -43,7 +43,7 @@ public class Cluster : MonoBehaviour {
 			EnemyBehaviour behaviour = a.GetComponent<EnemyBehaviour> ();
 
 			if (behaviour != null) {
-				behaviour.speed = 0;
+				//behaviour.speed = 0;
 				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
 				continue;
 			}
@@ -51,7 +51,7 @@ public class Cluster : MonoBehaviour {
 			Enemy2Behavior behaviour2 = a.GetComponent<Enemy2Behavior> ();
 
 			if (behaviour2 != null) {
-				behaviour2.speed = 0;
+				//behaviour2.speed = 0;
 				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
 				continue;
 			}
@@ -59,7 +59,7 @@ public class Cluster : MonoBehaviour {
 			Enemy3Behavior behaviour3 = a.GetComponent<Enemy3Behavior> ();
 
 			if (behaviour3 != null) {
-				behaviour3.speed = 0;
+				//behaviour3.speed = 0;
 				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
 				continue;
 			}

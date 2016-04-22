@@ -143,7 +143,7 @@ public class TurretController : MonoBehaviour {
 			if (playerFire) {
 				PhotonView photonView = PhotonView.Get(this);
 				photonView.RPC("Fire", PhotonTargets.All);
-
+				Fire ();
 			}
 		}
 
