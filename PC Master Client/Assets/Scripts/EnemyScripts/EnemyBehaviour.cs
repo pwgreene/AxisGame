@@ -49,7 +49,11 @@ public class EnemyBehaviour : MonoBehaviour
 
 				behaviour.Damage (damage);
 			} 
-
+			if (transform.parent != null) {
+				EnemyManager manager = transform.parent.GetComponent<EnemyManager> ();
+				manager.killEnemy ();
+				print ("dead enemy");
+			}
             Destroy(gameObject);
         }
     }
