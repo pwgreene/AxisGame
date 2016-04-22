@@ -28,10 +28,14 @@ public class Grenade : MonoBehaviour, Projectile {
 	}
 
 	void blowUp(){
-		for (int i = 0; i < fragments; i++) {
+		//Former code for individual grenade pieces
+		/*for (int i = 0; i < fragments; i++) {
 			GameObject piece = Instantiate (grenadePiece, this.gameObject.transform.position, this.gameObject.transform.rotation) as GameObject;
 			piece.transform.Rotate(new Vector3(0, 0, 360.0f / fragments * i));
-		}
+		}*/
+
+		Instantiate (grenadePiece, this.gameObject.transform.position, this.gameObject.transform.rotation);
+
 		Destroy (this.gameObject);
 	}
 
