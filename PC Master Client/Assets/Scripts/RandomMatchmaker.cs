@@ -28,6 +28,7 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	public override void OnCreatedRoom ()
 	{
 		GameObject core= PhotonNetwork.InstantiateSceneObject("rotating_core", Vector3.zero, Quaternion.identity, 0,null);
+		GameObject wave= PhotonNetwork.InstantiateSceneObject("WaveManager", Vector3.zero, Quaternion.identity, 0,null);
 	}
 
 	public override void OnJoinedRoom(){

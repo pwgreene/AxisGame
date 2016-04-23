@@ -24,7 +24,10 @@ public class EnemyBehaviour : MonoBehaviour
         }
         catch (NullReferenceException)
         {
-            Destroy(gameObject);
+			
+			PhotonView photonView = PhotonView.Get(this);
+			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+
         }
         rb = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer> ();
@@ -55,25 +58,39 @@ public class EnemyBehaviour : MonoBehaviour
 
 				behaviour.Damage (damage);
 			} 
-            Destroy(gameObject);
+			PhotonView photonView = PhotonView.Get(this);
+			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
         }
     }
 
-	public void decreaseHealth(int amount) {
+
+	public void decreaseHealth(int amount){
+		PhotonView photonView = PhotonView.Get(this);
+		photonView.RPC("EnemyDamage", PhotonTargets.All,amount);
+
+	}
+
+	[PunRPC]
+	public void EnemyDamage(int amount) {
 		remainingHealth -= amount;
 		if (remainingHealth <= 0) {
-			Destroy (gameObject);
+			PhotonView photonView = PhotonView.Get(this);
+			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
 		}
 		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
 		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
 	}
 
 	//triggered when this object is destroyed
-	void OnDestroy()
+	[PunRPC]
+	void DestroyEnemy()
 	{
+		//not called through photon destroy
 		//let enemy manager know when this enemy is dead
-		if (transform.parent != null) {
-			EnemyManager manager = transform.parent.gameObject.GetComponent<EnemyManager> ();
+		//if (transform.parent != null) {
+		if(PhotonNetwork.isMasterClient){
+			PhotonNetwork.Destroy(gameObject);
+			EnemyManager manager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponent<EnemyManager> ();
 			manager.killEnemy ();
 		}
 	}

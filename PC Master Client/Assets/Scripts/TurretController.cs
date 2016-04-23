@@ -26,14 +26,9 @@ public class TurretController : MonoBehaviour {
 	Transform right_turret_position;
 
 	int timeElapsedSinceFire;
-
-	public GameObject laser;
 	public Color color;
 
-	public GameObject homing_missile;
-	public GameObject grenade;
-
-	GameObject current_ammo;
+	public GameObject[] weapons;
 
 	public GameObject spoke_object;
 
@@ -41,12 +36,12 @@ public class TurretController : MonoBehaviour {
 	bool rightShooting = false;
 
 	//public bool hasSpoke = false;
-
+    int ammoType;
 
 	Transform core;
 	// Use this for initialization
 	void Start () {
-		current_ammo = laser;
+		ammoType = 0;
 
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
@@ -88,21 +83,26 @@ public class TurretController : MonoBehaviour {
 			playerHorizontal = Input.GetAxis("Horizontal");
 			playerVertical = Input.GetAxis("Vertical");
 			playerFire = Input.GetButton("Fire1");
+
+			if(Input.GetKeyDown("1")){
+				ammoType = 0;
+			}
+			if (Input.GetKeyDown ("2")) {
+				ammoType = 1;
+			}
+			if (Input.GetKeyDown ("3")) {
+				ammoType = 2;
+			}
 			if (timeElapsedSinceFire < fireRate) 
 			{
 				timeElapsedSinceFire++;
 			}
-			if(Input.GetKeyDown("1")){
-				current_ammo = laser;
-			}
-			if (Input.GetKeyDown ("2")) {
-				current_ammo = homing_missile;
-			}
-			if (Input.GetKeyDown ("3")) {
-				current_ammo = grenade;
-			}
 			orbit ();
 		}
+			
+	
+			
+		
 
 	}
 
@@ -150,8 +150,9 @@ public class TurretController : MonoBehaviour {
 			rb.AddTorque (-playerHorizontal * rotationSpeed);
 			if (playerFire) {
 				PhotonView photonView = PhotonView.Get(this);
-				photonView.RPC("Fire", PhotonTargets.All);
-				Fire ();
+				photonView.RPC("Fire", PhotonTargets.All, ammoType,timeElapsedSinceFire);
+				timeElapsedSinceFire = 0;
+
 			}
 		}
 
@@ -170,9 +171,12 @@ public class TurretController : MonoBehaviour {
 	}
 
 	[PunRPC]
-	void Fire()
+	void Fire(int ammo_num,int time_elapsed)
 	{
-		if (timeElapsedSinceFire >= fireRate) {
+		
+
+		Debug.Log ("pew pew");
+		if (time_elapsed >= fireRate) {
 			//create two new lasers to fire and set them equal to the color of the parent
 			if (leftShooting) {
 				leftShooting = false;
@@ -181,7 +185,7 @@ public class TurretController : MonoBehaviour {
 
 				left_turret.SetTrigger ("Recoil");
 
-				GameObject leftLaser = Instantiate (current_ammo, leftBarrelEnd, transform.rotation) as GameObject;
+				GameObject leftLaser = Instantiate (weapons[ammo_num], leftBarrelEnd, transform.rotation) as GameObject;
 				leftLaser.GetComponent<SpriteRenderer> ().color = color;
 
 				
@@ -191,14 +195,14 @@ public class TurretController : MonoBehaviour {
 				Vector3 rightBarrelEnd = right_turret_position.position;
 
 				right_turret.SetTrigger("Recoil");
-				GameObject rightLaser = Instantiate (current_ammo, rightBarrelEnd, transform.rotation) as GameObject;
+				GameObject rightLaser = Instantiate (weapons[ammo_num], rightBarrelEnd, transform.rotation) as GameObject;
 				rightLaser.GetComponent<SpriteRenderer> ().color = color;
 			}
 
 
 
 
-			timeElapsedSinceFire = 0;
+
 		}
 	}
 }

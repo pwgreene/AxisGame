@@ -23,11 +23,15 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void InitializeManager(GameObject manager, GameObject enemyType, int numEnemies) {
-		EnemyManager enemyManager = manager.GetComponent<EnemyManager> ();
-		enemyManager.enemy = enemyType;
-		enemyManager.setNumEnemiesToSpawn (numEnemies);
-		manager.transform.parent = transform;
+		if (PhotonNetwork.isMasterClient) {
+			EnemyManager enemyManager = manager.GetComponent<EnemyManager> ();
+			enemyManager.enemy = enemyType;
+			enemyManager.setNumEnemiesToSpawn (numEnemies);
+		}
+
+		//manager.transform.parent = transform;
 	}
+
 
 	public void EnemyManagerDone(int numEnemies) {
 		numEnemiesOnWave -= numEnemies;
@@ -40,19 +44,22 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void SpawnWave() {
-		GameObject manager = (GameObject)Instantiate (enemyManager, transform.position, transform.rotation);
-		numEnemiesOnWave = waveNumber*2 + 1;
-		switch ((waveNumber-1) % 3) {
-		case 0:
-			InitializeManager (manager, smallSuicider, numEnemiesOnWave);
-			break;
-		case 1:
-			InitializeManager (manager, mediumSuicider, numEnemiesOnWave);
-			break;
-		case 2:
-			InitializeManager (manager, largeSuicider, numEnemiesOnWave);
-			break;
+		if (PhotonNetwork.isMasterClient) {
+			GameObject manager = PhotonNetwork.InstantiateSceneObject ("EnemyManager", transform.position, transform.rotation,0,null);
+			numEnemiesOnWave = waveNumber*2 + 1;
+			switch ((waveNumber-1) % 3) {
+			case 0:
+				InitializeManager (manager, smallSuicider, numEnemiesOnWave);
+				break;
+			case 1:
+				InitializeManager (manager, mediumSuicider, numEnemiesOnWave);
+				break;
+			case 2:
+				InitializeManager (manager, largeSuicider, numEnemiesOnWave);
+				break;
+			}
 		}
+
 	}
 		
 	void OnGUI() {

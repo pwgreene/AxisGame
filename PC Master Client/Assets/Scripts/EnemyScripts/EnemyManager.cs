@@ -16,7 +16,10 @@ public class EnemyManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {	
-        StartCoroutine(SpawnEnemies());
+		if (PhotonNetwork.isMasterClient) {
+			StartCoroutine(SpawnEnemies());
+		}
+        
     }
 
 	public void setNumEnemiesToSpawn(int num) {
@@ -30,11 +33,11 @@ public class EnemyManager : MonoBehaviour
 		numRemainingEnemies--;
 		if (numRemainingEnemies == 0) {
 			//let the wave manager know all of your enemies are killed
-			if (transform.parent != null) {
-				WaveManager waveManager = transform.parent.GetComponent<WaveManager> ();
+			if (PhotonNetwork.isMasterClient) {
+				WaveManager waveManager = GameObject.FindGameObjectWithTag("WaveManager").GetComponent<WaveManager> ();
 				waveManager.EnemyManagerDone(totalEnemies);
 			}
-			Destroy (gameObject);
+			PhotonNetwork.Destroy (gameObject);
 		}
 	}
 
@@ -75,9 +78,9 @@ public class EnemyManager : MonoBehaviour
             Vector3 enemyWorldPoint = Camera.main.ViewportToWorldPoint(enemyScreenPoint);
 			Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
 			Instantiate (enemyWarning, warningWorldPoint, Quaternion.identity);
-            GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
-			//GameObject newEnemy = PhotonNetwork.InstantiateSceneObject(enemy.name, enemyWorldPoint, Quaternion.identity, 0,null);
-            newEnemy.transform.parent = transform;
+            //GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
+			GameObject newEnemy = PhotonNetwork.InstantiateSceneObject(enemy.name, enemyWorldPoint, Quaternion.identity, 0,null);
+            //newEnemy.transform.parent = transform;
 			numEnemiesToSpawn -= 1;
             yield return new WaitForSeconds(spawnTime);
         }

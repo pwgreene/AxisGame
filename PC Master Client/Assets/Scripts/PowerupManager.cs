@@ -30,5 +30,6 @@ public class PowerupManager : MonoBehaviour {
 
 	}
 
+
 }
 public enum PowerupType{Speed, CoreHealth, FiringRate, CoreRotationSpeed}
