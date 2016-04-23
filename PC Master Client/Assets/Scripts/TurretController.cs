@@ -39,6 +39,8 @@ public class TurretController : MonoBehaviour {
     int ammoType;
 
 	Transform core;
+
+	PhotonView pv;
 	// Use this for initialization
 	void Start () {
 		ammoType = 0;
@@ -74,6 +76,8 @@ public class TurretController : MonoBehaviour {
 		Spoke spoke = a.GetComponent<Spoke>();
 		spoke.player = this;
 		spoke.core = core.gameObject.GetComponent<RotatingCoreBehaviour>();
+
+		pv = PhotonView.Get(this);
 	}
 
 	// Update is called once per frame
@@ -149,8 +153,8 @@ public class TurretController : MonoBehaviour {
 			//rb.AddRelativeForce (new Vector2 (0, playerVertical * speed));
 			rb.AddTorque (-playerHorizontal * rotationSpeed);
 			if (playerFire) {
-				PhotonView photonView = PhotonView.Get(this);
-				photonView.RPC("Fire", PhotonTargets.All, ammoType,timeElapsedSinceFire);
+				
+				pv.RPC("Fire", PhotonTargets.All, ammoType,timeElapsedSinceFire);
 				timeElapsedSinceFire = 0;
 
 			}
@@ -198,9 +202,6 @@ public class TurretController : MonoBehaviour {
 				GameObject rightLaser = Instantiate (weapons[ammo_num], rightBarrelEnd, transform.rotation) as GameObject;
 				rightLaser.GetComponent<SpriteRenderer> ().color = color;
 			}
-
-
-
 
 
 		}

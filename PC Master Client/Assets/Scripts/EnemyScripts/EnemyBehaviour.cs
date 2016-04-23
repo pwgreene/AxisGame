@@ -11,6 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
 	public int points;
 	int remainingHealth;
 
+	PhotonView pv;
     Vector3 corePosition;
     Rigidbody2D rb;
 	SpriteRenderer sprite;
@@ -32,6 +33,8 @@ public class EnemyBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer> ();
 		remainingHealth = totalHealth;
+
+		pv = GetComponent<PhotonView> ();
     }
 
     // Update is called once per frame
@@ -58,15 +61,15 @@ public class EnemyBehaviour : MonoBehaviour
 
 				behaviour.Damage (damage);
 			} 
-			PhotonView photonView = PhotonView.Get(this);
-			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+
+			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
         }
     }
 
 
 	public void decreaseHealth(int amount){
-		PhotonView photonView = PhotonView.Get(this);
-		photonView.RPC("EnemyDamage", PhotonTargets.All,amount);
+		
+		pv.RPC("EnemyDamage", PhotonTargets.All,amount);
 
 	}
 
@@ -74,8 +77,8 @@ public class EnemyBehaviour : MonoBehaviour
 	public void EnemyDamage(int amount) {
 		remainingHealth -= amount;
 		if (remainingHealth <= 0) {
-			PhotonView photonView = PhotonView.Get(this);
-			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+			
+			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
 		}
 		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
 		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);

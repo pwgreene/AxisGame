@@ -15,11 +15,12 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	public Spoke rod;
 
 	SpriteRenderer coreSprite;
-
+	PhotonView pv;
 	void Start()
 	{
 		currentHP = startingHP;
 		coreSprite = GetComponent<SpriteRenderer>();
+		pv = PhotonView.Get(this);
 	}
 
 	void Update(){
@@ -41,7 +42,7 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	public void Damage(int damageValue)
 	{
 
-		PhotonView photonView = PhotonView.Get(this);
-		photonView.RPC("CoreDamage", PhotonTargets.All,damageValue);
+
+		pv.RPC("CoreDamage", PhotonTargets.All,damageValue);
 	}
 }
