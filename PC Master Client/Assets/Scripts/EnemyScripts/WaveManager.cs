@@ -11,15 +11,17 @@ public class WaveManager : MonoBehaviour {
 	public GameObject mediumSuicider;
 	public GameObject largeSuicider;
 
+    public GUIManager guiM;
+
 	// Use this for initialization
 	void Start () {
 		waveNumber = 1;
 		SpawnWave ();
+        guiM = GameObject.FindGameObjectWithTag("GUIManager").GetComponent<GUIManager>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
 	void InitializeManager(GameObject manager, GameObject enemyType, int numEnemies) {
@@ -39,7 +41,8 @@ public class WaveManager : MonoBehaviour {
 		//all managers should be done, wave over
 		if (numEnemiesOnWave <= 0) {
 			waveNumber++;
-			SpawnWave ();
+            guiM.UpdateWaveNumber(waveNumber);
+            SpawnWave ();
 		}
 	}
 
