@@ -34,8 +34,11 @@ public class RandomMatchmaker : Photon.PunBehaviour
 
     public override void OnJoinedRoom()
     {
-        float angle = Random.Range(0, 360);
-        GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(6 * Mathf.Cos(angle), 6 * Mathf.Sin(angle), 0), Quaternion.identity, 0);
-        player.SendMessage("setControllable", true);
+        if (!PhotonNetwork.isMasterClient)
+        {
+            float angle = Random.Range(0, 360);
+            GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(6 * Mathf.Cos(angle), 6 * Mathf.Sin(angle), 0), Quaternion.identity, 0);
+            player.SendMessage("setControllable", true);
+        }
     }
 }
