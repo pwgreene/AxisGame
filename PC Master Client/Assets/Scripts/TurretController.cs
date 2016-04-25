@@ -43,6 +43,8 @@ public class TurretController : MonoBehaviour {
 	PhotonView pv;
 	// Use this for initialization
 	void Start () {
+
+
 		ammoType = 0;
 
 		rb = GetComponent<Rigidbody2D>();
@@ -166,6 +168,8 @@ public class TurretController : MonoBehaviour {
 
 	public void setControllable(bool val){
 		isControllable = val;
+		Camera.main.enabled = false;
+		GetComponentInChildren<Camera> ().enabled = true;
 	}
 	void OnCollisionEnter(Collision col){
 		print ("We have a collision");
