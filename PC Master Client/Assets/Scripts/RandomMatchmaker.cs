@@ -34,8 +34,8 @@ public class RandomMatchmaker : Photon.PunBehaviour
 
     public override void OnJoinedRoom()
     {
-        if (!PhotonNetwork.isMasterClient)
-        {
+        //if (!PhotonNetwork.isMasterClient)
+        //{
 
 			//disable the main camera
 
@@ -44,6 +44,6 @@ public class RandomMatchmaker : Photon.PunBehaviour
             player.SendMessage("setControllable", true);
 
 
-        }
+        //}
     }
 }
