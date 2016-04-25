@@ -168,8 +168,8 @@ public class TurretController : MonoBehaviour {
 
 	public void setControllable(bool val){
 		isControllable = val;
-		Camera.main.enabled = false;
-		GetComponentInChildren<Camera> ().enabled = true;
+		//Camera.main.enabled = false;
+		//GetComponentInChildren<Camera> ().enabled = true;
 	}
 	void OnCollisionEnter(Collision col){
 		print ("We have a collision");
