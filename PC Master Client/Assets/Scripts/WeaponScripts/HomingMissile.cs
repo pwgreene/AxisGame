@@ -63,7 +63,7 @@ public class HomingMissile : MonoBehaviour, Projectile {
 				//print ("Angle: " + turn_amount);
 
 			} else {
-				print ("No enemies");
+				//print ("No enemies");
 			}
 
 		}
