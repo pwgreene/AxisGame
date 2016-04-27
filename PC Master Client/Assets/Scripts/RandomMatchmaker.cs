@@ -44,7 +44,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 			int numPlayers = PhotonNetwork.playerList.Length + 1 ;
 			float angle = 360f / (float) numPlayers;
 
-			for(int i = 0; i < numPlayers; i ++){
+			for(int i = 0; i < (numPlayers -1); i ++){
 				Transform plTrans = PhotonView.Find (PhotonNetwork.playerList[i].ID).GetComponent < Transform> ();
 				if (i == 0) {
 					startingAngle = Mathf.Atan2 (plTrans.position.y, plTrans.position.x);
