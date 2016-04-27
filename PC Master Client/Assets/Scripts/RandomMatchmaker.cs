@@ -5,9 +5,12 @@ using System.Collections;
 public class RandomMatchmaker : Photon.PunBehaviour
 {
     // Use this for initialization
+
+    public TurretController[] turrets;
+
     void Start()
     {
-        PhotonNetwork.ConnectUsingSettings("0.2");
+        PhotonNetwork.ConnectUsingSettings("0.3");
     }
 
     void OnGUI()
@@ -28,22 +31,13 @@ public class RandomMatchmaker : Photon.PunBehaviour
 
     public override void OnCreatedRoom()
     {
-        GameObject core = PhotonNetwork.InstantiateSceneObject("rotating_core", Vector3.zero, Quaternion.identity, 0, null);
-        GameObject wave = PhotonNetwork.InstantiateSceneObject("WaveManager", Vector3.zero, Quaternion.identity, 0, null);
     }
 
     public override void OnJoinedRoom()
     {
-        //if (!PhotonNetwork.isMasterClient)
-        //{
+        if (!PhotonNetwork.isMasterClient)
+        {
 
-			//disable the main camera
-
-            float angle = Random.Range(0, 360);
-            GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(6 * Mathf.Cos(angle), 6 * Mathf.Sin(angle), 0), Quaternion.identity, 0);
-            player.SendMessage("setControllable", true);
-
-
-        //}
+        }
     }
 }

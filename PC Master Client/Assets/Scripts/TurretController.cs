@@ -69,12 +69,12 @@ public class TurretController : MonoBehaviour
         if (right_turret != null)
         {
             print("We have found the right turret");
+
         }
         if (left_turret != null)
         {
             print("We have found the left turret");
         }
-        print(color);
 
         core = GameObject.FindGameObjectWithTag("Core").transform;
 
@@ -82,6 +82,8 @@ public class TurretController : MonoBehaviour
         Spoke spoke = a.GetComponent<Spoke>();
         spoke.player = this;
         spoke.core = core.gameObject.GetComponent<RotatingCoreBehaviour>();
+
+        setControllable(isControllable);
     }
 
     // Update is called once per frame
@@ -109,16 +111,12 @@ public class TurretController : MonoBehaviour
             {
                 timeElapsedSinceFire++;
             }
-            orbit();
         }
 
-
-
-
-
+        Orbit();
     }
 
-    void orbit()
+    void Orbit()
     {
         Vector3 new_distance = Quaternion.AngleAxis(orbiting_speed, Vector3.forward) * (gameObject.transform.position);
         gameObject.transform.position = new_distance;
@@ -164,8 +162,25 @@ public class TurretController : MonoBehaviour
     public void setControllable(bool val)
     {
         isControllable = val;
-        //Camera.main.enabled = false;
-        //GetComponentInChildren<Camera> ().enabled = true;
+
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        if (val == true)
+        {
+            foreach (SpriteRenderer spr in sprites)
+            {
+                Color color = spr.color;
+                color.a = 1f;
+                spr.color = color;
+            }
+        } else
+        {
+            foreach (SpriteRenderer spr in sprites)
+            {
+                Color color = spr.color;
+                color.a = 0.25f;
+                spr.color = color;
+            }
+        }
     }
 
     void OnCollisionEnter(Collision col)
