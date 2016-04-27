@@ -38,7 +38,7 @@ public class TurretController : MonoBehaviour {
 	//public bool hasSpoke = false;
     int ammoType;
 
-	Transform core;
+	public float coreRadius = 1.845f;
 
 	PhotonView pv;
 	// Use this for initialization
@@ -72,12 +72,12 @@ public class TurretController : MonoBehaviour {
 		}
 		print (color);
 
-		core = GameObject.FindGameObjectWithTag ("Core").transform;
+		//core = GameObject.FindGameObjectWithTag ("Core").transform;
 
-		GameObject a = Instantiate (spoke_object, core.position, Quaternion.identity) as GameObject;
+		GameObject a = Instantiate (spoke_object, Vector3.zero, Quaternion.identity) as GameObject;
 		Spoke spoke = a.GetComponent<Spoke>();
 		spoke.player = this;
-		spoke.core = core.gameObject.GetComponent<RotatingCoreBehaviour>();
+		//spoke.core = core.gameObject.GetComponent<RotatingCoreBehaviour>();
 
 		pv = PhotonView.Get(this);
 	}
@@ -123,21 +123,21 @@ public class TurretController : MonoBehaviour {
 	void FixedUpdate()
 	{
 		if (isControllable) {
-			Vector3 toCenter = (this.transform.position + core.position).normalized;
+			Vector3 toCenter = (this.transform.position + Vector3.zero).normalized;
 			Vector3 distance = toCenter * playerVertical * speed;
-			float dot_product = Vector3.Dot ((core.position + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
+			float dot_product = Vector3.Dot ((Vector3.zero + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
 
 			//print ("Player Vertical: " + playerVertical);
 
 			//print ("Dot: " + dot_product);
 
-			if (this.GetComponent<CircleCollider2D> ().radius + core.gameObject.GetComponent<CircleCollider2D> ().radius >
-				Vector3.Distance (this.gameObject.transform.position + distance, core.position) ||
+			if (this.GetComponent<CircleCollider2D> ().radius + coreRadius>
+				Vector3.Distance (this.gameObject.transform.position + distance, Vector3.zero) ||
 				playerVertical < 0.0f && -1.01f < dot_product && dot_product < -.99f) {
 				print ("Collision");
 				//this.gameObject.transform.position = toCenter * (core.gameObject.GetComponent<CircleCollider2D> ().radius + this.GetComponent<CircleCollider2D> ().radius);
 			} 
-			else if (playerVertical > 0.0f && Vector3.Distance (this.gameObject.transform.position + distance, core.position) > max_distance) {
+			else if (playerVertical > 0.0f && Vector3.Distance (this.gameObject.transform.position + distance, Vector3.zero) > max_distance) {
 				print ("Outer limit Reached");
 				//this.gameObject.transform.position = toCenter * max_distance;
 
