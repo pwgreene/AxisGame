@@ -35,7 +35,7 @@ public class Spoke : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (player != null) {
+		if (player != null || core != null) {
 			Vector3 direction = (player.gameObject.transform.position - core.gameObject.transform.position).normalized;
 			//print ("Spoke " + direction);
 
