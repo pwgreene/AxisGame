@@ -5,10 +5,23 @@ using System.Collections;
 
 public class GUIManager : MonoBehaviour
 {
+    public static GUIManager Instance { get; private set; }
+    
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        } else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public CanvasGroup canvasGroup;
     public Text waveText;
 
-    public void Start()
+    void Start()
     {
         StartCoroutine(ShowEndScreen());
     }

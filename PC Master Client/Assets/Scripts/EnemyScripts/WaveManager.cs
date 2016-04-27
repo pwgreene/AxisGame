@@ -17,7 +17,7 @@ public class WaveManager : MonoBehaviour {
 	void Start () {
 		waveNumber = 1;
 		SpawnWave ();
-        guiM = GameObject.FindGameObjectWithTag("GUIManager").GetComponent<GUIManager>();
+        guiM = GUIManager.Instance;
 	}
 	
 	// Update is called once per frame
