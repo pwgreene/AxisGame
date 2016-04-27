@@ -27,7 +27,6 @@ public class Cluster : MonoBehaviour {
 		{
 			Destroy(gameObject);
 		}
-
 		spawn ();
 	}
 	
@@ -47,26 +46,6 @@ public class Cluster : MonoBehaviour {
 				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
 				continue;
 			}
-			/**
-			Enemy2Behavior behaviour2 = a.GetComponent<Enemy2Behavior> ();
-
-			if (behaviour2 != null) {
-				//behaviour2.speed = 0;
-				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
-				continue;
-			}
-
-			Enemy3Behavior behaviour3 = a.GetComponent<Enemy3Behavior> ();
-
-			if (behaviour3 != null) {
-				//behaviour3.speed = 0;
-				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
-				continue;
-			}
-
-			gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
-			**/
-
 		}
 	}
 

@@ -5,6 +5,7 @@ public class EnemyManager : MonoBehaviour
 {
 
     public GameObject enemy;
+	public GameObject cluster;
 	public GameObject enemyWarning;
 
 	int numRemainingEnemies; //number of enemies alive on the map
@@ -43,6 +44,7 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
+		//wait for enemy type
 		if (enemy == null) {
 			yield return new WaitForSeconds (1);
 		}
@@ -79,8 +81,8 @@ public class EnemyManager : MonoBehaviour
 			Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
 			Instantiate (enemyWarning, warningWorldPoint, Quaternion.identity);
             //GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
-			GameObject newEnemy = PhotonNetwork.InstantiateSceneObject(enemy.name, enemyWorldPoint, Quaternion.identity, 0,null);
-            //newEnemy.transform.parent = transform;
+			GameObject newEnemy = PhotonNetwork.InstantiateSceneObject (enemy.name, enemyWorldPoint, Quaternion.identity, 0, null);
+			//newEnemy.transform.parent = transform;
 			numEnemiesToSpawn -= 1;
             yield return new WaitForSeconds(spawnTime);
         }
