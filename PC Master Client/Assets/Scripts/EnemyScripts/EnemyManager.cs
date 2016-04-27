@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject enemy;
 	public GameObject cluster;
 	public GameObject enemyWarning;
+	PhotonView pv;
 
 	int numRemainingEnemies; //number of enemies alive on the map
 	int totalEnemies;		 //number of enemies that will spawn total
@@ -17,9 +18,11 @@ public class EnemyManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {	
+		pv = PhotonView.Get(this);
 		if (PhotonNetwork.isMasterClient) {
 			StartCoroutine(SpawnEnemies());
 		}
+
         
     }
 
@@ -79,7 +82,7 @@ public class EnemyManager : MonoBehaviour
             
             Vector3 enemyWorldPoint = Camera.main.ViewportToWorldPoint(enemyScreenPoint);
 			Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
-			Instantiate (enemyWarning, warningWorldPoint, Quaternion.identity);
+			pv.RPC("InstantiateWarning", PhotonTargets.All, warningWorldPoint);
             //GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
 			if (numEnemiesToSpawn >= 10) {
 				spawnCluster (5, 1, enemyWorldPoint, enemy);
@@ -94,6 +97,11 @@ public class EnemyManager : MonoBehaviour
 
 
     }
+
+	[PunRPC] 
+	void InstantiateWarning(Vector3 point){
+		Instantiate (enemyWarning, point, Quaternion.identity);
+	}
 
 	void spawnCluster(int enemyCount, int radius, Vector3 location, GameObject enemyType) {
 		Vector3 gap = new Vector3 (radius, 0, 0);
