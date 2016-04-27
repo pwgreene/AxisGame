@@ -27,6 +27,7 @@ public class Cluster : MonoBehaviour {
 		{
 			Destroy(gameObject);
 		}
+
 		spawn ();
 	}
 	

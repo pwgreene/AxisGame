@@ -81,10 +81,31 @@ public class EnemyManager : MonoBehaviour
 			Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
 			Instantiate (enemyWarning, warningWorldPoint, Quaternion.identity);
             //GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
-			GameObject newEnemy = PhotonNetwork.InstantiateSceneObject (enemy.name, enemyWorldPoint, Quaternion.identity, 0, null);
-			//newEnemy.transform.parent = transform;
-			numEnemiesToSpawn -= 1;
+			if (numEnemiesToSpawn >= 10) {
+				spawnCluster (5, 1, enemyWorldPoint, enemy);
+				numEnemiesToSpawn -= 5;
+			} else {
+				GameObject newEnemy = PhotonNetwork.InstantiateSceneObject (enemy.name, enemyWorldPoint, Quaternion.identity, 0, null);
+				//newEnemy.transform.parent = transform;
+				numEnemiesToSpawn -= 1;
+			}
             yield return new WaitForSeconds(spawnTime);
         }
+
+
     }
+
+	void spawnCluster(int enemyCount, int radius, Vector3 location, GameObject enemyType) {
+		Vector3 gap = new Vector3 (radius, 0, 0);
+		for (int i = 0; i < enemyCount; i++) {
+			GameObject enemy = PhotonNetwork.InstantiateSceneObject (enemyType.name, location + gap, Quaternion.identity, 0, null);
+			EnemyBehaviour behaviour = enemy.GetComponent<EnemyBehaviour> ();
+
+			if (behaviour != null) {
+				//behaviour.speed = 0;
+				gap = Quaternion.Euler (0, 0, 360.0f / enemyCount) * gap;
+				continue;
+			}
+		}
+	}
 }
