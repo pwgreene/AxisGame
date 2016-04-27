@@ -50,11 +50,11 @@ public class WaveManager : MonoBehaviour {
 	void SpawnWave() {
 		if (PhotonNetwork.isMasterClient && PhotonNetwork.playerList.Length > 0) {
 			GameObject manager = PhotonNetwork.InstantiateSceneObject ("EnemyManager", transform.position, transform.rotation,0,null);
-			numEnemiesOnWave = waveNumber*2 + 10;
+			numEnemiesOnWave = waveNumber*2 + 5;
 			float spawnFrequency;
 			switch ((waveNumber-1) % 3) {
 			case 0:
-				spawnFrequency = .5f;
+				spawnFrequency = 3f;
 				InitializeManager (manager, smallSuicider, numEnemiesOnWave, spawnFrequency);
 				break;
 			case 1:
