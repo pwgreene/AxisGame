@@ -50,9 +50,10 @@ public class RandomMatchmaker : Photon.PunBehaviour
 					startingAngle = Mathf.Atan2 (plTrans.position.y, plTrans.position.x);
 				} else {
 					float newRadius = Mathf.Sqrt(Mathf.Pow(plTrans.position.x,2) + Mathf.Pow(plTrans.position.y, 2));
-					startingAngle += angle;
+
 					Vector3 newPos = new Vector3(newRadius * Mathf.Cos(startingAngle), newRadius * Mathf.Sin(startingAngle),0);
 				}
+				startingAngle += angle;
 
 			}
 		}
