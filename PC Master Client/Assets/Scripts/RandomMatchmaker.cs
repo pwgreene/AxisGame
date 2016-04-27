@@ -37,7 +37,8 @@ public class RandomMatchmaker : Photon.PunBehaviour
         //if (!PhotonNetwork.isMasterClient)
         //{
 		float radius = 6;
-		float startingAngle = 0;
+		float startingAngle = Random.Range(0,Mathf.PI * 2);
+		/*
 		if (PhotonNetwork.isMasterClient) {
 			
 			//disable the main camera
@@ -57,7 +58,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 				startingAngle += angle;
 
 			}
-		}
+		}*/
 
 			GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(radius* Mathf.Cos(startingAngle), radius * Mathf.Sin(startingAngle), 0), Quaternion.identity, 0);
             player.SendMessage("setControllable", true);
