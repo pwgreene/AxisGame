@@ -52,6 +52,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 					float newRadius = Mathf.Sqrt(Mathf.Pow(plTrans.position.x,2) + Mathf.Pow(plTrans.position.y, 2));
 
 					Vector3 newPos = new Vector3(newRadius * Mathf.Cos(startingAngle), newRadius * Mathf.Sin(startingAngle),0);
+					plTrans.position = newPos;
 				}
 				startingAngle += angle;
 
@@ -60,7 +61,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 
 			GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(radius* Mathf.Cos(startingAngle), radius * Mathf.Sin(startingAngle), 0), Quaternion.identity, 0);
             player.SendMessage("setControllable", true);
-
+			
 
         //}
     }
