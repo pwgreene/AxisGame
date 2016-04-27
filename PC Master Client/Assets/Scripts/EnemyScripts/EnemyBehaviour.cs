@@ -4,17 +4,15 @@ using System;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-
     public float speed;
     public int damage;
-	public int totalHealth;
-	public int points;
-	int remainingHealth;
+    public int totalHealth;
+    public int points;
+    int remainingHealth;
 
-	PhotonView pv;
     Vector3 corePosition;
     Rigidbody2D rb;
-	SpriteRenderer sprite;
+    SpriteRenderer sprite;
 
     // Use this for initialization
     void Start()
@@ -25,16 +23,13 @@ public class EnemyBehaviour : MonoBehaviour
         }
         catch (NullReferenceException)
         {
-			
-			PhotonView photonView = PhotonView.Get(this);
-			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+            DestroyEnemy();
 
         }
-        rb = GetComponent<Rigidbody2D>();
-		sprite = GetComponent<SpriteRenderer> ();
-		remainingHealth = totalHealth;
 
-		pv = GetComponent<PhotonView> ();
+        rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        remainingHealth = totalHealth;
     }
 
     // Update is called once per frame
@@ -42,8 +37,8 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Vector3 direction = corePosition - transform.position;
         rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
-		float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
     }
 
@@ -51,50 +46,48 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Core"))
         {
-			
+
             //collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
-			var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
-			if (null == behaviour) {
-				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+            var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
+            if (null == behaviour)
+            {
+                collision.gameObject.GetComponent<RotatingCoreBehaviour>().Damage(damage);
 
-			} else {
+            }
+            else {
 
-				behaviour.Damage (damage);
-			} 
+                behaviour.Damage(damage);
+            }
 
-			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+            DestroyEnemy();
         }
     }
 
 
-	public void decreaseHealth(int amount){
-		
-		pv.RPC("EnemyDamage", PhotonTargets.All,amount);
+    public void decreaseHealth(int amount)
+    {
+        EnemyDamage(amount);
+    }
 
-	}
+    public void EnemyDamage(int amount)
+    {
+        remainingHealth -= amount;
+        if (remainingHealth <= 0)
+        {
+            DestroyEnemy();
+        }
+        float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
+        sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
+    }
 
-	[PunRPC]
-	public void EnemyDamage(int amount) {
-		remainingHealth -= amount;
-		if (remainingHealth <= 0) {
-			
-			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
-		}
-		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
-		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
-	}
-
-	//triggered when this object is destroyed
-	[PunRPC]
-	void DestroyEnemy()
-	{
-		//not called through photon destroy
-		//let enemy manager know when this enemy is dead
-		//if (transform.parent != null) {
-		if(PhotonNetwork.isMasterClient){
-			PhotonNetwork.Destroy(gameObject);
-			EnemyManager manager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponent<EnemyManager> ();
-			manager.killEnemy ();
-		}
-	}
+    //triggered when this object is destroyed
+    void DestroyEnemy()
+    {
+        //not called through photon destroy
+        //let enemy manager know when this enemy is dead
+        Destroy(gameObject);
+        EnemyManager manager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponent<EnemyManager>();
+        manager.killEnemy();
+    }
 }
+

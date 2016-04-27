@@ -15,34 +15,29 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	public Spoke rod;
 
 	SpriteRenderer coreSprite;
-	PhotonView pv;
+
 	void Start()
 	{
 		currentHP = startingHP;
 		coreSprite = GetComponent<SpriteRenderer>();
-		pv = PhotonView.Get(this);
 	}
 
 	void Update(){
-		this.gameObject.transform.Rotate(new Vector3(0,0,rotationspeed));
+		gameObject.transform.Rotate(new Vector3(0,0,rotationspeed));
 	}
-
-	[PunRPC]
+    
 	public void CoreDamage(int damageValue){
-		currentHP -= (float)damageValue;
-		coreSprite.color = new Color(1, 1 - (float)(startingHP - currentHP) / startingHP, 1 - (float)(startingHP - currentHP) / startingHP);
+		currentHP -= damageValue;
+		coreSprite.color = new Color(1, 1 - (startingHP - currentHP) / startingHP, 1 - (startingHP - currentHP) / startingHP);
 
 		if (currentHP < 0)
 		{
-			
-			PhotonNetwork.Destroy(gameObject);
+			Destroy(gameObject);
 		}
 	}
 
 	public void Damage(int damageValue)
 	{
-
-
-		pv.RPC("CoreDamage", PhotonTargets.AllBuffered,damageValue);
+        CoreDamage(damageValue);
 	}
 }
