@@ -4,7 +4,7 @@ using System.Collections;
 public class Spoke : MonoBehaviour {
 
 	public TurretController player;
-	public RotatingCoreBehaviour core;
+	//public RotatingCoreBehaviour core;
 
 
 	const int VERTEX_COUNT = 2;
@@ -14,7 +14,7 @@ public class Spoke : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Vector3 direction = (player.gameObject.transform.position - core.gameObject.transform.position).normalized;
+		Vector3 direction = (player.gameObject.transform.position - Vector3.zero).normalized;
 //		line = this.gameObject.GetComponent<LineRenderer> ();
 		if (line == null) {
 			print ("Something bad happened with the Spoke");
@@ -35,8 +35,8 @@ public class Spoke : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (player != null && core != null) {
-			Vector3 direction = (player.gameObject.transform.position - core.gameObject.transform.position).normalized;
+		if (player != null) {
+			Vector3 direction = (player.gameObject.transform.position - Vector3.zero).normalized;
 			//print ("Spoke " + direction);
 
 //			line.SetPosition (0, direction*core.GetComponent<CircleCollider2D>().radius);
