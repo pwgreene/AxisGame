@@ -17,18 +17,19 @@ public class WaveManager : MonoBehaviour {
 	void Start () {
 		waveNumber = 1;
 		SpawnWave ();
-        guiM = GameObject.FindGameObjectWithTag("GUIManager").GetComponent<GUIManager>();
+        guiM = GUIManager.Instance;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	}
 
-	void InitializeManager(GameObject manager, GameObject enemyType, int numEnemies) {
+	void InitializeManager(GameObject manager, GameObject enemyType, int numEnemies, float spawnTime) {
 		if (PhotonNetwork.isMasterClient) {
 			EnemyManager enemyManager = manager.GetComponent<EnemyManager> ();
 			enemyManager.enemy = enemyType;
 			enemyManager.setNumEnemiesToSpawn (numEnemies);
+			enemyManager.spawnTime = spawnTime;
 		}
 
 		//manager.transform.parent = transform;
@@ -47,18 +48,22 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void SpawnWave() {
-		if (PhotonNetwork.isMasterClient) {
+		if (PhotonNetwork.isMasterClient && PhotonNetwork.playerList.Length > 0) {
 			GameObject manager = PhotonNetwork.InstantiateSceneObject ("EnemyManager", transform.position, transform.rotation,0,null);
-			numEnemiesOnWave = waveNumber*2 + 1;
+			numEnemiesOnWave = waveNumber*2 + 5;
+			float spawnFrequency;
 			switch ((waveNumber-1) % 3) {
 			case 0:
-				InitializeManager (manager, smallSuicider, numEnemiesOnWave);
+				spawnFrequency = 3f;
+				InitializeManager (manager, smallSuicider, numEnemiesOnWave, spawnFrequency);
 				break;
 			case 1:
-				InitializeManager (manager, mediumSuicider, numEnemiesOnWave);
+				spawnFrequency = 3f;
+				InitializeManager (manager, mediumSuicider, numEnemiesOnWave, spawnFrequency);
 				break;
 			case 2:
-				InitializeManager (manager, largeSuicider, numEnemiesOnWave);
+				spawnFrequency = 3f;
+				InitializeManager (manager, largeSuicider, numEnemiesOnWave, spawnFrequency);
 				break;
 			}
 		}
