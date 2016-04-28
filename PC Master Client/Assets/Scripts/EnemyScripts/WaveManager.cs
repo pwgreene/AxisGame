@@ -10,6 +10,7 @@ public class WaveManager : MonoBehaviour {
 	public GameObject smallSuicider;
 	public GameObject mediumSuicider;
 	public GameObject largeSuicider;
+	public GameObject enemyBoss;
 
     public GUIManager guiM;
 
@@ -55,7 +56,8 @@ public class WaveManager : MonoBehaviour {
 			switch ((waveNumber-1) % 3) {
 			case 0:
 				spawnFrequency = 3f;
-				InitializeManager (manager, smallSuicider, numEnemiesOnWave, spawnFrequency);
+				InitializeManager (manager, enemyBoss, 1, spawnFrequency);
+				//InitializeManager (manager, smallSuicider, numEnemiesOnWave, spawnFrequency);
 				break;
 			case 1:
 				spawnFrequency = 3f;

@@ -12,12 +12,12 @@ public class EnemyBehaviour : MonoBehaviour
 	int remainingHealth;
 
 	PhotonView pv;
-    Vector3 corePosition;
+    public Vector3 corePosition;
     Rigidbody2D rb;
 	SpriteRenderer sprite;
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
         try
         {
@@ -40,12 +40,17 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 direction = corePosition - transform.position;
-        rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
+		moveTowardCore ();
+    }
+
+	public void moveTowardCore() 
+	{
+		Vector3 direction = corePosition - transform.position;
+		rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
 		float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
-    }
+		rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
+	}
 
     void OnCollisionEnter2D(Collision2D collision)
     {
