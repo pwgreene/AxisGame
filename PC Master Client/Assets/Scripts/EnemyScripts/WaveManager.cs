@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour {
 	public GameObject mediumSuicider;
 	public GameObject largeSuicider;
 	public GameObject enemyBoss;
-
+	PhotonView pv;
     public GUIManager guiM;
 
 	// Use this for initialization
@@ -19,10 +19,20 @@ public class WaveManager : MonoBehaviour {
 		waveNumber = 1;
 		SpawnWave ();
         guiM = GUIManager.Instance;
+		pv = PhotonView.Get (this);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//nothing right now
+		if(!pv.isMine){
+			
+		}
+	}
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		//nothing right now
 	}
 
 	void InitializeManager(GameObject manager, GameObject enemyType, int numEnemies, float spawnTime) {

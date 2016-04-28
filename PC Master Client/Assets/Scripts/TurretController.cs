@@ -168,8 +168,11 @@ public class TurretController : MonoBehaviour {
 
 	public void setControllable(bool val){
 		isControllable = val;
+
+		//transform.FindChild ("Camera").gameObject.SetActive (true);
 		//Camera.main.enabled = false;
 		//GetComponentInChildren<Camera> ().enabled = true;
+		GetComponentInChildren<AudioListener>().enabled = true;
 	}
 	void OnCollisionEnter(Collision col){
 		print ("We have a collision");

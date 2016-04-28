@@ -25,7 +25,16 @@ public class EnemyManager : MonoBehaviour
 
         
     }
+	void Update () {
+		if(!pv.isMine){
+			//nothing rightn ow
+		}
+	}
 
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		//nothing right now, need this to be implemented if script is being observed
+	}
 	public void setNumEnemiesToSpawn(int num) {
 		numEnemiesToSpawn = num;
 		numRemainingEnemies = numEnemiesToSpawn;
