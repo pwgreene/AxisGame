@@ -104,9 +104,15 @@ public class TurretController : MonoBehaviour
         }
     }
 
-    public void SetFiring(bool firing)
+    public void SetFiring(int firing)
     {
-        playerFire = firing;
+        if (firing == 0)
+        {
+            playerFire = false;
+        } else
+        {
+            playerFire = true;
+        }
     }
 
     // Update is called once per frame

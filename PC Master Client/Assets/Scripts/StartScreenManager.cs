@@ -11,9 +11,11 @@ public class StartScreenManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SceneManager.LoadScene(1);
-        }
+
 	}
+
+    public void LoadScene()
+    {
+        SceneManager.LoadScene(1);
+    }
 }

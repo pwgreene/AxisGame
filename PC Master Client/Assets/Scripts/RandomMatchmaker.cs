@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon;
-using System.Collections;
 using System.Collections.Generic;
 
 public class RandomMatchmaker : PunBehaviour
@@ -27,7 +27,7 @@ public class RandomMatchmaker : PunBehaviour
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
     }
 
-    public override void OnJoinedLobby()
+    public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinRandomRoom();
     }
@@ -35,7 +35,7 @@ public class RandomMatchmaker : PunBehaviour
     void OnPhotonRandomJoinFailed()
     {
         Debug.Log("Can't join random room!");
-        PhotonNetwork.CreateRoom(null);
+        PhotonNetwork.CreateRoom("RoomToJoin");
     }
 
     public override void OnCreatedRoom()
@@ -46,7 +46,8 @@ public class RandomMatchmaker : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient)
         {
-            // Do some stuff, maybe
+            PhotonNetwork.Disconnect();
+            SceneManager.LoadScene(2);
         }
     }
 
@@ -105,13 +106,13 @@ public class RandomMatchmaker : PunBehaviour
             else if (eventCode == 2)
             {
                 // Fire the player's weapon
-                bool firing = (bool)content;
+                int firing = Mathf.RoundToInt((float)content);
                 turretToControl.SetFiring(firing);
             }
             else if (eventCode == 3)
             {
                 // Change the player's weapon
-                int ammoType = (int)content;
+                int ammoType = Mathf.RoundToInt((float)content);
                 turretToControl.SetWeapon(ammoType);
             }
         }
