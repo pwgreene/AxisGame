@@ -9,7 +9,7 @@ public class EnemyBehaviour : MonoBehaviour
     public int damage;
 	public int totalHealth;
 	public int points;
-	int remainingHealth;
+	public int remainingHealth;
 
 	public PhotonView pv;
     public Vector3 corePosition;
@@ -45,30 +45,37 @@ public class EnemyBehaviour : MonoBehaviour
 
 	public void moveTowardCore() 
 	{
-		Vector3 direction = corePosition - transform.position;
-		rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
-		float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-		rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
+		//only the master client moves enemies
+		if (PhotonNetwork.isMasterClient) {
+
+			Vector3 direction = corePosition - transform.position;
+			rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
+			float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
+			transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+			rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
+		}
 	}
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Core"))
-        {
-			
-            //collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
-			var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
-			if (null == behaviour) {
-				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+		if (PhotonNetwork.isMasterClient) {
 
-			} else {
+			if (collision.gameObject.CompareTag("Core"))
+			{
 
-				behaviour.Damage (damage);
-			} 
+				//collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
+				var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
+				if (null == behaviour) {
+					collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
 
-			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
-        }
+				} else {
+
+					behaviour.Damage (damage);
+				} 
+
+				pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+			}
+		}
     }
 
 
@@ -91,7 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
 
 	//triggered when this object is destroyed
 	[PunRPC]
-	void DestroyEnemy()
+	public void DestroyEnemy()
 	{
 		//not called through photon destroy
 		//let enemy manager know when this enemy is dead

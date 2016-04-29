@@ -5,6 +5,8 @@ using System;
 public class EnemyBossBehaviour : EnemyBehaviour {
 
 	public GameObject shield;
+
+	private ShieldBehaviour newShieldBehaviour;
 	public int shieldCooldown;
 	public int shieldLife;
 
@@ -26,15 +28,37 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 		if (distance > 10f) {
 			moveTowardCore ();
 		} else if (!hasShield) { //stopped moving, spawn shield
+			//needs to go here otherwise client keeps trying to spawn shield until it gets the message from server
+			hasShield = true;
 			pv.RPC("InstantiateShield",PhotonTargets.AllBufferedViaServer);
+		}
+
+		if (hasShield) {
+
+
 		}
 	}
 
 	[PunRPC]
+	void SetShieldActive(bool active) {
+		if (null != newShieldBehaviour) {
+
+			newShieldBehaviour.sprite.enabled = active;
+
+			newShieldBehaviour.isActive = active;
+			newShieldBehaviour.timer = 0;
+		}
+	}
+	[PunRPC]
 	void InstantiateShield(){
-		GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
-		newShield.transform.parent = transform;
-		hasShield = true;
+		if (PhotonNetwork.isMasterClient) {
+			GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
+
+			newShieldBehaviour = newShield.GetComponent<ShieldBehaviour> ();
+			newShield.transform.parent = transform;
+			hasShield = true;
+		}
+
 	}
 
 }

@@ -3,17 +3,19 @@ using System.Collections;
 
 public class ShieldBehaviour : MonoBehaviour {
 
-	bool isActive;
-	int timer;
+	public bool isActive;
+	public int timer;
+
 
 	public int activeLife;
 	public int inactiveLife;
 	PhotonView pv;
-	SpriteRenderer sprite;
+	public SpriteRenderer sprite;
 
 	// Use this for initialization
 	void Start () {
 		isActive = true;
+
 		timer = 0;
 		sprite = gameObject.GetComponent<SpriteRenderer> ();
 		if (sprite == null) {
@@ -28,23 +30,27 @@ public class ShieldBehaviour : MonoBehaviour {
 		if (transform.parent != null) {
 			transform.position = transform.parent.position;
 		}
-		//periodically go inactive and active
-		if (isActive) {
-			if (timer > activeLife) {
-				//GoInactive ();
+		if (PhotonNetwork.isMasterClient) {
 
-				pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
+			//periodically go inactive and active
+			if (isActive) {
+				if (timer > activeLife) {
+					//GoInactive ();
+
+					pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
+				} else {
+					timer++;
+				} 
 			} else {
-				timer++;
-			} 
-		} else {
-			if (timer > inactiveLife) {
-				//GoActive ();
-				pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
-			} else {
-				timer++;
+				if (timer > inactiveLife) {
+					//GoActive ();
+					pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
+				} else {
+					timer++;
+				}
 			}
 		}
+
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
@@ -55,13 +61,7 @@ public class ShieldBehaviour : MonoBehaviour {
 		}
 	}
 
-	[PunRPC]
-	void SetShieldActive(bool active) {
-		sprite.enabled = active;
 
-		isActive = active;
-		timer = 0;
-	}
 
 
 }
