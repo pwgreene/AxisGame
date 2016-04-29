@@ -103,7 +103,7 @@ public class TurretController : MonoBehaviour {
 			{
 				timeElapsedSinceFire++;
 			}
-			orbit ();
+
 		}
 			
 	
@@ -113,11 +113,14 @@ public class TurretController : MonoBehaviour {
 	}
 
 	void orbit (){
-		Vector3 new_distance =  Quaternion.AngleAxis (orbiting_speed, Vector3.forward) * (this.gameObject.transform.position);
-		this.gameObject.transform.position = new_distance;
-		Vector3 current_rotation = this.gameObject.transform.rotation.eulerAngles;
-		current_rotation = new Vector3 (current_rotation.x, current_rotation.y, current_rotation.z + orbiting_speed);
-		this.gameObject.transform.rotation = Quaternion.Euler (current_rotation);
+		if (isControllable) {
+
+			Vector3 new_distance =  Quaternion.AngleAxis (orbiting_speed, Vector3.forward) * (this.gameObject.transform.position);
+			this.gameObject.transform.position = new_distance;
+			Vector3 current_rotation = this.gameObject.transform.rotation.eulerAngles;
+			current_rotation = new Vector3 (current_rotation.x, current_rotation.y, current_rotation.z + orbiting_speed);
+			this.gameObject.transform.rotation = Quaternion.Euler (current_rotation);
+		}
 	}
 
 	void FixedUpdate()
@@ -160,6 +163,7 @@ public class TurretController : MonoBehaviour {
 				timeElapsedSinceFire = 0;
 
 			}
+			orbit ();
 		}
 
 		//print (timeElapsedSinceFire);

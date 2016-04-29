@@ -23,7 +23,7 @@ public class RotatingCoreBehaviour : MonoBehaviour
 		pv = PhotonView.Get(this);
 	}
 
-	void Update(){
+	void FixedUpdate(){
 		this.gameObject.transform.Rotate(new Vector3(0,0,rotationspeed));
 	}
 
