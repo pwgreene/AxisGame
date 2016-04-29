@@ -45,6 +45,6 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	{
 
 
-		pv.RPC("CoreDamage", PhotonTargets.AllBuffered,damageValue);
+		pv.RPC("CoreDamage", PhotonTargets.AllBufferedViaServer,damageValue);
 	}
 }

@@ -11,7 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
 	public int points;
 	int remainingHealth;
 
-	PhotonView pv;
+	public PhotonView pv;
     public Vector3 corePosition;
     Rigidbody2D rb;
 	SpriteRenderer sprite;
@@ -74,7 +74,7 @@ public class EnemyBehaviour : MonoBehaviour
 
 	public void decreaseHealth(int amount){
 		
-		pv.RPC("EnemyDamage", PhotonTargets.All,amount);
+		pv.RPC("EnemyDamage", PhotonTargets.AllBufferedViaServer,amount);
 
 	}
 

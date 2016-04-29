@@ -4,22 +4,23 @@ using System.Collections;
 public class ShieldBehaviour : MonoBehaviour {
 
 	bool isActive;
-	int timeActive;
-	int timeInactive;
+	int timer;
 
 	public int activeLife;
 	public int inactiveLife;
-
+	PhotonView pv;
 	SpriteRenderer sprite;
 
 	// Use this for initialization
 	void Start () {
 		isActive = true;
-		timeActive = 0;
+		timer = 0;
 		sprite = gameObject.GetComponent<SpriteRenderer> ();
 		if (sprite == null) {
 			Destroy (gameObject);
 		}
+
+		pv = GetComponentInParent<PhotonView> ();
 	}
 	
 	// Update is called once per frame
@@ -29,16 +30,19 @@ public class ShieldBehaviour : MonoBehaviour {
 		}
 		//periodically go inactive and active
 		if (isActive) {
-			if (timeActive > activeLife) {
-				GoInactive ();
+			if (timer > activeLife) {
+				//GoInactive ();
+
+				pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
 			} else {
-				timeActive++;
+				timer++;
 			} 
 		} else {
-			if (timeInactive > inactiveLife) {
-				GoActive ();
+			if (timer > inactiveLife) {
+				//GoActive ();
+				pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
 			} else {
-				timeInactive++;
+				timer++;
 			}
 		}
 	}
@@ -51,15 +55,13 @@ public class ShieldBehaviour : MonoBehaviour {
 		}
 	}
 
-	void GoActive() {
-		sprite.enabled = true;
-		timeActive = 0;
-		isActive = true;
+	[PunRPC]
+	void SetShieldActive(bool active) {
+		sprite.enabled = active;
+
+		isActive = active;
+		timer = 0;
 	}
 
-	void GoInactive() {
-		sprite.enabled = false;
-		timeInactive = 0;
-		isActive = false;
-	}
+
 }
