@@ -9,6 +9,7 @@ public class TurretController : MonoBehaviour {
 	public float fireRate;
 	public float orbiting_speed;
 
+
 	float BASE_FIRE_RATE;
 	public bool increased_fire_rate = false;
 	public float increased_fire_rate_duration = 0;
