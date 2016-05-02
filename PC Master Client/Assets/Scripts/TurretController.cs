@@ -3,6 +3,8 @@ using System.Collections;
 
 public class TurretController : MonoBehaviour {
 
+
+	public Color playerColor;
 	public bool isControllable = false;
 	public float speed;
 	public float rotationSpeed;

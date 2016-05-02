@@ -53,11 +53,17 @@ public class WaveManager : MonoBehaviour {
 		//all managers should be done, wave over
 		if (numEnemiesOnWave <= 0) {
 			waveNumber++;
-            guiM.UpdateWaveNumber(waveNumber);
+
+			pv.RPC ("ChangeWaveNumber", PhotonTargets.AllBufferedViaServer, waveNumber);
             SpawnWave ();
 		}
 	}
 
+	[PunRPC]
+	void ChangeWaveNumber(int waveNum){
+		waveNumber = waveNum;
+		guiM.UpdateWaveNumber(waveNumber);
+	}
 	void SpawnWave() {
 		if (PhotonNetwork.isMasterClient && PhotonNetwork.playerList.Length > 0) {
 			GameObject manager = PhotonNetwork.InstantiateSceneObject ("EnemyManager", transform.position, transform.rotation,0,null);
