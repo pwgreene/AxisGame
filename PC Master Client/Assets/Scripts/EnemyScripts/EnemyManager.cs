@@ -5,7 +5,7 @@ public class EnemyManager : MonoBehaviour
 {
 
     public GameObject enemy;
-	public GameObject cluster;
+
 	public GameObject enemyWarning;
 	PhotonView pv;
 
