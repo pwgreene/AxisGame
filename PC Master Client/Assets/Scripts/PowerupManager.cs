@@ -37,7 +37,7 @@ public class PowerupManager : MonoBehaviour {
 		if (PhotonNetwork.isMasterClient) {
 
 
-			int powType = (PowerupType)Mathf.RoundToInt (Random.Range (0, System.Enum.GetValues (typeof(PowerupType)).Length));
+			int powType = (int)Mathf.RoundToInt (Random.Range (0, System.Enum.GetValues (typeof(PowerupType)).Length));
 			//GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
 			GameObject clone = PhotonNetwork.InstantiateSceneObject ("Powerup", powerUpSpawnPoints [Mathf.RoundToInt (Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity, 0, null);
 			Powerups scriptPower = clone.GetComponent<Powerups> ();
