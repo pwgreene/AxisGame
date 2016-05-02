@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class PowerupManager : MonoBehaviour {
 	public float minTimeBetweenPowerUps;
 	public float maxTimeBetweenPowerUps;
-	public GameObject powerupPrefab;
+	//public GameObject powerupPrefab;
 	List<Vector2> powerUpSpawnPoints;
 
 	public float ammo;
