@@ -30,40 +30,23 @@ public class RandomMatchmaker : Photon.PunBehaviour
     {
         GameObject core = PhotonNetwork.InstantiateSceneObject("rotating_core", Vector3.zero, Quaternion.identity, 0, null);
         GameObject wave = PhotonNetwork.InstantiateSceneObject("WaveManager", Vector3.zero, Quaternion.identity, 0, null);
+		GameObject powerUps = PhotonNetwork.InstantiateSceneObject("PowerupManager", Vector3.zero, Quaternion.identity, 0, null);
+
     }
+
 
     public override void OnJoinedRoom()
     {
-        //if (!PhotonNetwork.isMasterClient)
-        //{
+        
 		float radius = 6;
-		float startingAngle = Random.Range(0,Mathf.PI * 2);
-		/*
-		if (PhotonNetwork.isMasterClient) {
+		float startingAngle = 0;
+
+		GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(radius* Mathf.Cos(startingAngle), radius * Mathf.Sin(startingAngle), 0), Quaternion.identity, 0);
+        player.SendMessage("setControllable", true);
+		//photonView.RPC("SomeFunction", PhotonTargets.All, sender.gameObject.GetPhotonView().viewID, target.gameObject.GetPhotonView().viewID);
 			
-			//disable the main camera
-			int numPlayers = PhotonNetwork.playerList.Length + 1 ;
-			float angle = 2*Mathf.PI / (float) numPlayers;
-
-			for(int i = 0; i < (numPlayers -1); i ++){
-				Transform plTrans = PhotonView.Find (PhotonNetwork.playerList[i].ID).GetComponent < Transform> ();
-				if (i == 0) {
-					startingAngle = Mathf.Atan2 (plTrans.position.y, plTrans.position.x) ;
-				} else {
-					float newRadius = Mathf.Sqrt(Mathf.Pow(plTrans.position.x,2) + Mathf.Pow(plTrans.position.y, 2));
-
-					Vector3 newPos = new Vector3(newRadius * Mathf.Cos(startingAngle), newRadius * Mathf.Sin(startingAngle),0);
-					plTrans.position = newPos;
-				}
-				startingAngle += angle;
-
-			}
-		}*/
-
-			GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(radius* Mathf.Cos(startingAngle), radius * Mathf.Sin(startingAngle), 0), Quaternion.identity, 0);
-            player.SendMessage("setControllable", true);
-			
-
-        //}
+        
     }
+
+
 }

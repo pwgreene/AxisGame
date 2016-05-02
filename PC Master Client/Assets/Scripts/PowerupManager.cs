@@ -28,6 +28,11 @@ public class PowerupManager : MonoBehaviour {
 		StartCoroutine ("spawnPowerUp");
 	}
 
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		//nothing right now, need this to be implemented if script is being observed
+	}
+
 	IEnumerator spawnPowerUp(){
 		//GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
 		GameObject clone= PhotonNetwork.InstantiateSceneObject("Powerup", powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity, 0,null);
