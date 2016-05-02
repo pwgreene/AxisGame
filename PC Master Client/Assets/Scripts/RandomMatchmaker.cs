@@ -47,8 +47,8 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		//TurretController controller = player.GetComponent<TurretController> ();
 		//controller.playerColor =playerColors [PhotonNetwork.playerList.Length - 1];
 
-//		player.GetComponent<PhotonView>().RPC("SetColor", playerColors[PhotonNetwork.playerList.Length -1];
-//		player.SendMessage("setControllable", true);
+		player.GetComponent<PhotonView>().RPC("SetColor", playerColors[PhotonNetwork.playerList.Length -1]);
+		player.SendMessage("setControllable", true);
 		//photonView.RPC("SomeFunction", PhotonTargets.All, sender.gameObject.GetPhotonView().viewID, target.gameObject.GetPhotonView().viewID);
 			
         
