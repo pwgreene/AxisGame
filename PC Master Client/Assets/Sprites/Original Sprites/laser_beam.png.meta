@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 2a5c168b210e0403ba3087b03a2b2f9f
-timeCreated: 1460576055
+timeCreated: 1462167158
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -61,15 +61,15 @@ TextureImporter:
         y: 34
         width: 62
         height: 121
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.47030327, y: 0.19186486}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -31, y: 60.5}
-        - {x: -31, y: -60.5}
-        - {x: 29, y: -60.5}
-        - {x: 31, y: -59.5}
-        - {x: 31, y: 60.5}
+      - - {x: -29.158802, y: 97.78435}
+        - {x: -29.158802, y: -23.215649}
+        - {x: 30.841198, y: -23.215649}
+        - {x: 32.841198, y: -22.215649}
+        - {x: 32.841198, y: 97.78435}
     - name: laser_beam_1
       rect:
         serializedVersion: 2

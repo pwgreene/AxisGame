@@ -5,14 +5,15 @@ using System;
 public class EnemyBossBehaviour : EnemyBehaviour {
 
 	public GameObject shield;
+	public GameObject laser;
 
 	private ShieldBehaviour newShieldBehaviour;
 	public int shieldCooldown;
 	public int shieldLife;
+	public int fireRate;
 
 	bool hasShield;
-	int timeToSpawnShield;
-	int timeToDestroyShield;
+	int timeElapsedSinceFire;
 
 	// Use this for initialization
 	protected override void Start()
@@ -32,10 +33,11 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 			hasShield = true;
 			pv.RPC("InstantiateShield",PhotonTargets.AllBufferedViaServer);
 		}
-
-		if (hasShield) {
-
-
+		if (timeElapsedSinceFire < fireRate) {
+			timeElapsedSinceFire++;
+		} else if (timeElapsedSinceFire >= fireRate) {
+			pv.RPC ("FireLaser", PhotonTargets.AllBufferedViaServer);
+			timeElapsedSinceFire = 0;
 		}
 	}
 
@@ -58,7 +60,13 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 			newShield.transform.parent = transform;
 			hasShield = true;
 		}
+	}
 
+	[PunRPC]
+	void FireLaser() {
+		if (PhotonNetwork.isMasterClient) {
+			PhotonNetwork.InstantiateSceneObject (laser.name, transform.position, transform.rotation,0,null);
+		}
 	}
 
 }

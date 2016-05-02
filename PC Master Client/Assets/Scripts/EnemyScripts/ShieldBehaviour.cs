@@ -53,7 +53,6 @@ public class ShieldBehaviour : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		print ("laser collision");
 		if (collision.gameObject.CompareTag("Bullet") && isActive)
 		{	
 			Destroy (collision.gameObject);
