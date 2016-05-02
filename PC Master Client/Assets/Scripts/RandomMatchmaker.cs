@@ -30,7 +30,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
     {
         GameObject core = PhotonNetwork.InstantiateSceneObject("rotating_core", Vector3.zero, Quaternion.identity, 0, null);
         GameObject wave = PhotonNetwork.InstantiateSceneObject("WaveManager", Vector3.zero, Quaternion.identity, 0, null);
-		GameObject powerUps = PhotonNetwork.InstantiateSceneObject("PowerupManager", Vector3.zero, Quaternion.identity, 0, null);
+		//GameObject powerUps = PhotonNetwork.InstantiateSceneObject("PowerupManager", Vector3.zero, Quaternion.identity, 0, null);
 
     }
 
