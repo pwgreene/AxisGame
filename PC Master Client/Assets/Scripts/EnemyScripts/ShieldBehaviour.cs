@@ -6,7 +6,6 @@ public class ShieldBehaviour : MonoBehaviour {
 	public bool isActive;
 	public int timer;
 
-
 	public int activeLife;
 	public int inactiveLife;
 	PhotonView pv;
@@ -24,9 +23,8 @@ public class ShieldBehaviour : MonoBehaviour {
 
 		pv = GetComponentInParent<PhotonView> ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void FixedUpdate () {
 		if (transform.parent != null) {
 			transform.position = transform.parent.position;
 		}
@@ -55,6 +53,7 @@ public class ShieldBehaviour : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
+		print ("laser collision");
 		if (collision.gameObject.CompareTag("Bullet") && isActive)
 		{	
 			Destroy (collision.gameObject);
