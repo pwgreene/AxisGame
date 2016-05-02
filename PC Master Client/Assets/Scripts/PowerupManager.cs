@@ -17,7 +17,7 @@ public class PowerupManager : MonoBehaviour {
 	public Sprite missile_icon;
 	public Sprite heal_icon;
 	public Sprite fire_rate_icon;
-	p
+
 	// Use this for initialization
 	void Start () {
 		powerUpSpawnPoints = new List<Vector2> ();
