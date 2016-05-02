@@ -54,6 +54,8 @@ public class TurretController : MonoBehaviour {
 
 		ammoAmmounts = new float[weapons.Length];
 		ammoAmmounts [0] = Mathf.Infinity;
+		ammoAmmounts [1] = 30;
+		ammoAmmounts [2] = 30;
 
 		ammoType = 0;
 
