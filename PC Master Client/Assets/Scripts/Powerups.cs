@@ -29,6 +29,13 @@ public class Powerups : MonoBehaviour {
 	void SetPowType(int type){
 		powType = (PowerupType)type;
 	}
+
+	[PunRPC]
+	void DestroyPowerUp(){
+		if (PhotonNetwork.isMasterClient) {
+			PhotonNetwork.Destroy(transform.gameObject);
+		}
+	}
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag.Equals ("Player") || other.tag.Equals("Core")) {
 			//Debug.Log ("collided with powerup");
@@ -62,7 +69,8 @@ public class Powerups : MonoBehaviour {
 
 
 			//destroy this
-			Destroy(transform.gameObject);
+			PhotonView.Get(this).RPC("DestroyPowerUp",PhotonTargets.MasterClient);
+
 		}
 
 	}
