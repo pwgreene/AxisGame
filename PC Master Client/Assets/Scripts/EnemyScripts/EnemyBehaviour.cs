@@ -11,6 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
 	public int points;
 	public int remainingHealth;
 
+	public GameObject explosion;
 	public PhotonView pv;
     public Vector3 corePosition;
     Rigidbody2D rb;
@@ -107,6 +108,7 @@ public class EnemyBehaviour : MonoBehaviour
 			PhotonNetwork.Destroy(gameObject);
 			EnemyManager manager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponent<EnemyManager> ();
 			manager.killEnemy ();
+			Instantiate (explosion, transform.position, transform.rotation);
 		}
 	}
 }
