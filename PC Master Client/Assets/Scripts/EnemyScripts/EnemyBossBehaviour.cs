@@ -26,7 +26,7 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 	{
 		float distance = (corePosition - transform.position).magnitude;
 		//move a fixed distance away from the core
-		if (distance > 10f) {
+		if (distance > 11f) {
 			moveTowardCore ();
 		} else if (!hasShield) { //stopped moving, spawn shield
 			//needs to go here otherwise client keeps trying to spawn shield until it gets the message from server
@@ -35,7 +35,7 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 		}
 		if (timeElapsedSinceFire < fireRate) {
 			timeElapsedSinceFire++;
-		} else if (timeElapsedSinceFire >= fireRate) {
+		} else if (timeElapsedSinceFire >= fireRate && distance <= 11f) {
 			pv.RPC ("FireLaser", PhotonTargets.AllBufferedViaServer);
 			timeElapsedSinceFire = 0;
 		}
