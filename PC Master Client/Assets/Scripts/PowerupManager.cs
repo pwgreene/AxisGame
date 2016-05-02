@@ -17,7 +17,7 @@ public class PowerupManager : MonoBehaviour {
 	public Sprite missile_icon;
 	public Sprite heal_icon;
 	public Sprite fire_rate_icon;
-
+	p
 	// Use this for initialization
 	void Start () {
 		powerUpSpawnPoints = new List<Vector2> ();
@@ -34,40 +34,44 @@ public class PowerupManager : MonoBehaviour {
 	}
 
 	IEnumerator spawnPowerUp(){
-		//GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
-		GameObject clone= PhotonNetwork.InstantiateSceneObject("Powerup", powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity, 0,null);
-		Powerups scriptPower = clone.GetComponent<Powerups> ();
-		scriptPower.powType = (PowerupType) Mathf.RoundToInt (Random.Range(0,System.Enum.GetValues(typeof(PowerupType)).Length)) ;
-		SpriteRenderer icon = clone.transform.FindChild("icon").GetComponent<SpriteRenderer> ();
-		switch (scriptPower.powType)
-		{
+		if (PhotonNetwork.isMasterClient) {
 
-		case PowerupType.AmmoIncrease_Grenade:
-			scriptPower.ammoCount = ammo;
-			icon.sprite = grenade_icon;
-			break;
 
-		case PowerupType.AmmoIncrease_Missile:
-			scriptPower.ammoCount = ammo;
-			icon.sprite = missile_icon;
-			icon.transform.localScale = new Vector3 (1, 1, 1);
-			break;
+			int powType = (PowerupType)Mathf.RoundToInt (Random.Range (0, System.Enum.GetValues (typeof(PowerupType)).Length));
+			//GameObject clone = Instantiate (powerupPrefab, powerUpSpawnPoints [Mathf.RoundToInt(Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity) as GameObject;
+			GameObject clone = PhotonNetwork.InstantiateSceneObject ("Powerup", powerUpSpawnPoints [Mathf.RoundToInt (Random.Range (0, powerUpSpawnPoints.Count - 1))], Quaternion.identity, 0, null);
+			Powerups scriptPower = clone.GetComponent<Powerups> ();
+			PhotonView pvClone = clone.GetComponent<PhotonView> ();
+			pvClone.RPC ("SetPowType", PhotonTargets.AllBuffered, powType);
+			SpriteRenderer icon = clone.transform.FindChild ("icon").GetComponent<SpriteRenderer> ();
+			switch (scriptPower.powType) {
 
-		case PowerupType.CoreHealth:
-			scriptPower.healAmount = heal_amount;
-			icon.sprite = heal_icon;
-			break;
+			case PowerupType.AmmoIncrease_Grenade:
+				scriptPower.ammoCount = ammo;
+				icon.sprite = grenade_icon;
+				break;
 
-		case PowerupType.FiringRate:
-			scriptPower.fireRateIncrease = fireRate_decrease_factor;
-			scriptPower.rateIncreaseDuration = fireRate_duration;
-			icon.sprite = fire_rate_icon;
-			break;
+			case PowerupType.AmmoIncrease_Missile:
+				scriptPower.ammoCount = ammo;
+				icon.sprite = missile_icon;
+				icon.transform.localScale = new Vector3 (1, 1, 1);
+				break;
+
+			case PowerupType.CoreHealth:
+				scriptPower.healAmount = heal_amount;
+				icon.sprite = heal_icon;
+				break;
+
+			case PowerupType.FiringRate:
+				scriptPower.fireRateIncrease = fireRate_decrease_factor;
+				scriptPower.rateIncreaseDuration = fireRate_duration;
+				icon.sprite = fire_rate_icon;
+				break;
+			}
+
+			yield return new WaitForSeconds (Random.Range (minTimeBetweenPowerUps, maxTimeBetweenPowerUps));
+			StartCoroutine ("spawnPowerUp");
 		}
-
-		yield return new WaitForSeconds(Random.Range(minTimeBetweenPowerUps,maxTimeBetweenPowerUps));
-		StartCoroutine ("spawnPowerUp");
-
 	}
 
 

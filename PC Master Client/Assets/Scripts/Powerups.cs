@@ -25,6 +25,10 @@ public class Powerups : MonoBehaviour {
 		}
 	}
 
+	[PunRPC]
+	void SetPowType(int type){
+		powType = type;
+	}
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag.Equals ("Player") || other.tag.Equals("Core")) {
 			//Debug.Log ("collided with powerup");
