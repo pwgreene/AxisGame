@@ -5,7 +5,7 @@ using System.Collections;
 public class RandomMatchmaker : Photon.PunBehaviour
 {
 
-	Color[] playerColors = new Color[Color.blue, Color.red, Color.green, Color.magenta, Color.cyan];
+	Color[] playerColors = new Color[]{Color.blue, Color.red, Color.green, Color.magenta, Color.cyan};
     // Use this for initialization
     void Start()
     {
@@ -44,8 +44,11 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		float startingAngle = 0;
 
 		GameObject player = PhotonNetwork.Instantiate("turret", new Vector3(radius* Mathf.Cos(startingAngle), radius * Mathf.Sin(startingAngle), 0), Quaternion.identity, 0);
-		player.GetComponent<TurretController>.playerColor = playerColors [PhotonNetwork.playerList.Length - 1];
-		player.SendMessage("setControllable", true);
+		//TurretController controller = player.GetComponent<TurretController> ();
+		//controller.playerColor =playerColors [PhotonNetwork.playerList.Length - 1];
+
+//		player.GetComponent<PhotonView>().RPC("SetColor", playerColors[PhotonNetwork.playerList.Length -1];
+//		player.SendMessage("setControllable", true);
 		//photonView.RPC("SomeFunction", PhotonTargets.All, sender.gameObject.GetPhotonView().viewID, target.gameObject.GetPhotonView().viewID);
 			
         

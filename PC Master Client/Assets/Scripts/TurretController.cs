@@ -223,7 +223,10 @@ public class TurretController : MonoBehaviour {
 			print ("Core collision");
 		}
 	}
-
+	[PunRPC]
+	void SetColor(Color col){
+		playerColor = col;
+	}
 	[PunRPC]
 	void Fire(int ammo_num,int time_elapsed)
 	{
