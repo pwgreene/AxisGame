@@ -9,6 +9,11 @@ public class TurretController : MonoBehaviour {
 	public float fireRate;
 	public float orbiting_speed;
 
+	float BASE_FIRE_RATE;
+	public bool increased_fire_rate = false;
+	public float increased_fire_rate_duration = 0;
+
+
 	public float max_distance;
 
 	float playerVertical;
@@ -30,6 +35,7 @@ public class TurretController : MonoBehaviour {
 
 	public GameObject[] weapons;
 
+
 	public GameObject spoke_object;
 
 	bool leftShooting = true;
@@ -38,14 +44,20 @@ public class TurretController : MonoBehaviour {
 	//public bool hasSpoke = false;
     int ammoType;
 
+	public float[] ammoAmmounts;
+
 	public float coreRadius = 1.845f;
 
 	PhotonView pv;
 	// Use this for initialization
 	void Start () {
 
+		ammoAmmounts = new float[weapons.Length];
+		ammoAmmounts [0] = Mathf.Infinity;
 
 		ammoType = 0;
+
+		BASE_FIRE_RATE = fireRate;
 
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
@@ -90,20 +102,30 @@ public class TurretController : MonoBehaviour {
 			playerVertical = Input.GetAxis("Vertical");
 			playerFire = Input.GetButton("Fire1");
 
-			if(Input.GetKeyDown("1")){
+			if(Input.GetKeyDown("1") && ammoAmmounts[0] > 0){
 				ammoType = 0;
 			}
-			if (Input.GetKeyDown ("2")) {
+			if (Input.GetKeyDown ("2") && ammoAmmounts[1] > 0) {
 				ammoType = 1;
 			}
-			if (Input.GetKeyDown ("3")) {
+			if (Input.GetKeyDown ("3") && ammoAmmounts[2] > 0) {
 				ammoType = 2;
 			}
 			if (timeElapsedSinceFire < fireRate) 
 			{
 				timeElapsedSinceFire++;
 			}
-
+			if (increased_fire_rate) {
+				if (increased_fire_rate_duration <= 0) {
+					increased_fire_rate_duration = 0;
+					increased_fire_rate = false;
+					fireRate = BASE_FIRE_RATE;
+					print ("Returning to base fireRate");
+				} else {
+					increased_fire_rate_duration--;
+					print ("Countdown: " + increased_fire_rate_duration);
+				}
+			}
 		}
 			
 	
@@ -157,11 +179,23 @@ public class TurretController : MonoBehaviour {
 			//	this.gameObject.transform.position.y-this.gameObject.transform.parent.transform.position.y)*playerVertical*speed)
 			//rb.AddRelativeForce (new Vector2 (0, playerVertical * speed));
 			rb.AddTorque (-playerHorizontal * rotationSpeed);
-			if (playerFire) {
-				
+
+			//If we have ammo and the player pressed the fire button
+			if (playerFire && ammoAmmounts[ammoType] > 0) {
+
+
+
+
 				pv.RPC("Fire", PhotonTargets.All, ammoType,timeElapsedSinceFire);
 				timeElapsedSinceFire = 0;
 
+
+
+				//If we run out of ammo in our current weapon, go back to basic laser
+				if (ammoAmmounts [ammoType] <= 0) {
+					ammoType = 0;
+					print ("Switching back to laser");
+				}
 			}
 			orbit ();
 		}
@@ -192,6 +226,8 @@ public class TurretController : MonoBehaviour {
 
 		Debug.Log ("pew pew");
 		if (time_elapsed >= fireRate) {
+			ammoAmmounts [ammoType]--;
+			print ("Ammotype: " + ammoType + " ammoLeft: " + ammoAmmounts [ammoType]);
 			//create two new lasers to fire and set them equal to the color of the parent
 			if (leftShooting) {
 				leftShooting = false;

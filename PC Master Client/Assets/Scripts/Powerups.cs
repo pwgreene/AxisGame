@@ -5,8 +5,12 @@ public class Powerups : MonoBehaviour {
 	
 	public PowerupType powType;
 
-	public float percentageIncrease;
-	public float scalarIncrease;
+	public float ammoCount;
+
+	public float healAmount;
+
+	public float fireRateIncrease;
+	public float rateIncreaseDuration;
 
 	private GameObject core;
 	// Use this for initialization
@@ -15,26 +19,38 @@ public class Powerups : MonoBehaviour {
 		//currently none of these effects are temporary
 
 		//should be with find tag, but right now player is child of the core so they're all tagged core
-		 core = GameObject.Find("rotating_core");
+		core = GameObject.FindGameObjectWithTag("Core");
+		if (core == null) {
+			print ("Why doesn't this work?!");
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag.Equals ("Player") || other.tag.Equals("Core")) {
 			//Debug.Log ("collided with powerup");
-
+			TurretController turret = other.GetComponent<TurretController>();
 			switch (powType)
 			{
 			case PowerupType.CoreHealth:
-				core.GetComponent<RotatingCoreBehaviour> ().currentHP = scalarIncrease + core.GetComponent<RotatingCoreBehaviour> ().currentHP* percentageIncrease; 
-				break;
-			case PowerupType.CoreRotationSpeed:
-				core.GetComponent<RotatingCoreBehaviour> ().rotationspeed = scalarIncrease + core.GetComponent<RotatingCoreBehaviour> ().rotationspeed * percentageIncrease; 
+				core.GetComponent<RotatingCoreBehaviour> ().currentHP += healAmount; 
 				break;
 			case PowerupType.FiringRate:
-				other.GetComponent<TurretController> ().fireRate = Mathf.RoundToInt(1/(scalarIncrease + other.GetComponent<TurretController> ().fireRate * percentageIncrease))+1;
+				//The way this is organized right now, multiple fire rate powerups only increase the duration of the increase
+				if (!turret.increased_fire_rate) {
+					turret.increased_fire_rate = true;
+					turret.fireRate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireRate / fireRateIncrease) + 1;
+					turret.increased_fire_rate_duration += rateIncreaseDuration;
+				} else {
+					turret.increased_fire_rate_duration += rateIncreaseDuration;
+				}
+
+
 				break;
-			case PowerupType.Speed:
-				other.GetComponent<TurretController> ().speed = scalarIncrease + other.GetComponent<TurretController> ().speed * percentageIncrease;
+			case PowerupType.AmmoIncrease_Grenade:
+				turret.ammoAmmounts [2] += ammoCount;
+				break;
+			case PowerupType.AmmoIncrease_Missile:
+				turret.ammoAmmounts [1] += ammoCount;
 				break;
 			default:
 				break;
