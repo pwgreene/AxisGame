@@ -92,7 +92,10 @@ public class EnemyBehaviour : MonoBehaviour
 		if (remainingHealth <= 0) {
 			
 			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
-			Instantiate (explosion, transform.position, transform.rotation);
+			GameObject ex = Instantiate (explosion, transform.position, transform.rotation) as GameObject;
+			ParticleSystem pEx = ex.GetComponent<ParticleSystem> ();
+			var pEm = pEx.emission;
+			pEm.rate = new ParticleSystem.MinMaxCurve ((float) (points /2));
 		}
 		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
 		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);

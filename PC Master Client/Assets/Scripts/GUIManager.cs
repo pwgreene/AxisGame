@@ -23,7 +23,7 @@ public class GUIManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(ShowEndScreen());
+       
     }
 
     public void UpdateWaveNumber(int waveNumber)
@@ -40,8 +40,13 @@ public class GUIManager : MonoBehaviour
         }
     }
 
+	public void EndScreen(){
+		StartCoroutine(ShowEndScreen());
+	}
+
     public IEnumerator ShowEndScreen()
     {
+		/*
         GameObject core = null;
         while (core == null)
         {
@@ -53,7 +58,7 @@ public class GUIManager : MonoBehaviour
         {
             yield return null;
         }
-
+		*/
         bool go = true;
         while (go)
         {

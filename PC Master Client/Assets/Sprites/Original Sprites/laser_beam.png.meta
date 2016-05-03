@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 2a5c168b210e0403ba3087b03a2b2f9f
-timeCreated: 1462306887
+guid: 6ae83e2960e13448c9c2d619c6f70b1c
+timeCreated: 1462308396
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -58,18 +58,19 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 18
-        y: 34
-        width: 62
-        height: 121
+        y: 28
+        width: 59
+        height: 123
       alignment: 9
-      pivot: {x: 0.47772747, y: 0.25273108}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.4921983, y: 0.29043224}
+      border: {x: 0, y: 0, z: 59, w: 0}
       outline:
-      - - {x: -29.619102, y: 90.41954}
-        - {x: -29.619102, y: -30.58046}
-        - {x: 30.380898, y: -30.58046}
-        - {x: 32.380898, y: -29.58046}
-        - {x: 32.380898, y: 90.41954}
+      - - {x: -29.0397, y: 87.27683}
+        - {x: -29.0397, y: -32.723167}
+        - {x: -26.0397, y: -35.723167}
+        - {x: 25.9603, y: -35.723167}
+        - {x: 29.9603, y: -31.723167}
+        - {x: 29.9603, y: 87.27683}
     - name: laser_beam_1
       rect:
         serializedVersion: 2
@@ -77,55 +78,56 @@ TextureImporter:
         y: 1
         width: 75
         height: 159
-      alignment: 9
-      pivot: {x: 0.49386272, y: 0.77212733}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -37.039703, y: 36.23176}
-        - {x: -37.039703, y: -90.76824}
-        - {x: -28.039703, y: -101.76824}
-        - {x: -19.039703, y: -103.76824}
-        - {x: -18.039703, y: -103.76824}
-        - {x: -21.039703, y: -104.76824}
-        - {x: -26.039703, y: -116.76824}
-        - {x: -21.039703, y: -122.76824}
-        - {x: 19.960297, y: -122.76824}
-        - {x: 37.960297, y: -119.76824}
-        - {x: 37.960297, y: 36.23176}
-    - name: laser_beam_2
-      rect:
-        serializedVersion: 2
-        x: 86
-        y: 68
-        width: 61
-        height: 67
-      alignment: 9
-      pivot: {x: 0.51509184, y: 0.5022609}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -31.4206, y: 33.34852}
-        - {x: -31.4206, y: -33.65148}
-        - {x: 29.5794, y: -33.65148}
-        - {x: 29.5794, y: 33.34852}
-    - name: laser_beam_3
-      rect:
-        serializedVersion: 2
-        x: 154
-        y: 56
-        width: 63
-        height: 85
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -27.5, y: 42.5}
-        - {x: -31.5, y: 31.5}
-        - {x: -31.5, y: -27.5}
-        - {x: -15.5, y: -41.5}
-        - {x: 25.5, y: -41.5}
-        - {x: 31.5, y: -38.5}
-        - {x: 31.5, y: 34.5}
-        - {x: 27.5, y: 42.5}
+      - - {x: -37.5, y: 79.5}
+        - {x: -37.5, y: -47.5}
+        - {x: -28.5, y: -58.5}
+        - {x: -19.5, y: -60.5}
+        - {x: -18.5, y: -60.5}
+        - {x: -21.5, y: -61.5}
+        - {x: -26.5, y: -73.5}
+        - {x: -21.5, y: -79.5}
+        - {x: 19.5, y: -79.5}
+        - {x: 37.5, y: -76.5}
+        - {x: 37.5, y: 79.5}
+    - name: laser_beam_2
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 67
+        width: 66
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 33, y: -34}
+        - {x: 33, y: 29}
+        - {x: 32, y: 34}
+        - {x: -33, y: 34}
+        - {x: -33, y: -34}
+    - name: laser_beam_3
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 49
+        width: 59
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -21.5, y: 48.5}
+        - {x: -29.5, y: 40.5}
+        - {x: -29.5, y: -30.5}
+        - {x: -15.5, y: -40.5}
+        - {x: 10.5, y: -40.5}
+        - {x: 29.5, y: -34.5}
+        - {x: 29.5, y: 39.5}
+        - {x: 20.5, y: 48.5}
     outline: []
   spritePackingTag: 
   userData: 

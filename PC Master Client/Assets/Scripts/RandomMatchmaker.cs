@@ -48,7 +48,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		//controller.playerColor =playerColors [PhotonNetwork.playerList.Length - 1];
 
 		//if a player leaves and rejoins they get the same color
-		player.GetComponent<PhotonView>().RPC("SetColor", PhotonTargets.AllBufferedViaServer,PhotonNetwork.playerList.Length -1);
+	
 		player.SendMessage("setControllable", true);
 		//photonView.RPC("SomeFunction", PhotonTargets.All, sender.gameObject.GetPhotonView().viewID, target.gameObject.GetPhotonView().viewID);
 			
