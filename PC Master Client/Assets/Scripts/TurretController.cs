@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class TurretController : MonoBehaviour {
-
+	Color[] playerColors = new Color[]{Color.cyan, Color.red, Color.green, Color.magenta, Color.blue};
 
 	public Color playerColor;
 	public bool isControllable = false;
@@ -34,7 +34,7 @@ public class TurretController : MonoBehaviour {
 	Transform right_turret_position;
 
 	int timeElapsedSinceFire;
-	public Color color;
+
 
 	public GameObject[] weapons;
 
@@ -50,7 +50,7 @@ public class TurretController : MonoBehaviour {
 	public float[] ammoAmmounts;
 
 	public float coreRadius = 1.845f;
-
+	SpriteRenderer sprite;
 	PhotonView pv;
 	// Use this for initialization
 	void Start () {
@@ -67,7 +67,6 @@ public class TurretController : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
 
-
 		left_turret = player.transform.FindChild ("turret_left").GetComponent<Animator>();
 		left_turret_position = player.transform.FindChild ("turret_left").transform;
 
@@ -77,9 +76,9 @@ public class TurretController : MonoBehaviour {
 		playerVertical = 0;
 		playerHorizontal = 0;
 		timeElapsedSinceFire = 0;
-		SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
+		 sprite = GetComponent<SpriteRenderer> ();
 		if (sprite != null) {
-			color = sprite.color;
+			playerColor = sprite.color;
 		}
 		if (right_turret != null) {
 			print ("We have found the right turret");
@@ -87,7 +86,7 @@ public class TurretController : MonoBehaviour {
 		if (left_turret != null) {
 			print ("We have found the left turret");
 		}
-		print (color);
+		//print (color);
 
 		//core = GameObject.FindGameObjectWithTag ("Core").transform;
 
@@ -216,6 +215,8 @@ public class TurretController : MonoBehaviour {
 		//Camera.main.enabled = false;
 		//GetComponentInChildren<Camera> ().enabled = true;
 		GetComponentInChildren<AudioListener>().enabled = true;
+		pv.RPC("SetColor", PhotonTargets.AllBuffered,PhotonNetwork.playerList.Length -1);
+
 	}
 	void OnCollisionEnter(Collision col){
 		print ("We have a collision");
@@ -224,8 +225,14 @@ public class TurretController : MonoBehaviour {
 		}
 	}
 	[PunRPC]
-	void SetColor(Color col){
-		playerColor = col;
+	void SetColor(int colorIndex){
+		//some players might get the same color if the player leaves and joins
+		playerColor = playerColors [colorIndex];
+		sprite.color = playerColor;
+		SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer> ();
+		foreach (SpriteRenderer sp in sprites) {
+			sp.color = playerColor;
+		}
 	}
 	[PunRPC]
 	void Fire(int ammo_num,int time_elapsed)
@@ -245,7 +252,7 @@ public class TurretController : MonoBehaviour {
 				left_turret.SetTrigger ("Recoil");
 
 				GameObject leftLaser = Instantiate (weapons[ammo_num], leftBarrelEnd, transform.rotation) as GameObject;
-				leftLaser.GetComponent<SpriteRenderer> ().color = color;
+				leftLaser.GetComponent<SpriteRenderer> ().color = playerColor;
 
 				
 			} else if (rightShooting) {
@@ -255,7 +262,7 @@ public class TurretController : MonoBehaviour {
 
 				right_turret.SetTrigger("Recoil");
 				GameObject rightLaser = Instantiate (weapons[ammo_num], rightBarrelEnd, transform.rotation) as GameObject;
-				rightLaser.GetComponent<SpriteRenderer> ().color = color;
+				rightLaser.GetComponent<SpriteRenderer> ().color = playerColor;
 			}
 
 

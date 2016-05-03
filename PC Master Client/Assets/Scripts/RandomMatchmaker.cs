@@ -5,7 +5,7 @@ using System.Collections;
 public class RandomMatchmaker : Photon.PunBehaviour
 {
 
-	Color[] playerColors = new Color[]{Color.blue, Color.red, Color.green, Color.magenta, Color.cyan};
+
     // Use this for initialization
     void Start()
     {
@@ -47,7 +47,8 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		//TurretController controller = player.GetComponent<TurretController> ();
 		//controller.playerColor =playerColors [PhotonNetwork.playerList.Length - 1];
 
-		player.GetComponent<PhotonView>().RPC("SetColor", PhotonTargets.AllBufferedViaServer,playerColors[PhotonNetwork.playerList.Length -1]);
+		//if a player leaves and rejoins they get the same color
+		player.GetComponent<PhotonView>().RPC("SetColor", PhotonTargets.AllBufferedViaServer,PhotonNetwork.playerList.Length -1);
 		player.SendMessage("setControllable", true);
 		//photonView.RPC("SomeFunction", PhotonTargets.All, sender.gameObject.GetPhotonView().viewID, target.gameObject.GetPhotonView().viewID);
 			
