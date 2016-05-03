@@ -96,6 +96,10 @@ public class TurretController : MonoBehaviour {
 		//spoke.core = core.gameObject.GetComponent<RotatingCoreBehaviour>();
 
 		pv = PhotonView.Get(this);
+
+		if (isControllable) {
+			pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
+		}
 	}
 
 	// Update is called once per frame
@@ -215,9 +219,12 @@ public class TurretController : MonoBehaviour {
 		//Camera.main.enabled = false;
 		//GetComponentInChildren<Camera> ().enabled = true;
 		GetComponentInChildren<AudioListener>().enabled = true;
-		pv.RPC("SetColor", PhotonTargets.AllBuffered,PhotonNetwork.playerList.Length -1);
+
 
 	}
+
+		
+
 	void OnCollisionEnter(Collision col){
 		print ("We have a collision");
 		if (col.gameObject.name == "rotating_core") {
@@ -225,9 +232,10 @@ public class TurretController : MonoBehaviour {
 		}
 	}
 	[PunRPC]
-	void SetColor(int colorIndex){
+	void SetColor(int ID){
 		//some players might get the same color if the player leaves and joins
-		playerColor = playerColors [colorIndex];
+		playerColor = playerColors[ID];
+
 		sprite.color = playerColor;
 		SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer> ();
 		foreach (SpriteRenderer sp in sprites) {
