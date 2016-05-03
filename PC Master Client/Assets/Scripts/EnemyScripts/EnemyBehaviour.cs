@@ -92,6 +92,7 @@ public class EnemyBehaviour : MonoBehaviour
 		if (remainingHealth <= 0) {
 			
 			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+			Instantiate (explosion, transform.position, transform.rotation);
 		}
 		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
 		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
@@ -108,7 +109,8 @@ public class EnemyBehaviour : MonoBehaviour
 			PhotonNetwork.Destroy(gameObject);
 			EnemyManager manager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponent<EnemyManager> ();
 			manager.killEnemy ();
-			Instantiate (explosion, transform.position, transform.rotation);
+
 		}
+
 	}
 }
