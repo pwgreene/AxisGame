@@ -94,19 +94,9 @@ public class HomingMissile : MonoBehaviour, Projectile {
 			EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
 			enemy.decreaseHealth (damage);
 			Destroy (gameObject);
-		} else if(!other.gameObject.CompareTag ("Player")){
-			// get the point of contact
-			ContactPoint2D contact = other.contacts[0];
-			Vector3 oldVelocity = rb.velocity;
-			// reflect our old velocity off the contact point's normal vector
-			Vector3 reflectedVelocity = Vector3.Reflect(oldVelocity, contact.normal);        
-
-			// assign the reflected velocity back to the rigidbody
-			rb.velocity = reflectedVelocity;
-			// rotate the object by the same ammount we changed its velocity
-			Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectedVelocity);
-			transform.rotation = rotation * transform.rotation;
+		} else if(!other.gameObject.CompareTag("Player")){
 			//print (other.relativeVelocity);
+			Destroy (gameObject);
 		}
 
 	}
