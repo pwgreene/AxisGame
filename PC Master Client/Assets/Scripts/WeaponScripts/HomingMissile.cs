@@ -88,21 +88,26 @@ public class HomingMissile : MonoBehaviour, Projectile {
 		//rb.velocity = Quaternion.AngleAxis (turn_amount, Vector3.forward) * this.gameObject.transform.up * speed;
 	}
 
-	void OnTriggerEnter2D(Collider2D other)
+	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (other.CompareTag ("Enemy")) {
-			EnemyBehaviour enemy = other.GetComponent<EnemyBehaviour> ();
+		if (other.gameObject.CompareTag ("Enemy")) {
+			EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
 			enemy.decreaseHealth (damage);
 			Destroy (gameObject);
-		}/** else if (other.CompareTag ("Enemy2")) {
-			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
-			enemy.decreaseHealth (damage);
-			Destroy (gameObject);
-		} else if (other.CompareTag ("Enemy3")) {
-			Enemy3Behavior enemy = other.GetComponent<Enemy3Behavior> ();
-			enemy.decreaseHealth (damage);
-			Destroy (gameObject);
-		}**/
+		} else if(!other.gameObject.CompareTag ("Player")){
+			// get the point of contact
+			ContactPoint2D contact = other.contacts[0];
+			Vector3 oldVelocity = rb.velocity;
+			// reflect our old velocity off the contact point's normal vector
+			Vector3 reflectedVelocity = Vector3.Reflect(oldVelocity, contact.normal);        
+
+			// assign the reflected velocity back to the rigidbody
+			rb.velocity = reflectedVelocity;
+			// rotate the object by the same ammount we changed its velocity
+			Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectedVelocity);
+			transform.rotation = rotation * transform.rotation;
+			//print (other.relativeVelocity);
+		}
 
 	}
 

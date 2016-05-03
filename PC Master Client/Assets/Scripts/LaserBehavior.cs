@@ -25,9 +25,9 @@ public class LaserBehavior : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D other)
+	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (other.CompareTag ("Enemy")) {
+		if (other.gameObject.CompareTag ("Enemy")) {
 			PlayerController playerScript = owner.GetComponent<PlayerController> ();
 			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 			playerScript.IncreaseScore (enemyScript.points);
@@ -35,22 +35,19 @@ public class LaserBehavior : MonoBehaviour {
 				enemyScript.decreaseHealth (damage);
 			}
 			Destroy (gameObject);
-		}/** else if (other.CompareTag ("Enemy2")) {
-			PlayerController playerScript = owner.GetComponent<PlayerController> ();
-			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
-			playerScript.IncreaseScore (enemyScript.points);
-			if (enemyScript != null) {
-				enemyScript.decreaseHealth (damage);
-			}
-			Destroy (gameObject);
-		} else if (other.CompareTag ("Enemy3")) {
-			PlayerController playerScript = owner.GetComponent<PlayerController> ();
-			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
-			playerScript.IncreaseScore (enemyScript.points);
-			if (enemyScript != null) {
-				enemyScript.decreaseHealth (damage);
-			}
-			Destroy (gameObject);
-		}**/
+		} else if(!other.gameObject.CompareTag ("Player")){
+			// get the point of contact
+			ContactPoint2D contact = other.contacts[0];
+			Vector3 oldVelocity = rb.velocity;
+			// reflect our old velocity off the contact point's normal vector
+			Vector3 reflectedVelocity = Vector3.Reflect(oldVelocity, contact.normal);        
+
+			// assign the reflected velocity back to the rigidbody
+			rb.velocity = reflectedVelocity;
+			// rotate the object by the same ammount we changed its velocity
+			Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectedVelocity);
+			transform.rotation = rotation * transform.rotation;
+			//print (other.relativeVelocity);
+		}
 	}
 }
