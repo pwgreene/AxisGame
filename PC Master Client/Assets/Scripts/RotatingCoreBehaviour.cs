@@ -11,7 +11,7 @@ public class RotatingCoreBehaviour : MonoBehaviour
 	public float max_radius;
 
 	const float LINE_WIDTH = .2F; 
-
+	public GameObject coreExplosion;
 	public Spoke rod;
 
 	SpriteRenderer coreSprite;
@@ -34,13 +34,20 @@ public class RotatingCoreBehaviour : MonoBehaviour
 
 		if (currentHP < 0)
 		{
+			EndGame ();
 			if (PhotonNetwork.isMasterClient) {
+				Instantiate (coreExplosion, transform.position, transform.rotation);
 				PhotonNetwork.Destroy(gameObject);
 			}
 
 		}
 	}
 
+
+	public void EndGame(){
+		GameObject gui = GameObject.FindGameObjectWithTag ("GUIManager");
+		gui.GetComponent<GUIManager> ().EndScreen ();
+	}
 	public void Damage(int damageValue)
 	{
 
