@@ -106,7 +106,7 @@ public class TurretController : MonoBehaviour {
 	IEnumerator ColorUpdate(){
 		
 		yield return new WaitForSeconds(0.5f);
-		pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
+		pv.RPC("SetColor", PhotonTargets.AllBufferedViaServer, PhotonNetwork.playerList.Length-1);
 	}
 	// Update is called once per frame
 	void Update () 

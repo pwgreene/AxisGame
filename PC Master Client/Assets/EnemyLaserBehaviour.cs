@@ -58,14 +58,10 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 			{
 
 				//collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
-				var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
-				if (null == behaviour) {
-					collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
 
-				} else {
+				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
 
-					behaviour.Damage (damage);
-				} 
+				
 
 				pv.RPC("DestroyLaser", PhotonTargets.MasterClient);
 			}

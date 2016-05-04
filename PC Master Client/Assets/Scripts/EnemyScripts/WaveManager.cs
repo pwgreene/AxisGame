@@ -53,9 +53,12 @@ public class WaveManager : MonoBehaviour {
 		//all managers should be done, wave over
 		if (numEnemiesOnWave <= 0) {
 			waveNumber++;
+			if (PhotonNetwork.isMasterClient) {
+				pv.RPC ("ChangeWaveNumber", PhotonTargets.AllBufferedViaServer, waveNumber);
+				SpawnWave ();
+			}
 
-			pv.RPC ("ChangeWaveNumber", PhotonTargets.AllBufferedViaServer, waveNumber);
-            SpawnWave ();
+           
 		}
 	}
 
