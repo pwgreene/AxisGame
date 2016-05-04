@@ -107,9 +107,10 @@ public class TurretController : MonoBehaviour {
 	public void PowerUpApply(bool inc_rate, int fire_rate, float dur,int ammo,float ammo_increase){
 		if (inc_rate) {
 			increased_fire_rate = true;
+			fireRate = fire_rate;
 
 		}
-		fireRate = fire_rate;
+
 		increased_fire_rate_duration += dur;
 		ammoAmmounts [ammo] += ammo_increase;
 	}
