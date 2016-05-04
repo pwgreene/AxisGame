@@ -35,7 +35,7 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 		}
 		if (timeElapsedSinceFire < fireRate) {
 			timeElapsedSinceFire++;
-		} else if (timeElapsedSinceFire >= fireRate && distance <= 11f) {
+		} else if (timeElapsedSinceFire >= fireRate && distance <= 11f && PhotonNetwork.isMasterClient) {
 			pv.RPC("FireLaser",PhotonTargets.All);
 			timeElapsedSinceFire = 0;
 		}
@@ -55,7 +55,7 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 	void InstantiateShield(){
 		if (PhotonNetwork.isMasterClient) {
 			//GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
-			GameObject newShield = PhotonNetwork.Instantiate(shield.name, transform.position, transform.rotation, 0);
+			GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
 			newShieldBehaviour = newShield.GetComponent<ShieldBehaviour> ();
 			newShield.transform.parent = transform;
 			hasShield = true;

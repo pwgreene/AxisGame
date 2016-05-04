@@ -20,9 +20,8 @@ public class ShieldBehaviour : MonoBehaviour {
 		if (sprite == null) {
 			Destroy (gameObject);
 		}
-		if (PhotonNetwork.isMasterClient) {
-			pv = transform.parent.GetComponent<PhotonView> ();
-		}
+
+		pv = GetComponentInParent<PhotonView> ();
 	}
 
 	void FixedUpdate () {
