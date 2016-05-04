@@ -35,7 +35,10 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		//PhotonNetwork.InstantiateSceneObject("PowerupManager", Vector3.zero, Quaternion.identity, 0, null);
 
     }
-
+	public override void OnPhotonPlayerConnected(PhotonPlayer other )
+	{
+		Debug.Log( "OnPhotonPlayerConnected() " + other.name ); // not seen if you're the player connecting
+	}
 
     public override void OnJoinedRoom()
     {

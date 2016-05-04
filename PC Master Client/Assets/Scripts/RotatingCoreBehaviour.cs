@@ -38,8 +38,9 @@ public class RotatingCoreBehaviour : MonoBehaviour
 		if (currentHP < 0)
 		{
 			EndGame ();
+
 			if (PhotonNetwork.isMasterClient) {
-				Instantiate (coreExplosion, transform.position, transform.rotation);
+				
 				PhotonNetwork.Destroy(gameObject);
 			}
 
@@ -48,6 +49,7 @@ public class RotatingCoreBehaviour : MonoBehaviour
 
 
 	public void EndGame(){
+		Instantiate (coreExplosion, transform.position, transform.rotation);
 		GameObject gui = GameObject.FindGameObjectWithTag ("GUIManager");
 		gui.GetComponent<GUIManager> ().EndScreen ();
 	}
