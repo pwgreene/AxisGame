@@ -42,24 +42,27 @@ public class Grenade : MonoBehaviour, Projectile {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (other.gameObject.CompareTag ("Enemy")) {
-			EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
-			enemy.decreaseHealth (damage);
-			blowUp ();
-		} else if(!other.gameObject.CompareTag ("Player")){
-			// get the point of contact
-			ContactPoint2D contact = other.contacts[0];
-			Vector3 oldVelocity = rb.velocity;
-			// reflect our old velocity off the contact point's normal vector
-			Vector3 reflectedVelocity = Vector3.Reflect(oldVelocity, contact.normal);        
+		if (null != rb) {
+			if (other.gameObject.CompareTag ("Enemy")) {
+				EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
+				enemy.decreaseHealth (damage);
+				blowUp ();
+			} else if(!other.gameObject.CompareTag ("Player")){
+				// get the point of contact
+				ContactPoint2D contact = other.contacts[0];
+				Vector3 oldVelocity = rb.velocity;
+				// reflect our old velocity off the contact point's normal vector
+				Vector3 reflectedVelocity = Vector3.Reflect(oldVelocity, contact.normal);        
 
-			// assign the reflected velocity back to the rigidbody
-			rb.velocity = reflectedVelocity;
-			// rotate the object by the same ammount we changed its velocity
-			Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectedVelocity);
-			transform.rotation = rotation * transform.rotation;
-			//print (other.relativeVelocity);
+				// assign the reflected velocity back to the rigidbody
+				rb.velocity = reflectedVelocity;
+				// rotate the object by the same ammount we changed its velocity
+				Quaternion rotation = Quaternion.FromToRotation(oldVelocity, reflectedVelocity);
+				transform.rotation = rotation * transform.rotation;
+				//print (other.relativeVelocity);
+			}
 		}
+
 	}
 
 	public int getDamage(){

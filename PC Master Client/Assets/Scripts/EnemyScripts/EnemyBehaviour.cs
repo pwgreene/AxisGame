@@ -27,8 +27,8 @@ public class EnemyBehaviour : MonoBehaviour
         catch (NullReferenceException)
         {
 			
-			PhotonView photonView = PhotonView.Get(this);
-			photonView.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+
+			DestroyEnemy ();
 
         }
         rb = GetComponent<Rigidbody2D>();
@@ -64,17 +64,10 @@ public class EnemyBehaviour : MonoBehaviour
 			if (collision.gameObject.CompareTag("Core"))
 			{
 
-				//collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
-				var behaviour = collision.gameObject.GetComponent<CoreBehaviour>();
-				if (null == behaviour) {
-					collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
 
-				} else {
-
-					behaviour.Damage (damage);
-				} 
-
-				pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+		
+				DestroyEnemy ();
 			}
 		}
     }
@@ -90,8 +83,13 @@ public class EnemyBehaviour : MonoBehaviour
 	public void EnemyDamage(int amount) {
 		remainingHealth -= amount;
 		if (remainingHealth <= 0) {
-			
-			pv.RPC("DestroyEnemy", PhotonTargets.MasterClient);
+			//this instantiate is outside so everyone sees it
+			Instantiate (explosion, transform.position, transform.rotation);
+			//not called through photon destroy
+			//let enemy manager know when this enemy is dead
+			//if (transform.parent != null) {
+
+			DestroyEnemy ();
 //			GameObject ex = Instantiate (explosion, transform.position, transform.rotation) as GameObject;
 //			ParticleSystem pEx = ex.GetComponent<ParticleSystem> ();
 //			var pEm = pEx.emission;
@@ -100,21 +98,14 @@ public class EnemyBehaviour : MonoBehaviour
 		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
 		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
 	}
+		
 
-	//triggered when this object is destroyed
-	[PunRPC]
-	public void DestroyEnemy()
-	{
-		//not called through photon destroy
-		//let enemy manager know when this enemy is dead
-		//if (transform.parent != null) {
+	void DestroyEnemy(){
 		if(PhotonNetwork.isMasterClient){
 			PhotonNetwork.Destroy(gameObject);
 			EnemyManager manager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponent<EnemyManager> ();
 			manager.killEnemy ();
-			Instantiate (explosion, transform.position, transform.rotation);
 
 		}
-
 	}
 }

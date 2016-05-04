@@ -90,14 +90,17 @@ public class HomingMissile : MonoBehaviour, Projectile {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (other.gameObject.CompareTag ("Enemy")) {
-			EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
-			enemy.decreaseHealth (damage);
-			Destroy (gameObject);
-		} else if(!other.gameObject.CompareTag("Player")){
-			//print (other.relativeVelocity);
-			Destroy (gameObject);
+		if (null != rb) {
+			if (other.gameObject.CompareTag ("Enemy")) {
+				EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
+				enemy.decreaseHealth (damage);
+				Destroy (gameObject);
+			} else if(!other.gameObject.CompareTag("Player")){
+				//print (other.relativeVelocity);
+				Destroy (gameObject);
+			}
 		}
+
 
 	}
 
