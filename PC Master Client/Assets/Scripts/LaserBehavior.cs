@@ -30,7 +30,7 @@ public class LaserBehavior : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (null != rb && null != owner)
+		if (null != rb && null != owner){
 			if (other.gameObject.CompareTag ("Enemy")) {
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 				//owner.IncreaseScore (enemyScript.points);

@@ -34,7 +34,7 @@ public class GrenadeExplosion : MonoBehaviour, Projectile {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if (null != owner)
+		if (null != owner){
 			//print ("Collision");
 			if (other.CompareTag ("Enemy")) {
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
