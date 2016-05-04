@@ -11,7 +11,7 @@ public class Powerups : MonoBehaviour {
 
 	public float fireRateIncrease;
 	public float rateIncreaseDuration;
-
+	public SpriteRenderer icon;
 	private GameObject core;
 	// Use this for initialization
 	void Start () {
@@ -28,6 +28,32 @@ public class Powerups : MonoBehaviour {
 	[PunRPC]
 	void SetPowType(int type){
 		powType = (PowerupType)type;
+		//SpriteRenderer icon = GetComponentInChildren<SpriteRenderer> ();
+		PowerupManager powMan = GameObject.FindGameObjectWithTag ("PowerupManager").GetComponent<PowerupManager> ();
+		switch (powType) {
+
+		case PowerupType.AmmoIncrease_Grenade:
+			ammoCount = powMan.ammo;
+			icon.sprite = powMan.grenade_icon;
+			break;
+
+		case PowerupType.AmmoIncrease_Missile:
+			ammoCount = powMan.ammo;
+			icon.sprite = powMan.missile_icon;
+			icon.transform.localScale = new Vector3 (1, 1, 1);
+			break;
+
+		case PowerupType.CoreHealth:
+			healAmount = powMan.heal_amount;
+			icon.sprite = powMan.heal_icon;
+			break;
+
+		case PowerupType.FiringRate:
+			fireRateIncrease = powMan.fireRate_decrease_factor;
+			rateIncreaseDuration = powMan.fireRate_duration;
+			icon.sprite = powMan.fire_rate_icon;
+			break;
+		}
 	}
 
 	[PunRPC]

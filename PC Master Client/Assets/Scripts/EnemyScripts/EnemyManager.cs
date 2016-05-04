@@ -19,9 +19,9 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {	
 		pv = PhotonView.Get(this);
-		if (PhotonNetwork.isMasterClient) {
-			StartCoroutine(SpawnEnemies());
-		}
+
+		StartCoroutine(SpawnEnemies());
+
 
         
     }
@@ -56,56 +56,53 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-		//wait for enemy type
-		if (enemy == null) {
-			yield return new WaitForSeconds (1);
-		}
-
-        while (numEnemiesToSpawn > 0)
-        {
-            // Choose a random position off screen
-            float fixedValue = Random.value > 0.5f ? -0.2f : 1.2f;
-            float randomValue = Random.value;
-
-            Vector3 enemyScreenPoint;
-			Vector3 warningScreenPoint;
-
-            if (Random.value > 0.5f)
-            {
-                enemyScreenPoint = new Vector3(fixedValue, randomValue, 10);
-				if (fixedValue >= 0) { //spawing point is on right of screen
-					warningScreenPoint = new Vector3 (.9f, .5f, 10);
-				} else {
-					warningScreenPoint = new Vector3 (.1f, .5f, 10);
-				}
-            }
-            else
-            {
-                enemyScreenPoint = new Vector3(randomValue, fixedValue, 10);
-				if (fixedValue >= 0) { //spawing point is on top of screen
-					warningScreenPoint = new Vector3 (.5f, .9f, 10);
-				} else {
-					warningScreenPoint = new Vector3 (.5f, .1f, 10);
-				}
-            }
-            
-            Vector3 enemyWorldPoint = Camera.main.ViewportToWorldPoint(enemyScreenPoint);
-			Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
-			pv.RPC("InstantiateWarning", PhotonTargets.All, warningWorldPoint);
-            //GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
-			if (numEnemiesToSpawn >= 10) {
-				spawnCluster (5, 1, enemyWorldPoint, enemy);
-				numEnemiesToSpawn -= 5;
-			} else {
-				GameObject newEnemy = PhotonNetwork.InstantiateSceneObject (enemy.name, enemyWorldPoint, Quaternion.identity, 0, null);
-				//newEnemy.transform.parent = transform;
-				print ("enemy spawned");
-				numEnemiesToSpawn -= 1;
+		if (PhotonNetwork.isMasterClient) {
+			//wait for enemy type
+			if (enemy == null) {
+				yield return new WaitForSeconds (1);
 			}
-            yield return new WaitForSeconds(spawnTime);
-        }
 
+			while (numEnemiesToSpawn > 0) {
+				// Choose a random position off screen
+				float fixedValue = Random.value > 0.5f ? -0.2f : 1.2f;
+				float randomValue = Random.value;
 
+				Vector3 enemyScreenPoint;
+				Vector3 warningScreenPoint;
+
+				if (Random.value > 0.5f) {
+					enemyScreenPoint = new Vector3 (fixedValue, randomValue, 10);
+					if (fixedValue >= 0) { //spawing point is on right of screen
+						warningScreenPoint = new Vector3 (.9f, .5f, 10);
+					} else {
+						warningScreenPoint = new Vector3 (.1f, .5f, 10);
+					}
+				} else {
+					enemyScreenPoint = new Vector3 (randomValue, fixedValue, 10);
+					if (fixedValue >= 0) { //spawing point is on top of screen
+						warningScreenPoint = new Vector3 (.5f, .9f, 10);
+					} else {
+						warningScreenPoint = new Vector3 (.5f, .1f, 10);
+					}
+				}
+	            
+				Vector3 enemyWorldPoint = Camera.main.ViewportToWorldPoint (enemyScreenPoint);
+				Vector3 warningWorldPoint = Camera.main.ViewportToWorldPoint (warningScreenPoint);
+				pv.RPC ("InstantiateWarning", PhotonTargets.All, warningWorldPoint);
+				//GameObject newEnemy = (GameObject)Instantiate(enemy, enemyWorldPoint, Quaternion.identity);
+				if (numEnemiesToSpawn >= 10) {
+					spawnCluster (5, 1, enemyWorldPoint, enemy);
+					numEnemiesToSpawn -= 5;
+				} else {
+					PhotonNetwork.InstantiateSceneObject (enemy.name, enemyWorldPoint, Quaternion.identity, 0, null);
+					//newEnemy.transform.parent = transform;
+					print ("enemy spawned");
+					numEnemiesToSpawn -= 1;
+				}
+				yield return new WaitForSeconds (spawnTime);
+			}
+
+		}
     }
 
 	[PunRPC] 
