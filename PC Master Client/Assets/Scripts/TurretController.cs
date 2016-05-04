@@ -99,11 +99,7 @@ public class TurretController : MonoBehaviour {
 
 		pv = PhotonView.Get(this);
 
-		if (isControllable) {
-			pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
-			button_manager = GameObject.FindGameObjectWithTag ("ButtonManager");
-			button_manager.GetComponent<ButtonManager> ().ActivateButtons( this);
-		}
+
 	}
 
 	[PunRPC]
@@ -257,7 +253,9 @@ public class TurretController : MonoBehaviour {
 		//Camera.main.enabled = false;
 		//GetComponentInChildren<Camera> ().enabled = true;
 		GetComponentInChildren<AudioListener>().enabled = true;
-
+		button_manager = GameObject.FindGameObjectWithTag ("ButtonManager");
+		button_manager.GetComponent<ButtonManager> ().ActivateButtons( this);
+		pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
 
 	}
 
