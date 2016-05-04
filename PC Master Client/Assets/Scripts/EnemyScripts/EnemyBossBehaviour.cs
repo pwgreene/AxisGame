@@ -31,12 +31,12 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 		} else if (!hasShield) { //stopped moving, spawn shield
 			//needs to go here otherwise client keeps trying to spawn shield until it gets the message from server
 			hasShield = true;
-			pv.RPC("InstantiateShield",PhotonTargets.All);
+			pv.RPC("InstantiateShield",PhotonTargets.AllBuffered);
 		}
 		if (timeElapsedSinceFire < fireRate) {
 			timeElapsedSinceFire++;
 		} else if (timeElapsedSinceFire >= fireRate && distance <= 11f) {
-			pv.RPC("InstantiateShield",PhotonTargets.All);
+			pv.RPC("FireLaser",PhotonTargets.All);
 			timeElapsedSinceFire = 0;
 		}
 	}
