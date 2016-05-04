@@ -102,7 +102,7 @@ public class TurretController : MonoBehaviour {
 		if (isControllable) {
 			pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
 			button_manager = GameObject.FindGameObjectWithTag ("ButtonManager");
-			button_manager.GetComponent<ButtonManager> ().turret = this;
+			button_manager.GetComponent<ButtonManager> ().ActivateButtons( this);
 		}
 	}
 
@@ -116,6 +116,11 @@ public class TurretController : MonoBehaviour {
 
 		increased_fire_rate_duration += dur;
 		ammoAmmounts [ammo] += ammo_increase;
+	}
+	[PunRPC]
+	void SetColor(int ID){
+		StartCoroutine ("ColorUpdate", ID);
+
 	}
 	IEnumerator ColorUpdate(int ID){
 		
@@ -264,11 +269,7 @@ public class TurretController : MonoBehaviour {
 			print ("Core collision");
 		}
 	}
-	[PunRPC]
-	void SetColor(int ID){
-		StartCoroutine ("ColorUpdate", ID);
 
-	}
 	[PunRPC]
 	void Fire(int ammo_num)
 	{
