@@ -22,8 +22,7 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 		catch (NullReferenceException)
 		{
 
-			PhotonView photonView = PhotonView.Get(this);
-			photonView.RPC("DestroyLaser", PhotonTargets.MasterClient);
+
 
 		}
 		rb = GetComponent<Rigidbody2D>();
@@ -40,14 +39,13 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 
 	public void moveTowardCore() 
 	{
-		//only the master client moves enemies
-		if (PhotonNetwork.isMasterClient) {
-			Vector3 direction = corePosition - transform.position;
-			rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
-			float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
-			transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-			rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
-		}
+
+		Vector3 direction = corePosition - transform.position;
+		rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
+		float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
+
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
