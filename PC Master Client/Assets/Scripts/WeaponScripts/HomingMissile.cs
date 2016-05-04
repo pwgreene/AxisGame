@@ -8,7 +8,8 @@ public class HomingMissile : MonoBehaviour, Projectile {
 	Rigidbody2D rb;
 	public int speed;
 	public int max_turn;
-	public TurretController owner;
+	public bool owned;
+
 	float turn_amount = 0;
 
 	public float ROTATION_SCALAR;
@@ -89,12 +90,12 @@ public class HomingMissile : MonoBehaviour, Projectile {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (null != rb && null != owner) {
+		if (null != rb && null != owned) {
 			if (other.gameObject.CompareTag ("Enemy")) {
 
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 				//playerScript.IncreaseScore (enemyScript.points);
-				if (owner.isControllable && enemyScript != null) {
+				if (owned && enemyScript != null) {
 					enemyScript.decreaseHealth (damage);
 				}
 				Destroy (gameObject);
@@ -107,6 +108,9 @@ public class HomingMissile : MonoBehaviour, Projectile {
 
 	}
 
+	public void setControllable(bool control){
+		owned = control;
+	}
 	public int getDamage (){
 		return damage;
 	}

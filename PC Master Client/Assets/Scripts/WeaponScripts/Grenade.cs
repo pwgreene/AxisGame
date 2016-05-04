@@ -7,7 +7,7 @@ public class Grenade : MonoBehaviour, Projectile {
 	public int life;
 	Rigidbody2D rb;
 	public int speed;
-	public TurretController owner;
+
 	public int fragments;
 	public GameObject grenadePiece;
 
@@ -35,6 +35,7 @@ public class Grenade : MonoBehaviour, Projectile {
 		}*/
 
 		GameObject explosion = Instantiate (grenadePiece, this.gameObject.transform.position, this.gameObject.transform.rotation) as GameObject;
+		explosion.GetComponent<GrenadeExplosion> ().owned = owned;
 		explosion.GetComponent<SpriteRenderer> ().color = this.gameObject.GetComponent<SpriteRenderer> ().color;
 
 		Destroy (this.gameObject);
@@ -42,12 +43,12 @@ public class Grenade : MonoBehaviour, Projectile {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (null != rb && null != owner){
+		if (null != rb && null != owned){
 			if (other.gameObject.CompareTag ("Enemy")) {
-				TurretController playerScript = owner.GetComponent<TurretController> ();
+
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 				//playerScript.IncreaseScore (enemyScript.points);
-				if (playerScript.isControllable && enemyScript != null) {
+				if (owned && enemyScript != null) {
 					enemyScript.decreaseHealth (damage);
 				}
 				blowUp ();
@@ -69,6 +70,11 @@ public class Grenade : MonoBehaviour, Projectile {
 
 	}
 
+	public bool owned;
+
+	public void setControllable(bool control){
+		owned = control;
+	}
 	public int getDamage(){
 		return damage;
 	}

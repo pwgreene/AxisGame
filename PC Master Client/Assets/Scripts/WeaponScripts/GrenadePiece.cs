@@ -40,6 +40,18 @@ public class GrenadePiece : MonoBehaviour, Projectile {
 
 	}
 
+	public bool owned{
+
+		get{
+			return owned;
+		}
+		set{
+			owned = value;
+		}
+	}
+	public void setControllable(bool control){
+		owned = control;
+	}
 	public int getLife(){
 		return life;
 	}

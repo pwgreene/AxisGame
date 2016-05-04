@@ -6,7 +6,8 @@ public class GrenadeExplosion : MonoBehaviour, Projectile {
 	public float expansion_speed;
 	public int life;
 	public int damage;
-	public TurretController owner;
+	public bool owned;
+
 	CircleCollider2D collider_object;
 	SpriteRenderer explosion_sprite;
 
@@ -34,12 +35,12 @@ public class GrenadeExplosion : MonoBehaviour, Projectile {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if (null != owner){
+		if (null != owned){
 			//print ("Collision");
 			if (other.CompareTag ("Enemy")) {
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 				//owner.IncreaseScore (enemyScript.points);
-				if (owner.isControllable && enemyScript != null) {
+				if (owned && enemyScript != null) {
 					enemyScript.decreaseHealth (damage);
 				}
 			}/** else if (other.CompareTag ("Enemy2")) {
@@ -50,6 +51,10 @@ public class GrenadeExplosion : MonoBehaviour, Projectile {
 				enemy.decreaseHealth (damage);
 			}**/
 		}
+	}
+
+	public void setControllable(bool control){
+		owned = control;
 	}
 
 	public int getLife(){

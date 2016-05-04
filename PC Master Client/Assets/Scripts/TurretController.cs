@@ -269,35 +269,67 @@ public class TurretController : MonoBehaviour {
 	[PunRPC]
 	void Fire(int ammo_num)
 	{
-		
-
-		Debug.Log ("pew pew");
-	
-			ammoAmmounts [ammoType]--;
-			print ("Ammotype: " + ammoType + " ammoLeft: " + ammoAmmounts [ammoType]);
-			//create two new lasers to fire and set them equal to the color of the parent
-			if (leftShooting) {
-				leftShooting = false;
-				rightShooting = true;
-				Vector3 leftBarrelEnd = left_turret_position.position;
-
-				left_turret.SetTrigger ("Recoil");
-
-				GameObject leftLaser = Instantiate (weapons[ammo_num], leftBarrelEnd, transform.rotation) as GameObject;
-				leftLaser.GetComponent<SpriteRenderer> ().color = playerColor;
-				leftLaser.GetComponent<LaserBehavior> ().owner = GetComponent<TurretController>();
+		ammoAmmounts [ammoType]--;
+		print ("Ammotype: " + ammoType + " ammoLeft: " + ammoAmmounts [ammoType]);
 
 				
-			} else if (rightShooting) {
-				rightShooting = false;
-				leftShooting = true;
-				Vector3 rightBarrelEnd = right_turret_position.position;
+		GameObject laser; 
+		Vector3 barrelEnd = new Vector3(0,0,0);
+		//create two new lasers to fire and set them equal to the color of the parent
+		if (leftShooting) {
+			leftShooting = false;
+			rightShooting = true;
+			barrelEnd = left_turret_position.position;
 
-				right_turret.SetTrigger("Recoil");
-				GameObject rightLaser = Instantiate (weapons[ammo_num], rightBarrelEnd, transform.rotation) as GameObject;
-				rightLaser.GetComponent<SpriteRenderer> ().color = playerColor;
-				rightLaser.GetComponent<LaserBehavior> ().owner = GetComponent<TurretController>();
+			left_turret.SetTrigger ("Recoil");
+			laser = Instantiate (weapons[ammo_num], barrelEnd, transform.rotation) as GameObject;
+
+			laser.GetComponent<SpriteRenderer> ().color = playerColor;
+			switch (ammo_num) {
+			case 0:
+				LaserBehavior a = laser.GetComponent<LaserBehavior> () as LaserBehavior;
+				a.owned = isControllable;
+				break;
+			case 1:
+				HomingMissile b = laser.GetComponent<HomingMissile> () as HomingMissile;
+				b.owned = isControllable;
+				break;
+
+			case 2:
+
+				Grenade c = laser.GetComponent<Grenade> () as Grenade;
+				c.owned = isControllable;
+				break;
 			}
+		} else if (rightShooting) {
+			rightShooting = false;
+			leftShooting = true;
+			barrelEnd = right_turret_position.position;
+
+			right_turret.SetTrigger("Recoil");
+			laser = Instantiate (weapons[ammo_num], barrelEnd, transform.rotation) as GameObject;
+			laser.GetComponent<SpriteRenderer> ().color = playerColor;
+			switch (ammo_num) {
+			case 0:
+				LaserBehavior a = laser.GetComponent<LaserBehavior> () as LaserBehavior;
+				a.owned = isControllable;
+				break;
+			case 1:
+				HomingMissile b = laser.GetComponent<HomingMissile> () as HomingMissile;
+				b.owned = isControllable;
+				break;
+
+			case 2:
+
+				Grenade c = laser.GetComponent<Grenade> () as Grenade;
+				c.owned = isControllable;
+				break;
+			}
+		}
+	
+
+
+
 
 
 

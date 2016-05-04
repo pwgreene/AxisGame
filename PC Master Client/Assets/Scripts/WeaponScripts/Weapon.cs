@@ -10,7 +10,10 @@ public interface Weapon {
 
 public interface Projectile{
 
+
 	int getDamage ();
 
 	int getLife (); 
+
+
 }

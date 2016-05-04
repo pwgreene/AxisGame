@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserBehavior : MonoBehaviour {
+public class LaserBehavior : MonoBehaviour,Projectile {
 
 	Rigidbody2D rb;
 
 	public int speed;
-	public TurretController owner;
+
 	public int life;
 	public int damage;
 	private float startTime;
@@ -30,11 +30,11 @@ public class LaserBehavior : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (null != rb && null != owner){
+		if (null != rb && null != owned){
 			if (other.gameObject.CompareTag ("Enemy")) {
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
 				//owner.IncreaseScore (enemyScript.points);
-				if (owner.isControllable && enemyScript != null) {
+				if (owned && enemyScript != null) {
 					enemyScript.decreaseHealth (damage);
 				}
 				Destroy (gameObject);
@@ -54,5 +54,16 @@ public class LaserBehavior : MonoBehaviour {
 			} 
 		}
 
+	}
+	public bool owned;
+
+	public void setControllable(bool control){
+		owned = control;
+	}
+	public int getDamage(){
+		return damage;
+	}
+	public int getLife(){
+		return life;
 	}
 }
