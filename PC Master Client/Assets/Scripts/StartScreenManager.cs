@@ -16,4 +16,8 @@ public class StartScreenManager : MonoBehaviour {
             SceneManager.LoadScene(1);
         }
 	}
+
+	public void LoadScene(string sceneName) {
+		SceneManager.LoadScene (sceneName);
+	}
 }
