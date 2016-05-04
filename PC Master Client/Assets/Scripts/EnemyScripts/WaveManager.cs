@@ -71,8 +71,7 @@ public class WaveManager : MonoBehaviour {
 			switch ((waveNumber-1) % numTypesOfWaves) {
 			case 0:
 				spawnFrequency = 3f;
-				InitializeManager (manager, enemyBoss, 1, spawnFrequency);
-				//InitializeManager (manager, smallSuicider, numEnemiesOnWave, spawnFrequency);
+				InitializeManager (manager, smallSuicider, numEnemiesOnWave, spawnFrequency);
 				break;
 			case 1:
 				spawnFrequency = 3f;
