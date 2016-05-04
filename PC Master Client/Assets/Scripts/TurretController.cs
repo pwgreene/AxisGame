@@ -8,7 +8,7 @@ public class TurretController : MonoBehaviour {
 	public bool isControllable = false;
 	public float speed;
 	public float rotationSpeed;
-	public float fireInterval;
+	public float fireIntervalSeconds;
 	public float orbiting_speed;
 
 
@@ -33,7 +33,7 @@ public class TurretController : MonoBehaviour {
 	Animator right_turret;
 	Transform right_turret_position;
 
-	int timeElapsedSinceFire;
+	float timeElapsedSinceFire;
 
 
 	public GameObject[] weapons;
@@ -62,7 +62,7 @@ public class TurretController : MonoBehaviour {
 
 		ammoType = 0;
 
-		BASE_FIRE_INTERVAL= fireInterval;
+		BASE_FIRE_INTERVAL= fireIntervalSeconds;
 
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
@@ -107,7 +107,7 @@ public class TurretController : MonoBehaviour {
 	public void PowerUpApply(bool inc_rate, int fire_interval, float dur,int ammo,float ammo_increase){
 		if (inc_rate) {
 			increased_fire_rate = true;
-			fireInterval = fire_interval;
+			fireIntervalSeconds = fire_interval;
 
 		}
 
@@ -146,15 +146,12 @@ public class TurretController : MonoBehaviour {
 			if (Input.GetKeyDown ("3") && ammoAmmounts[2] > 0) {
 				ammoType = 2;
 			}
-			if (timeElapsedSinceFire < fireInterval) 
-			{
-				timeElapsedSinceFire++;
-			}
+
 			if (increased_fire_rate) {
 				if (increased_fire_rate_duration <= 0) {
 					increased_fire_rate_duration = 0;
 					increased_fire_rate = false;
-					fireInterval = BASE_FIRE_INTERVAL;
+					fireIntervalSeconds = BASE_FIRE_INTERVAL;
 					print ("Returning to base fireRate");
 				} else {
 					increased_fire_rate_duration--;
@@ -182,7 +179,13 @@ public class TurretController : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		
 		if (isControllable) {
+			//assuming 60 fps
+			if (timeElapsedSinceFire < fireIntervalSeconds ) 
+			{
+				timeElapsedSinceFire += Time.deltaTime;
+			}
 			Vector3 toCenter = (this.transform.position + Vector3.zero).normalized;
 			Vector3 distance = toCenter * playerVertical * speed;
 			float dot_product = Vector3.Dot ((Vector3.zero + (this.gameObject.transform.position + toCenter * playerVertical * speed)).normalized, toCenter);
@@ -220,10 +223,10 @@ public class TurretController : MonoBehaviour {
 
 
 
-
-				pv.RPC("Fire", PhotonTargets.All, ammoType,timeElapsedSinceFire);
-				timeElapsedSinceFire = 0;
-
+				if (timeElapsedSinceFire >= fireIntervalSeconds) {
+					pv.RPC ("Fire", PhotonTargets.All, ammoType);
+					timeElapsedSinceFire = 0;
+				}
 
 
 				//If we run out of ammo in our current weapon, go back to basic laser
@@ -264,12 +267,12 @@ public class TurretController : MonoBehaviour {
 
 	}
 	[PunRPC]
-	void Fire(int ammo_num,int time_elapsed)
+	void Fire(int ammo_num)
 	{
 		
 
 		Debug.Log ("pew pew");
-		if (time_elapsed >= fireInterval) {
+	
 			ammoAmmounts [ammoType]--;
 			print ("Ammotype: " + ammoType + " ammoLeft: " + ammoAmmounts [ammoType]);
 			//create two new lasers to fire and set them equal to the color of the parent
@@ -295,6 +298,6 @@ public class TurretController : MonoBehaviour {
 			}
 
 
-		}
+
 	}
 }

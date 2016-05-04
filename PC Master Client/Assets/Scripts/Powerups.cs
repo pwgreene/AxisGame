@@ -79,7 +79,7 @@ public class Powerups : MonoBehaviour {
 					if (!turret.increased_fire_rate) {
 						//rpc
 						//PowerUpApply(bool inc_rate, int fire_rate, float dur,int ammo,float ammo_increase){
-						int rate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireInterval / fireIntervalInverseFactor) + 1;
+						int rate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireIntervalSeconds / fireIntervalInverseFactor) + 1;
 						pv.RPC("PowerUpApply", PhotonTargets.AllBuffered, true, rate, rateIncreaseDuration ,0,0f);
 
 
