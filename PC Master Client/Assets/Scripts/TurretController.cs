@@ -107,7 +107,7 @@ public class TurretController : MonoBehaviour {
 	}
 
 	[PunRPC]
-	public void PowerUpApply(bool inc_rate, int fire_interval, float dur,int ammo,float ammo_increase){
+	public void PowerUpApply(bool inc_rate, float fire_interval, float dur,int ammo,float ammo_increase){
 		if (inc_rate) {
 			increased_fire_rate = true;
 			fireIntervalSeconds = fire_interval;
@@ -155,10 +155,10 @@ public class TurretController : MonoBehaviour {
 					increased_fire_rate_duration = 0;
 					increased_fire_rate = false;
 					fireIntervalSeconds = BASE_FIRE_INTERVAL;
-					print ("Returning to base fireRate");
+					print ("Returning to base fireRate:" + fireIntervalSeconds);
 				} else {
 					increased_fire_rate_duration--;
-					print ("Countdown: " + increased_fire_rate_duration);
+					print ("Increased fire rate: " + fireIntervalSeconds);
 				}
 			}
 		}
