@@ -59,6 +59,7 @@ public class GUIManager : MonoBehaviour
             yield return null;
         }
 		*/
+		yield return new WaitForSeconds(1f);
         bool go = true;
         while (go)
         {
