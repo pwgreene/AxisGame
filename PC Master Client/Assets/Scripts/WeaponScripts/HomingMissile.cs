@@ -12,7 +12,6 @@ public class HomingMissile : MonoBehaviour, Projectile {
 	float turn_amount = 0;
 
 	public float ROTATION_SCALAR;
-	public TurretController owner;
 
 	// Use this for initialization
 	void Start () {
