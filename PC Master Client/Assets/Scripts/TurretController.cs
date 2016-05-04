@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class TurretController : MonoBehaviour {
-	Color[] playerColors = new Color[]{Color.cyan, Color.red, Color.green, Color.magenta, Color.blue};
+	Color[] playerColors = new Color[]{Color.cyan, Color.green, Color.magenta, Color.blue};
 
 	public Color playerColor;
 	public bool isControllable = false;
@@ -98,15 +98,26 @@ public class TurretController : MonoBehaviour {
 		pv = PhotonView.Get(this);
 
 		if (isControllable) {
-			StartCoroutine ("ColorUpdate");
+			pv.RPC("SetColor", PhotonTargets.AllBufferedViaServer, PhotonNetwork.playerList.Length-1);
+
 		}
 	}
 
 
-	IEnumerator ColorUpdate(){
+	IEnumerator ColorUpdate(int ID){
 		
-		yield return new WaitForSeconds(0.5f);
-		pv.RPC("SetColor", PhotonTargets.AllBufferedViaServer, PhotonNetwork.playerList.Length-1);
+		yield return new WaitForSeconds(1f);
+		//some players might get the same color if the player leaves and joins
+		playerColor = playerColors[ID];
+		if (null != sprite) {
+			sprite = GetComponent<SpriteRenderer> ();
+		}
+		sprite.color = playerColor;
+		SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer> ();
+		foreach (SpriteRenderer sp in sprites) {
+			sp.color = playerColor;
+		}
+
 	}
 	// Update is called once per frame
 	void Update () 
@@ -239,20 +250,7 @@ public class TurretController : MonoBehaviour {
 	}
 	[PunRPC]
 	void SetColor(int ID){
-		//some players might get the same color if the player leaves and joins
-		playerColor = playerColors[ID];
-		if (null != sprite) {
-			sprite.color = playerColor;
-			SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer> ();
-			foreach (SpriteRenderer sp in sprites) {
-				sp.color = playerColor;
-			}
-		} else {
-			if (isControllable) {
-				StartCoroutine ("ColorUpdate");
-			}
-
-		}
+		StartCoroutine ("ColorUpdate", ID);
 
 	}
 	[PunRPC]

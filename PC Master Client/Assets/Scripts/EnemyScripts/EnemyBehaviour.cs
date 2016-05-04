@@ -75,7 +75,7 @@ public class EnemyBehaviour : MonoBehaviour
 
 	public void decreaseHealth(int amount){
 		
-		pv.RPC("EnemyDamage", PhotonTargets.AllBufferedViaServer,amount);
+		pv.RPC("EnemyDamage", PhotonTargets.AllBuffered,amount);
 
 	}
 
