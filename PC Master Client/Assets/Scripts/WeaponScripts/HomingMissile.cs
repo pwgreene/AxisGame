@@ -8,11 +8,11 @@ public class HomingMissile : MonoBehaviour, Projectile {
 	Rigidbody2D rb;
 	public int speed;
 	public int max_turn;
-
+	public TurretController owner;
 	float turn_amount = 0;
 
 	public float ROTATION_SCALAR;
-
+	public TurretController owner;
 
 	// Use this for initialization
 	void Start () {
@@ -92,8 +92,12 @@ public class HomingMissile : MonoBehaviour, Projectile {
 	{
 		if (null != rb) {
 			if (other.gameObject.CompareTag ("Enemy")) {
-				EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
-				enemy.decreaseHealth (damage);
+
+				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
+				//playerScript.IncreaseScore (enemyScript.points);
+				if (owner.isControllable && enemyScript != null) {
+					enemyScript.decreaseHealth (damage);
+				}
 				Destroy (gameObject);
 			} else if(!other.gameObject.CompareTag("Player")){
 				//print (other.relativeVelocity);

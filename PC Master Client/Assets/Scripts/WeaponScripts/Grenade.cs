@@ -7,7 +7,7 @@ public class Grenade : MonoBehaviour, Projectile {
 	public int life;
 	Rigidbody2D rb;
 	public int speed;
-
+	public TurretController owner;
 	public int fragments;
 	public GameObject grenadePiece;
 
@@ -44,8 +44,12 @@ public class Grenade : MonoBehaviour, Projectile {
 	{
 		if (null != rb) {
 			if (other.gameObject.CompareTag ("Enemy")) {
-				EnemyBehaviour enemy = other.gameObject.GetComponent<EnemyBehaviour> ();
-				enemy.decreaseHealth (damage);
+				TurretController playerScript = owner.GetComponent<TurretController> ();
+				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
+				//playerScript.IncreaseScore (enemyScript.points);
+				if (playerScript.isControllable && enemyScript != null) {
+					enemyScript.decreaseHealth (damage);
+				}
 				blowUp ();
 			} else if(!other.gameObject.CompareTag ("Player")){
 				// get the point of contact

@@ -50,17 +50,15 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (PhotonNetwork.isMasterClient) {
-
-			if (collision.gameObject.CompareTag("Core"))
-			{
+		
+			if (collision.gameObject.CompareTag ("Core")) {
 
 				//collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
-
-				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
+				if (PhotonNetwork.isMasterClient) {
+					collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage (damage);
+				}
 				DestroyLaser ();
 			}
-		}
 	}
 
 	//triggered when this object is destroyed

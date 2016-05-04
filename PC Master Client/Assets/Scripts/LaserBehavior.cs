@@ -6,7 +6,7 @@ public class LaserBehavior : MonoBehaviour {
 	Rigidbody2D rb;
 
 	public int speed;
-	public GameObject owner;
+	public TurretController owner;
 	public int life;
 	public int damage;
 	private float startTime;
@@ -32,10 +32,9 @@ public class LaserBehavior : MonoBehaviour {
 	{
 		if (null != rb) {
 			if (other.gameObject.CompareTag ("Enemy")) {
-				PlayerController playerScript = owner.GetComponent<PlayerController> ();
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
-				playerScript.IncreaseScore (enemyScript.points);
-				if (enemyScript != null) {
+				//owner.IncreaseScore (enemyScript.points);
+				if (owner.isControllable && enemyScript != null) {
 					enemyScript.decreaseHealth (damage);
 				}
 				Destroy (gameObject);

@@ -285,6 +285,7 @@ public class TurretController : MonoBehaviour {
 
 				GameObject leftLaser = Instantiate (weapons[ammo_num], leftBarrelEnd, transform.rotation) as GameObject;
 				leftLaser.GetComponent<SpriteRenderer> ().color = playerColor;
+				leftLaser.GetComponent<LaserBehavior> ().owner = this;
 
 				
 			} else if (rightShooting) {
@@ -295,6 +296,7 @@ public class TurretController : MonoBehaviour {
 				right_turret.SetTrigger("Recoil");
 				GameObject rightLaser = Instantiate (weapons[ammo_num], rightBarrelEnd, transform.rotation) as GameObject;
 				rightLaser.GetComponent<SpriteRenderer> ().color = playerColor;
+				rightLaser.GetComponent<LaserBehavior> ().owner = this;
 			}
 
 
