@@ -53,13 +53,13 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 	}
 	[PunRPC]
 	void InstantiateShield(){
-		if (PhotonNetwork.isMasterClient) {
+		
 			//GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
-			GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
-			newShieldBehaviour = newShield.GetComponent<ShieldBehaviour> ();
-			newShield.transform.parent = transform;
-			hasShield = true;
-		}
+		GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
+		newShieldBehaviour = newShield.GetComponent<ShieldBehaviour> ();
+		newShield.transform.parent = transform;
+		hasShield = true;
+	
 	}
 	[PunRPC]
 	void FireLaser() {
