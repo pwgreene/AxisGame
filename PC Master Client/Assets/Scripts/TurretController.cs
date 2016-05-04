@@ -98,7 +98,7 @@ public class TurretController : MonoBehaviour {
 		pv = PhotonView.Get(this);
 
 		if (isControllable) {
-			pv.RPC("SetColor", PhotonTargets.AllBufferedViaServer, PhotonNetwork.playerList.Length-1);
+			pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
 
 		}
 	}
@@ -106,7 +106,7 @@ public class TurretController : MonoBehaviour {
 
 	IEnumerator ColorUpdate(int ID){
 		
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.5f);
 		//some players might get the same color if the player leaves and joins
 		playerColor = playerColors[ID];
 		if (null != sprite) {
