@@ -34,21 +34,22 @@ public class GrenadeExplosion : MonoBehaviour, Projectile {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		//print ("Collision");
-		if (other.CompareTag ("Enemy")) {
-			EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
-			//owner.IncreaseScore (enemyScript.points);
-			if (owner.isControllable && enemyScript != null) {
-				enemyScript.decreaseHealth (damage);
-			}
-		}/** else if (other.CompareTag ("Enemy2")) {
-			Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
-			enemy.decreaseHealth (damage);
-		} else if (other.CompareTag ("Enemy3")) {
-			Enemy3Behavior enemy = other.GetComponent<Enemy3Behavior> ();
-			enemy.decreaseHealth (damage);
-		}**/
-
+		if (null != owner)
+			//print ("Collision");
+			if (other.CompareTag ("Enemy")) {
+				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
+				//owner.IncreaseScore (enemyScript.points);
+				if (owner.isControllable && enemyScript != null) {
+					enemyScript.decreaseHealth (damage);
+				}
+			}/** else if (other.CompareTag ("Enemy2")) {
+				Enemy2Behavior enemy = other.GetComponent<Enemy2Behavior> ();
+				enemy.decreaseHealth (damage);
+			} else if (other.CompareTag ("Enemy3")) {
+				Enemy3Behavior enemy = other.GetComponent<Enemy3Behavior> ();
+				enemy.decreaseHealth (damage);
+			}**/
+		}
 	}
 
 	public int getLife(){
