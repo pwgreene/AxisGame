@@ -11,7 +11,7 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 
 	public SpriteRenderer sprite;
 	public Rigidbody2D rb;
-	public PhotonView pv;
+	//public PhotonView pv;
 
 	void Start()
 	{
@@ -29,7 +29,7 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer> ();
 
-		pv = GetComponent<PhotonView> ();
+		//pv = GetComponent<PhotonView> ();
 	}
 
 	// Update is called once per frame
