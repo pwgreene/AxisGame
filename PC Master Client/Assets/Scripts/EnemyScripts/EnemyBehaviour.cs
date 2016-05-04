@@ -74,8 +74,10 @@ public class EnemyBehaviour : MonoBehaviour
 
 
 	public void decreaseHealth(int amount){
-		
-		pv.RPC("EnemyDamage", PhotonTargets.AllBuffered,amount);
+		if (remainingHealth > 0) {
+			pv.RPC("EnemyDamage", PhotonTargets.AllBuffered,amount);
+		}
+
 
 	}
 
@@ -88,14 +90,19 @@ public class EnemyBehaviour : MonoBehaviour
 			//not called through photon destroy
 			//let enemy manager know when this enemy is dead
 			//if (transform.parent != null) {
-
-			DestroyEnemy ();
+			if (PhotonNetwork.isMasterClient) {
+				DestroyEnemy ();
+			}
+		
 //			GameObject ex = Instantiate (explosion, transform.position, transform.rotation) as GameObject;
 //			ParticleSystem pEx = ex.GetComponent<ParticleSystem> ();
 //			var pEm = pEx.emission;
 //			pEx.Emit (15);
 		}
 		float healthPercent = (float)(totalHealth - remainingHealth) / totalHealth;
+		if (null == sprite) {
+			sprite = GetComponent<SpriteRenderer> ();
+		}
 		sprite.color = new Color(1 - (float)Math.Pow(healthPercent, 2f), 0, 0);
 	}
 		
