@@ -96,7 +96,6 @@ public class EnemyManager : MonoBehaviour
 				} else {
 					PhotonNetwork.InstantiateSceneObject (enemy.name, enemyWorldPoint, Quaternion.identity, 0, null);
 					//newEnemy.transform.parent = transform;
-					print ("enemy spawned");
 					numEnemiesToSpawn -= 1;
 				}
 				yield return new WaitForSeconds (spawnTime);

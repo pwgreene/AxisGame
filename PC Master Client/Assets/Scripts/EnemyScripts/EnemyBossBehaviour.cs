@@ -36,7 +36,7 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 		if (timeElapsedSinceFire < fireRate) {
 			timeElapsedSinceFire++;
 		} else if (timeElapsedSinceFire >= fireRate && distance <= 11f) {
-			pv.RPC ("FireLaser", PhotonTargets.AllBufferedViaServer);
+			FireLaser ();
 			timeElapsedSinceFire = 0;
 		}
 	}
@@ -62,11 +62,8 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 		}
 	}
 
-	[PunRPC]
 	void FireLaser() {
-		if (PhotonNetwork.isMasterClient) {
-			PhotonNetwork.InstantiateSceneObject (laser.name, transform.position, transform.rotation,0,null);
-		}
+		Instantiate (laser, transform.position, transform.rotation);
 	}
 
 }

@@ -60,21 +60,14 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 				//collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
 
 				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
-
-				
-
-				pv.RPC("DestroyLaser", PhotonTargets.MasterClient);
+				DestroyLaser ();
 			}
 		}
 	}
 
 	//triggered when this object is destroyed
-	[PunRPC]
 	public void DestroyLaser()
 	{
-		//not called through photon destroy
-		if(PhotonNetwork.isMasterClient){
-			PhotonNetwork.Destroy(gameObject);
-		}
+		Destroy (gameObject);
 	}
 }
