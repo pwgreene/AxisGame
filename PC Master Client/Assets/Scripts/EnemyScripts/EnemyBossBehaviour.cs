@@ -54,8 +54,8 @@ public class EnemyBossBehaviour : EnemyBehaviour {
 	[PunRPC]
 	void InstantiateShield(){
 		if (PhotonNetwork.isMasterClient) {
-			GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
-
+			//GameObject newShield = Instantiate(shield, transform.position, transform.rotation) as GameObject;
+			GameObject newShield = PhotonNetwork.Instantiate(shield.name, transform.position, Quaternion.identity, 0);
 			newShieldBehaviour = newShield.GetComponent<ShieldBehaviour> ();
 			newShield.transform.parent = transform;
 			hasShield = true;

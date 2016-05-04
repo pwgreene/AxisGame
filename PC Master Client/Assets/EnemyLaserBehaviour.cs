@@ -9,9 +9,7 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 
 	Vector3 corePosition;
 
-	public SpriteRenderer sprite;
 	public Rigidbody2D rb;
-	public PhotonView pv;
 
 	void Start()
 	{
@@ -21,15 +19,11 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 		}
 		catch (NullReferenceException)
 		{
-
 			PhotonView photonView = PhotonView.Get(this);
-			photonView.RPC("DestroyLaser", PhotonTargets.MasterClient);
+			DestroyLaser ();
 
 		}
 		rb = GetComponent<Rigidbody2D>();
-		sprite = GetComponent<SpriteRenderer> ();
-
-		pv = GetComponent<PhotonView> ();
 	}
 
 	// Update is called once per frame
@@ -40,29 +34,23 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 
 	public void moveTowardCore() 
 	{
-		//only the master client moves enemies
-		if (PhotonNetwork.isMasterClient) {
-			Vector3 direction = corePosition - transform.position;
-			rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
-			float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
-			transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-			rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
-		}
+		Vector3 direction = corePosition - transform.position;
+		rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
+		float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		rb.velocity = rb.velocity.magnitude > speed ? rb.velocity.normalized * speed : rb.velocity;
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (PhotonNetwork.isMasterClient) {
-
-			if (collision.gameObject.CompareTag("Core"))
-			{
-
+		
+		if (collision.gameObject.CompareTag("Core")) {
+			if (PhotonNetwork.isMasterClient) {
 				//collision.gameObject.GetComponent<CoreBehaviour>().Damage(damage);
-
 				collision.gameObject.GetComponent<RotatingCoreBehaviour> ().Damage(damage);
-				DestroyLaser ();
 			}
-		}
+			Destroy (gameObject);
+		} 
 	}
 
 	//triggered when this object is destroyed
