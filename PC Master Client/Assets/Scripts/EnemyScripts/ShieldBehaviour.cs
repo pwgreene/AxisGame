@@ -34,15 +34,14 @@ public class ShieldBehaviour : MonoBehaviour {
 			if (isActive) {
 				if (timer > activeLife) {
 					//GoInactive ();
-
-					pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
+					pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, false);
 				} else {
 					timer++;
 				} 
 			} else {
 				if (timer > inactiveLife) {
 					//GoActive ();
-					pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, !isActive);
+					pv.RPC ("SetShieldActive", PhotonTargets.AllBufferedViaServer, true);
 				} else {
 					timer++;
 				}
