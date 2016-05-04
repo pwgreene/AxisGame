@@ -20,6 +20,7 @@ public class GUIManager : MonoBehaviour
 
     public CanvasGroup canvasGroup;
     public Text waveText;
+	public Text waveStatusText;
 
     void Start()
     {
@@ -30,6 +31,19 @@ public class GUIManager : MonoBehaviour
     {
         waveText.text = "You survived " + (waveNumber - 1) + " waves!";
     }
+
+	public void WaveStatusUpdate() {
+		StartCoroutine("BlinkText", 0.3f);
+	}
+
+	 IEnumerator BlinkText(float delay) {
+		for (int i = 0; i < 6; i++) {
+			waveStatusText.text = "Next wave approaching";
+			yield return new WaitForSeconds (delay);
+			waveStatusText.text = "";
+			yield return new WaitForSeconds (delay);
+		}
+	}
 
     public static IEnumerator WaitForRealSeconds(float time)
     {
