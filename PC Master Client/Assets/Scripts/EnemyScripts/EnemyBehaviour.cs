@@ -12,7 +12,8 @@ public class EnemyBehaviour : MonoBehaviour
 	public int remainingHealth;
 
 	public GameObject explosion;
-	public PhotonView pv;
+    public GameObject power;
+    public PhotonView pv;
     public Vector3 corePosition;
     Rigidbody2D rb;
 	SpriteRenderer sprite;
@@ -20,6 +21,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Use this for initialization
     protected virtual void Start()
     {
+        power = GameObject.FindGameObjectWithTag("PowerupManager");
         try
         {
             corePosition = GameObject.FindGameObjectWithTag("Core").transform.position;
@@ -87,6 +89,7 @@ public class EnemyBehaviour : MonoBehaviour
 		if (remainingHealth <= 0) {
 			//this instantiate is outside so everyone sees it
 			Instantiate (explosion, transform.position, transform.rotation);
+            power.GetComponent<AudioSource>().Play();
 			//not called through photon destroy
 			//let enemy manager know when this enemy is dead
 			//if (transform.parent != null) {

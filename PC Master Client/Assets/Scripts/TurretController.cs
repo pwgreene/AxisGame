@@ -41,11 +41,13 @@ public class TurretController : MonoBehaviour {
 
 	public GameObject spoke_object;
 
+	GameObject button_manager;
+
 	bool leftShooting = true;
 	bool rightShooting = false;
 
 	//public bool hasSpoke = false;
-    int ammoType;
+    public int ammoType;
 
 	public float[] ammoAmmounts;
 
@@ -99,7 +101,8 @@ public class TurretController : MonoBehaviour {
 
 		if (isControllable) {
 			pv.RPC("SetColor", PhotonTargets.AllBuffered, PhotonNetwork.playerList.Length-1);
-
+			button_manager = GameObject.FindGameObjectWithTag ("ButtonManager");
+			button_manager.GetComponent<ButtonManager> ().turret = this;
 		}
 	}
 

@@ -42,6 +42,7 @@ public class WaveManager : MonoBehaviour {
 			enemyManager.setNumEnemiesToSpawn (numEnemies);
 			enemyManager.spawnTime = spawnTime;
 		}
+		//guiM.WaveStatusUpdate (true);
 
 		//manager.transform.parent = transform;
 	}
@@ -50,7 +51,10 @@ public class WaveManager : MonoBehaviour {
 	public void EnemyManagerDone(int numEnemies) {
 		print ("manager done"+numEnemiesOnWave.ToString());
 		//all managers should be done, wave over
+
+		//guiM.WaveStatusUpdate (false);
 		waveNumber++;
+		guiM.WaveStatusUpdate (); //argument = true
 		if (PhotonNetwork.isMasterClient) {
 			pv.RPC ("ChangeWaveNumber", PhotonTargets.AllBufferedViaServer, waveNumber);
 			SpawnWave ();
