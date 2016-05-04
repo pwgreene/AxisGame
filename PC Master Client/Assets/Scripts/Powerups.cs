@@ -9,7 +9,7 @@ public class Powerups : MonoBehaviour {
 
 	public float healAmount;
 
-	public float fireRateIncrease;
+	public float fireIntervalInverseFactor;
 	public float rateIncreaseDuration;
 	public SpriteRenderer icon;
 	private GameObject core;
@@ -49,7 +49,7 @@ public class Powerups : MonoBehaviour {
 			break;
 
 		case PowerupType.FiringRate:
-			fireRateIncrease = powMan.fireRate_decrease_factor;
+			fireIntervalInverseFactor = powMan.fireRate_decrease_factor;
 			rateIncreaseDuration = powMan.fireRate_duration;
 			icon.sprite = powMan.fire_rate_icon;
 			break;
@@ -79,7 +79,7 @@ public class Powerups : MonoBehaviour {
 					if (!turret.increased_fire_rate) {
 						//rpc
 						//PowerUpApply(bool inc_rate, int fire_rate, float dur,int ammo,float ammo_increase){
-						int rate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireRate / fireRateIncrease) + 1;
+						int rate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireInterval / fireIntervalInverseFactor) + 1;
 						pv.RPC("PowerUpApply", PhotonTargets.AllBuffered, true, rate, rateIncreaseDuration ,0,0f);
 
 

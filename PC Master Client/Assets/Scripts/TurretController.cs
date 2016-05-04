@@ -8,11 +8,11 @@ public class TurretController : MonoBehaviour {
 	public bool isControllable = false;
 	public float speed;
 	public float rotationSpeed;
-	public float fireRate;
+	public float fireInterval;
 	public float orbiting_speed;
 
 
-	float BASE_FIRE_RATE;
+	float BASE_FIRE_INTERVAL;
 	public bool increased_fire_rate = false;
 	public float increased_fire_rate_duration = 0;
 
@@ -62,7 +62,7 @@ public class TurretController : MonoBehaviour {
 
 		ammoType = 0;
 
-		BASE_FIRE_RATE = fireRate;
+		BASE_FIRE_INTERVAL= fireInterval;
 
 		rb = GetComponent<Rigidbody2D>();
 		player = this.gameObject;
@@ -104,10 +104,10 @@ public class TurretController : MonoBehaviour {
 	}
 
 	[PunRPC]
-	public void PowerUpApply(bool inc_rate, int fire_rate, float dur,int ammo,float ammo_increase){
+	public void PowerUpApply(bool inc_rate, int fire_interval, float dur,int ammo,float ammo_increase){
 		if (inc_rate) {
 			increased_fire_rate = true;
-			fireRate = fire_rate;
+			fireInterval = fire_interval;
 
 		}
 
@@ -146,7 +146,7 @@ public class TurretController : MonoBehaviour {
 			if (Input.GetKeyDown ("3") && ammoAmmounts[2] > 0) {
 				ammoType = 2;
 			}
-			if (timeElapsedSinceFire < fireRate) 
+			if (timeElapsedSinceFire < fireInterval) 
 			{
 				timeElapsedSinceFire++;
 			}
@@ -154,7 +154,7 @@ public class TurretController : MonoBehaviour {
 				if (increased_fire_rate_duration <= 0) {
 					increased_fire_rate_duration = 0;
 					increased_fire_rate = false;
-					fireRate = BASE_FIRE_RATE;
+					fireInterval = BASE_FIRE_INTERVAL;
 					print ("Returning to base fireRate");
 				} else {
 					increased_fire_rate_duration--;
@@ -269,7 +269,7 @@ public class TurretController : MonoBehaviour {
 		
 
 		Debug.Log ("pew pew");
-		if (time_elapsed >= fireRate) {
+		if (time_elapsed >= fireInterval) {
 			ammoAmmounts [ammoType]--;
 			print ("Ammotype: " + ammoType + " ammoLeft: " + ammoAmmounts [ammoType]);
 			//create two new lasers to fire and set them equal to the color of the parent
