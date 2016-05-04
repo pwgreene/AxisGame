@@ -10,6 +10,7 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 	Vector3 corePosition;
 
 	public Rigidbody2D rb;
+	//public PhotonView pv;
 
 	void Start()
 	{
@@ -33,7 +34,7 @@ public class EnemyLaserBehaviour : MonoBehaviour {
 	}
 
 	public void moveTowardCore() 
-	{
+    {
 		Vector3 direction = corePosition - transform.position;
 		rb.AddForce(direction.normalized * speed, ForceMode2D.Force);
 		float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
