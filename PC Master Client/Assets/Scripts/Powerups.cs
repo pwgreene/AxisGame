@@ -66,36 +66,48 @@ public class Powerups : MonoBehaviour {
 		if (other.tag.Equals ("Player") || other.tag.Equals("Core")) {
 			//Debug.Log ("collided with powerup");
 			TurretController turret = other.GetComponent<TurretController>();
-			switch (powType)
-			{
-			case PowerupType.CoreHealth:
-				core.GetComponent<RotatingCoreBehaviour> ().currentHP += healAmount; 
-				break;
-			case PowerupType.FiringRate:
-				//The way this is organized right now, multiple fire rate powerups only increase the duration of the increase
-				if (!turret.increased_fire_rate) {
-					turret.increased_fire_rate = true;
-					turret.fireRate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireRate / fireRateIncrease) + 1;
-					turret.increased_fire_rate_duration += rateIncreaseDuration;
-				} else {
-					turret.increased_fire_rate_duration += rateIncreaseDuration;
+			PhotonView pv = turret.GetComponent<PhotonView> ();
+			if (pv.isMine) {
+				switch (powType)
+				{
+				case PowerupType.CoreHealth:
+					//need to make sure this is networked - so damage calls rpc
+					core.GetComponent<RotatingCoreBehaviour> ().Damage ((int)(-1 * healAmount));
+					break;
+				case PowerupType.FiringRate:
+					//The way this is organized right now, multiple fire rate powerups only increase the duration of the increase
+					if (!turret.increased_fire_rate) {
+						//rpc
+						//PowerUpApply(bool inc_rate, int fire_rate, float dur,int ammo,float ammo_increase){
+						int rate = Mathf.RoundToInt (other.GetComponent<TurretController> ().fireRate / fireRateIncrease) + 1;
+						pv.RPC("PowerUpApply", PhotonTargets.AllBuffered, true, rate, rateIncreaseDuration ,0,0f);
+
+
+					} else {
+						pv.RPC("PowerUpApply", PhotonTargets.AllBuffered, false, 0, rateIncreaseDuration ,0,0f);
+					}
+
+
+					break;
+				case PowerupType.AmmoIncrease_Grenade:
+					pv.RPC("PowerUpApply", PhotonTargets.AllBuffered, false, 0, 0f ,2,ammoCount);
+
+					break;
+				case PowerupType.AmmoIncrease_Missile:
+					pv.RPC("PowerUpApply", PhotonTargets.AllBuffered, false, 0, 0f ,1,ammoCount);
+
+					break;
+				default:
+					break;
 				}
 
+				//destroy this
+				PhotonView.Get(this).RPC("DestroyPowerUp",PhotonTargets.AllBuffered);
 
-				break;
-			case PowerupType.AmmoIncrease_Grenade:
-				turret.ammoAmmounts [2] += ammoCount;
-				break;
-			case PowerupType.AmmoIncrease_Missile:
-				turret.ammoAmmounts [1] += ammoCount;
-				break;
-			default:
-				break;
+
 			}
 
 
-			//destroy this
-			PhotonView.Get(this).RPC("DestroyPowerUp",PhotonTargets.MasterClient);
 
 		}
 

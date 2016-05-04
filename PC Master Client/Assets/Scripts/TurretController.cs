@@ -103,7 +103,16 @@ public class TurretController : MonoBehaviour {
 		}
 	}
 
+	[PunRPC]
+	public void PowerUpApply(bool inc_rate, int fire_rate, float dur,int ammo,float ammo_increase){
+		if (inc_rate) {
+			increased_fire_rate = true;
 
+		}
+		fireRate = fire_rate;
+		increased_fire_rate_duration += dur;
+		ammoAmmounts [ammo] += ammo_increase;
+	}
 	IEnumerator ColorUpdate(int ID){
 		
 		yield return new WaitForSeconds(0.5f);
