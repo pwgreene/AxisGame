@@ -43,7 +43,7 @@ public class Grenade : MonoBehaviour, Projectile {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (!other.gameObject.CompareTag("Bullet") && null != rb && null != owned){
+		if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Bullet") && null != rb && null != owned){
 			if (other.gameObject.CompareTag ("Enemy")) {
 
 				EnemyBehaviour enemyScript = other.gameObject.GetComponent<EnemyBehaviour> ();
