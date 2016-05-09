@@ -9,8 +9,12 @@ public class RandomMatchmaker : Photon.PunBehaviour
     // Use this for initialization
     void Start()
     {
-        PhotonNetwork.ConnectUsingSettings("0.2");
+		PhotonConnect ();
     }
+
+	public void PhotonConnect (){
+		PhotonNetwork.ConnectUsingSettings("0.2");
+	}
 
     void OnGUI()
     {
