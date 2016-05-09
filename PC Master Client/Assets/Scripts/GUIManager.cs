@@ -98,6 +98,7 @@ public class GUIManager : MonoBehaviour
         yield return new WaitForSeconds(5 * Time.timeScale);
 
         PhotonNetwork.LeaveRoom();
+		PhotonNetwork.LeaveLobby ();
         SceneManager.LoadScene(0);
     }
 }
