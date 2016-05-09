@@ -6,6 +6,8 @@ public class WaveManager : MonoBehaviour {
 	int waveNumber;
 	int numEnemiesOnWave;
 
+	public Font waveGUIFont;
+
 	public GameObject enemyManager;
 	public GameObject smallSuicider;
 	public GameObject mediumSuicider;
@@ -95,7 +97,8 @@ public class WaveManager : MonoBehaviour {
 	}
 		
 	void OnGUI() {
-		GUI.Box (new Rect (50, 300, 100, 50), "Wave:  " + waveNumber.ToString());
+		GUI.skin.font = waveGUIFont;
+		GUI.Box (new Rect (40, 80, 100, 40), "Wave:  " + waveNumber.ToString());
 	}
 		
 }
