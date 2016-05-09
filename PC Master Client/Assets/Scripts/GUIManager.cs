@@ -73,6 +73,9 @@ public class GUIManager : MonoBehaviour
             yield return null;
         }
 		*/
+		float originalScale = Time.timeScale;
+		float originalFixedDelta = Time.fixedDeltaTime;
+		PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.player);
 		yield return new WaitForSeconds(1f);
         bool go = true;
         while (go)
@@ -92,13 +95,17 @@ public class GUIManager : MonoBehaviour
                 go = false;
             }
 
-            yield return new WaitForSeconds(0.05f * Time.timeScale);
+            yield return new WaitForSeconds(0.15f * Time.timeScale);
         }
 
         yield return new WaitForSeconds(5 * Time.timeScale);
 
-        PhotonNetwork.LeaveRoom();
-		PhotonNetwork.LeaveLobby ();
-        SceneManager.LoadScene(0);
+        //PhotonNetwork.LeaveRoom();
+
+		Time.timeScale = originalScale;
+		Time.fixedDeltaTime = originalFixedDelta;
+		PhotonNetwork.LeaveRoom ();
+
+       
     }
 }

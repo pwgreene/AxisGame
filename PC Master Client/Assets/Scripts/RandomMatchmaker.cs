@@ -1,25 +1,37 @@
 ﻿using UnityEngine;
 using Photon;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class RandomMatchmaker : Photon.PunBehaviour
 {
-
-
+	TextAsset animal_names;
     // Use this for initialization
     void Start()
     {
-		PhotonConnect ();
+		
+
+		//PhotonNetwork.logLevel = PhotonLogLevel.Full;
+		if (PhotonNetwork.insideLobby) {
+			PhotonNetwork.JoinRandomRoom();
+		} else {
+			
+			PhotonConnect ();
+		}
     }
 
 	public void PhotonConnect (){
 		PhotonNetwork.ConnectUsingSettings("0.2");
 	}
+		
+
+
 
     void OnGUI()
     {
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
     }
+		
 
     public override void OnJoinedLobby()
     {
@@ -28,12 +40,18 @@ public class RandomMatchmaker : Photon.PunBehaviour
 
     void OnPhotonRandomJoinFailed()
     {
-        Debug.Log("Can't join random room!");
-        PhotonNetwork.CreateRoom(null);
+		//animal_names = Resources.Load("animal_names",typeof(TextAsset)) as TextAsset;
+
+		//string[] dataLines = animal_names.text.Split('\n');
+		//string name = dataLines [Mathf.RoundToInt (Random.Range (0, dataLines.Length - 1))];
+		string name = "roomID" + Random.Range(0,100).ToString();
+        Debug.Log("Can't join random room!" + "creating room: " + name);
+        PhotonNetwork.CreateRoom(name);
     }
 
     public override void OnCreatedRoom()
     {
+		
         PhotonNetwork.InstantiateSceneObject("rotating_core", Vector3.zero, Quaternion.identity, 0, null);
         PhotonNetwork.InstantiateSceneObject("WaveManager", Vector3.zero, Quaternion.identity, 0, null);
 		//PhotonNetwork.InstantiateSceneObject("PowerupManager", Vector3.zero, Quaternion.identity, 0, null);
@@ -58,6 +76,13 @@ public class RandomMatchmaker : Photon.PunBehaviour
 			
         
     }
+
+
+	public override void OnLeftRoom()
+	{
+		SceneManager.LoadScene(0);
+	}
+
 
 
 }
