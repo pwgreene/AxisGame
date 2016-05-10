@@ -20,12 +20,16 @@ public class RotatingCoreBehaviour : MonoBehaviour
     PhotonView pv;
     AudioSource audioSource;
 
+	void Awake(){
+		currentHP = startingHP;
+		coreSprite = GetComponent<SpriteRenderer>();
+		pv = PhotonView.Get(this);
+		audioSource = GetComponent<AudioSource>();
+	}
     void Start()
     {
-        currentHP = startingHP;
-        coreSprite = GetComponent<SpriteRenderer>();
-        pv = PhotonView.Get(this);
-        audioSource = GetComponent<AudioSource>();
+        
+
         StartCoroutine(DangerBeep());
     }
 

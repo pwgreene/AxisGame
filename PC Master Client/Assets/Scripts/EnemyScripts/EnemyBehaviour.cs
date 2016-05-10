@@ -17,9 +17,11 @@ public class EnemyBehaviour : MonoBehaviour
     public Vector3 corePosition;
     Rigidbody2D rb;
 	SpriteRenderer sprite;
-
+	void Awake(){
+		remainingHealth = totalHealth;
+	}
     // Use this for initialization
-    protected virtual void Start()
+	protected virtual void Start()
     {
         power = GameObject.FindGameObjectWithTag("PowerupManager");
         try
@@ -35,7 +37,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
         rb = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer> ();
-		remainingHealth = totalHealth;
+
 
 		pv = GetComponent<PhotonView> ();
     }

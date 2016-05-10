@@ -64,7 +64,7 @@ public class EnemyManager : MonoBehaviour
 
 			while (numEnemiesToSpawn > 0) {
 				// Choose a random position off screen
-				float fixedValue = Random.value > 0.5f ? -0.2f : 1.2f;
+				float fixedValue = Random.value > 0.5f ? -0.5f : 1.5f;
 				float randomValue = Random.value;
 
 				Vector3 enemyScreenPoint;
@@ -112,7 +112,8 @@ public class EnemyManager : MonoBehaviour
 	void spawnCluster(int enemyCount, int radius, Vector3 location, GameObject enemyType) {
 		Vector3 gap = new Vector3 (radius, 0, 0);
 		for (int i = 0; i < enemyCount; i++) {
-			GameObject enemy = PhotonNetwork.InstantiateSceneObject (enemyType.name, location + gap, Quaternion.identity, 0, null);
+			Vector3 newLoc = location + gap;
+			GameObject enemy = PhotonNetwork.InstantiateSceneObject (enemyType.name, newLoc, Quaternion.identity, 0, null);
 			EnemyBehaviour behaviour = enemy.GetComponent<EnemyBehaviour> ();
 
 			if (behaviour != null) {
